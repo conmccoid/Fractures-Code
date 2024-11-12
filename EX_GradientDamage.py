@@ -40,18 +40,23 @@ class SNESProblem:
         J.assemble()
 
 class NewtonSolverContext:
-    # needs to take as input two Jacobian matrices, probably in the form of PETSc solvers
-    # needs also one Jacobian matrix that can multiply a vector
+    # nb: needs to take as input two Jacobian matrices, probably in the form of PETSc solvers
+    # nb: needs also one Jacobian matrix that can multiply a vector
     def __init__(self,Euu,Euv,Evu,Evv):
         # get sizes of submatrices, Nu, Nv
         self.Euu=Euu
         
     def mult(self, mat, X, Y):
-        # split up X and Y into subcomponents of size Nu and Nv
-        self.Euu.assemble()
-        self.Euv.assemble()
-        self.Evu.assemble()
-        self.Evv.assemble()
+        x1, x2 = X.getNestSubVecs()
+        w1, v2 = Y.getNestSubVecs()
+        Euu = mat.getNestSubMatrix(0,0) # nb: if using this set-up, need to update to not use self.Euu, etc.
+        Euv = mat.getNestSubMatrix(0,1)
+        Evu = mat.getNestSubMatrix(1,0)
+        Evv = mat.getNestSubMatrix(1,1)
+        # self.Euu.assemble()
+        # self.Euv.assemble()
+        # self.Evu.assemble()
+        # self.Evv.assemble()
         y1=self.Euu.createVectorRight()
         y2=self.Evv.createVectorRight()
         z1=self.Euv.createVectorRight()
@@ -60,11 +65,12 @@ class NewtonSolverContext:
         self.Evv.mult(x2,y2)
         self.Euv.multAdd(x2,y1,z1)
         self.Evu.multAdd(x1,y2,z2)
-        w1=self.Euu.createVectorRight()
-        self.Euu.matSolve(z1,w1) # likely will need to change this to a proper KSP solve
+        # w1=self.Euu.createVectorRight()
+        self.Euu.matSolve(z1,w1) # nb: likely will need to change this to a proper KSP solve
         w2=self.Evv.createVectorRight()
         self.Evu.multAdd(-w1,z2,w2)
-        # then w1 and self.Evv.matSolve(w2,?) get put into Y
+        self.Evv.matSolve(w2,v2)
+        # then w1 and v2 get put into Y
 
 # Domain set-up
 L=1.; H=0.3
@@ -236,7 +242,7 @@ def alternate_minimization(u, v, atol=1e-8, max_iterations=100, monitor=True):
     )
 
 # Exact Newton solver
-EN=NewtonSolverContext()
+EN=NewtonSolverContext() # nb: what goes in here?
 
 A = PETSc.Mat().createPython()
 A.setPythonContext(EN)
@@ -246,13 +252,26 @@ EN_solver = PETSc.KSP().create()
 EN_solver.setOperators(A)
 EN_solver.setType('gmres')
 pc  = EN_solver.getPC()
-pc.setType('none')
+pc.setType('none') # there are no PCs for Python matrices (that I've found)
 EN_solver.setFromOptions()
 
 # AMEN definition
 def AMEN(u, v, atol=1e-8, max_iterations=100, monitor=True):
     v_old = fem.Function(v.function_space)
     v_old.x.array[:] = v.x.array
+    u_old = fem.Function(u.function_space)
+    u_old.x.array[:] = u.x.array
+
+    # initialize Newton step direction
+    p_u = fem.Function(u.function_space)
+    p_v = fem.Function(v.function_space)
+    p = PETSc.Vec().createNest([p_u,p_v])
+
+    # create residual vector to minimize
+    # nb: is this the way to do this?
+    res_u = u - u_old
+    res_v = v - v_old
+    res = PETSc.Vec().createNest([res_u,res_v])
 
     for iteration in range(max_iterations):
         # Solve for displacement
@@ -262,15 +281,20 @@ def AMEN(u, v, atol=1e-8, max_iterations=100, monitor=True):
 
         # Solve for damage
         damage_solver.solve(None, v.vector)
+        v.x.scatter_forward() # nb: either need this to update res or don't because it only is required for ksponly solvers
 
         # Exact Newton step
+          # nb: does res need to be redefined at each iteration? or are the pointers above enough?
         EN_solver.solve(res,p) # resulting p is the Newton direction in both u and v (needs initialization)
-            # also need to calculate residual
+        p_u, p_v = p.getNestSubVecs()
+        u.vector = u_old.vector + p_u # nb: should probably be some kind of line search or backtracking step
+        v.vector = v_old + p_v # nb: also not sure how to add these vectors
 
         # Check error and update
         L2_error = ufl.inner(v - v_old, v - v_old) * dx
         error_L2 = np.sqrt(MPI.COMM_WORLD.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
         v_old.x.array[:] = v.x.array
+        u_old.x.array[:] = u.x.array
 
         if monitor:
           print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
