@@ -7,6 +7,61 @@ from dolfinx import mesh, fem, la
 from dolfinx.fem import petsc
 
 # custom classes
+class GlobalProblem:
+    def __init__(self, Fu, u, bcs_u, Fv, v, bcs_v, Ju=None, Jv=None):
+      Vu = u.function_space
+      Vv = v.function_space
+      du = ufl.TrialFunction(Vu)
+      dv = ufl.TrialFunction(Vv)
+      self.Lu = fem.form(Fu)
+      self.Lv = fem.form(Fv)
+      if Ju is None:
+         self.au = fem.form(ufl.derivative(Fu,u,du))
+      else:
+         self.au = fem.form(Ju)
+      if Jv is None:
+         self.av = fem.form(ufl.derivative(Fv,v,dv))
+      else:
+         self.av = fem.form(Jv)
+      self.bcs_u = bcs_u
+      self.bcs_v = bcs_v
+      self._F, self._J = None, None
+      self.u = u
+      self.v = v
+
+    def Fn(self, snes, x, F):
+      """Assemble nested residual vector."""
+      xu, xv = x.getNestSubVecs()
+      xu.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+      xu.copy(self.u.vector)
+      self.u.vector.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+      xv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+      xv.copy(self.v.vector)
+      self.v.vector.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+
+      with F.localForm() as f_local:
+         f_local.set(0.0)
+      Fu, Fv = F.getNestSubVecs()
+      petsc.assemble_vector(Fu,self.Lu)
+      petsc.assemble_vector(Fv,self.Lv)
+      petsc.apply_lifting(Fu, [self.au], bcs=[self.bcs_u], x0=[xu], scale=-1.0)
+      petsc.apply_lifting(Fv, [self.av], bcs=[self.bcs_v], x0=[xv], scale=-1.0)
+      Fu.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
+      Fv.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
+      petsc.set_bc(Fu,self.bcs_u, xu, -1.0)
+      petsc.set_bc(Fv,self.bcs_v, xv, -1.0)
+
+    def Jn(self, snes, x, J, P):
+       """Assemble nested Jacobian matrix."""
+       Ju = J.getNestSubMatrix(0,0)
+       Jv = J.getNestSubMatrix(1,1)
+       Ju.zeroEntries()
+       Jv.zeroEntries()
+       petsc.assemble_matrix(Ju, self.au, bcs=self.bcs_u)
+       petsc.assemble_matrix(Jv, self.av, bcs=self.bcs_v)
+       Ju.assemble()
+       Jv.assemble()
+      
 class SNESProblem:
     def __init__(self, F, u, bcs, J=None):
         V = u.function_space
@@ -45,24 +100,25 @@ class NewtonSolverContext:
     def __init__(self,Euu,Euv,Evu,Evv):
         # get sizes of submatrices, Nu, Nv
         self.Euu=Euu
-        self.Euv=Euv
-        self.Evu=Evu
-        self.Evv=Evv
         
     def mult(self, mat, X, Y):
         x1, x2 = X.getNestSubVecs()
         w1, v2 = Y.getNestSubVecs()
-        self.Euu.assemble()
-        self.Euv.assemble()
-        self.Evu.assemble()
-        self.Evv.assemble()
-        y1=self.Euu.createVecRight()
-        y2=self.Evv.createVecRight()
-        z1=self.Euv.createVecRight()
-        z2=self.Evv.createVecRight()
+        Euu = mat.getNestSubMatrix(0,0) # nb: if using this set-up, need to update to not use self.Euu, etc.
+        Euv = mat.getNestSubMatrix(0,1)
+        Evu = mat.getNestSubMatrix(1,0)
+        Evv = mat.getNestSubMatrix(1,1)
+        # self.Euu.assemble()
+        # self.Euv.assemble()
+        # self.Evu.assemble()
+        # self.Evv.assemble()
+        y1=self.Euu.createVectorRight()
+        y2=self.Evv.createVectorRight()
+        z1=self.Euv.createVectorRight()
+        z2=self.Evv.createVectorRight()
         self.Euu.mult(x1,y1)
         self.Evv.mult(x2,y2)
-        self.Euv.multAdd(x2,y1,z1) # this isn't working right, apparently dimensional problem
+        self.Euv.multAdd(x2,y1,z1)
         self.Evu.multAdd(x1,y2,z2)
         # w1=self.Euu.createVectorRight()
         self.Euu.matSolve(z1,w1) # nb: likely will need to change this to a proper KSP solve
@@ -175,6 +231,8 @@ E_vu= ufl.derivative(E_v,u,ufl.TrialFunction(V_u))
 # now we want to solve E_u(u,v)=0 and E_v(u,v)=0 with alternate minimization with a Newton accelerator
 # first set up solvers for the individual minimizations
 
+# Nest the two problems into one: switching to Jacobi preconditioner
+
 # Custom class for the problems to be solved by SNES
 elastic_problem=SNESProblem(E_u, u, bcs_u, E_uu)
 damage_problem =SNESProblem(E_v, v, bcs_v, E_vv)
@@ -211,6 +269,20 @@ v_lb.x.array[:] = 0.0
 v_ub.x.array[:] = 1.0
 damage_solver.setVariableBounds(v_lb.vector,v_ub.vector)
 
+# A global solver that doesn't work
+global_solver=PETSc.SNES().create()
+global_problem=GlobalProblem(E_u, u, bcs_u, E_v, v, bcs_v)
+b=PETSc.Vec().createNest([b_u,b_v])
+J=PETSc.Mat().createNest([[J_u,None],[None,J_v]])
+global_solver.setFunction(global_problem.Fn,b)
+global_solver.setJacobian(global_problem.Jn,J)
+
+global_solver.setType('ksponly')
+global_solver.setTolerances(rtol=1.0e-9, max_it=50)
+global_solver.getKSP().setType('preonly')
+global_solver.getKSP().setTolerances(rtol=1.0e-9)
+global_solver.getKSP().getPC().setType('lu')
+
 # AltMin definition
 def alternate_minimization(u, v, atol=1e-8, max_iterations=100, monitor=True):
     v_old = fem.Function(v.function_space)
@@ -229,83 +301,6 @@ def alternate_minimization(u, v, atol=1e-8, max_iterations=100, monitor=True):
         L2_error = ufl.inner(v - v_old, v - v_old) * dx
         error_L2 = np.sqrt(MPI.COMM_WORLD.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
         v_old.x.array[:] = v.x.array
-
-        if monitor:
-          print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
-
-        if error_L2 <= atol:
-          return (error_L2,iteration)
-
-    raise RuntimeError(
-        f"Could not converge after {max_iterations} iterations, error {error_L2:3.4e}"
-    )
-
-# Exact Newton solver
-Euu = petsc.assemble_matrix(fem.form(E_uu))
-Evv=petsc.assemble_matrix(fem.form(E_vv))
-elastic_problem.Jn(_,_,Euu,_)
-damage_problem.Jn(_,_,Evv,_)
-Euv = petsc.assemble_matrix(fem.form(E_uv))
-Evu = petsc.assemble_matrix(fem.form(E_vu))
-EN=NewtonSolverContext(Euu, Euv, Evu, Evv) # replacing Euv with E_uv also works? ditto Evu
-
-A_test = PETSc.Mat().createNest([[Euu,Euv],[Evu,Evv]])
-# there has to be a better way!
-
-A = PETSc.Mat().createPython(A_test.getSize())
-A.setPythonContext(EN)
-A.setUp()
-
-EN_solver = PETSc.KSP().create()
-EN_solver.setOperators(A)
-EN_solver.setType('gmres')
-pc  = EN_solver.getPC()
-pc.setType('none') # there are no PCs for Python matrices (that I've found)
-EN_solver.setFromOptions()
-
-# AMEN definition
-def AMEN(u, v, atol=1e-8, max_iterations=100, monitor=True):
-    v_old = fem.Function(v.function_space)
-    v_old.x.array[:] = v.x.array
-    u_old = fem.Function(u.function_space)
-    u_old.x.array[:] = u.x.array
-
-    # initialize Newton step direction
-    p_u = fem.Function(u.function_space)
-    p_v = fem.Function(v.function_space)
-    p = PETSc.Vec().createNest([p_u.vector,p_v.vector])
-
-    # create residual vector to minimize
-    # nb: is this the way to do this?
-
-    for iteration in range(max_iterations):
-        # Solve for displacement
-        elastic_solver.solve(None, u.vector) # replace None with a rhs function
-        # This forward scatter is necessary when `solver_u_snes` is of type `ksponly`.
-        u.x.scatter_forward() # why isn't it necessary for v?
-
-        # Solve for damage
-        damage_solver.solve(None, v.vector)
-        v.x.scatter_forward() # nb: either need this to update res or don't because it only is required for ksponly solvers
-
-        # Exact Newton step
-        res_u = u.vector - u_old.vector
-        res_v = v.vector - v_old.vector
-        res = PETSc.Vec().createNest([res_u,res_v])
-          # nb: does res need to be redefined at each iteration? or are the pointers above enough?
-        
-        EN_solver.solve(res,p) # resulting p is the Newton direction in both u and v (needs initialization)
-        p_u, p_v = p.getNestSubVecs()
-        u.x.array[:] = u_old.x.array + p_u
-        v.x.array[:] = v_old.x.array + p_v
-        # u.vector = u_old.vector + p_u.vector # nb: should probably be some kind of line search or backtracking step
-        # v.vector = v_old.vector + p_v.vector # nb: also not sure how to add these vectors
-
-        # Check error and update
-        L2_error = ufl.inner(v - v_old, v - v_old) * dx
-        error_L2 = np.sqrt(MPI.COMM_WORLD.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
-        v_old.x.array[:] = v.x.array
-        u_old.x.array[:] = u.x.array
 
         if monitor:
           print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
@@ -377,8 +372,7 @@ for i_t, t in enumerate(loads):
     v_lb.x.array[:] = v.x.array
 
     print(f"-- Solving for t = {t:3.2f} --")
-    # alternate_minimization(u, v)
-    AMEN(u,v)
+    alternate_minimization(u, v)
     plot_damage_state(u, v)
 
     # Calculate the energies
