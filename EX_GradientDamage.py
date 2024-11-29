@@ -40,10 +40,7 @@ class SNESProblem:
         J.assemble()
 
 class NewtonSolverContext:
-    # nb: needs to take as input two Jacobian matrices, probably in the form of PETSc solvers
-    # nb: needs also one Jacobian matrix that can multiply a vector
     def __init__(self,Euu,Euv,Evu,Evv):
-        # get sizes of submatrices, Nu, Nv
         self.Euu=Euu
         self.Euv=Euv
         self.Evu=Evu
@@ -56,19 +53,27 @@ class NewtonSolverContext:
         self.Euv.assemble()
         self.Evu.assemble()
         self.Evv.assemble()
-        y1=self.Euu.createVecRight()
-        y2=self.Evv.createVecRight()
-        z1=self.Euv.createVecRight()
-        z2=self.Evv.createVecRight()
+        y1=self.Euu.createVecLeft()
+        y2=self.Evv.createVecLeft()
+        z1=self.Euv.createVecLeft()
+        z2=self.Evv.createVecLeft()
+        ksp_uu=PETSc.KSP().create(MPI.COMM_WORLD)
+        ksp_uu.setOperators(Euu)
+        ksp_uu.setType('preonly')
+        ksp_uu.getPC().setType('lu')
+        ksp_vv=PETSc.KSP().create(MPI.COMM_WORLD)
+        ksp_vv.setOperators(Evv)
+        ksp_vv.setType('preonly')
+        ksp_vv.getPC().setType('lu')
         self.Euu.mult(x1,y1)
         self.Evv.mult(x2,y2)
-        self.Euv.multAdd(x2,y1,z1) # this isn't working right, apparently dimensional problem
+        self.Euv.multAdd(x2,y1,z1)
         self.Evu.multAdd(x1,y2,z2)
-        # w1=self.Euu.createVectorRight()
-        self.Euu.matSolve(z1,w1) # nb: likely will need to change this to a proper KSP solve
-        w2=self.Evv.createVectorRight()
+        # w1=self.Euu.createVecRight()
+        ksp_uu.solve(z1,w1)
+        w2=self.Evv.createVecRight()
         self.Evu.multAdd(-w1,z2,w2)
-        self.Evv.matSolve(w2,v2)
+        ksp_vv.solve(w2,v2)
         # then w1 and v2 get put into Y
 
 # Domain set-up
@@ -242,7 +247,7 @@ def alternate_minimization(u, v, atol=1e-8, max_iterations=100, monitor=True):
 
 # Exact Newton solver
 Euu = petsc.assemble_matrix(fem.form(E_uu))
-Evv=petsc.assemble_matrix(fem.form(E_vv))
+Evv = petsc.assemble_matrix(fem.form(E_vv))
 elastic_problem.Jn(_,_,Euu,_)
 damage_problem.Jn(_,_,Evv,_)
 Euv = petsc.assemble_matrix(fem.form(E_uv))
@@ -259,9 +264,7 @@ A.setUp()
 EN_solver = PETSc.KSP().create()
 EN_solver.setOperators(A)
 EN_solver.setType('gmres')
-pc  = EN_solver.getPC()
-pc.setType('none') # there are no PCs for Python matrices (that I've found)
-EN_solver.setFromOptions()
+EN_solver.getPC().setType('none') # there are no PCs for Python matrices (that I've found)
 
 # AMEN definition
 def AMEN(u, v, atol=1e-8, max_iterations=100, monitor=True):
@@ -274,9 +277,6 @@ def AMEN(u, v, atol=1e-8, max_iterations=100, monitor=True):
     p_u = fem.Function(u.function_space)
     p_v = fem.Function(v.function_space)
     p = PETSc.Vec().createNest([p_u.vector,p_v.vector])
-
-    # create residual vector to minimize
-    # nb: is this the way to do this?
 
     for iteration in range(max_iterations):
         # Solve for displacement
@@ -291,15 +291,13 @@ def AMEN(u, v, atol=1e-8, max_iterations=100, monitor=True):
         # Exact Newton step
         res_u = u.vector - u_old.vector
         res_v = v.vector - v_old.vector
-        res = PETSc.Vec().createNest([res_u,res_v])
-          # nb: does res need to be redefined at each iteration? or are the pointers above enough?
+        res = PETSc.Vec().createNest([res_u,res_v]) # residual vector to minimize
+          # nb: testing seems to indicate res needs to be redefined at each iteration; pointers are not enough
         
         EN_solver.solve(res,p) # resulting p is the Newton direction in both u and v (needs initialization)
         p_u, p_v = p.getNestSubVecs()
-        u.x.array[:] = u_old.x.array + p_u
+        u.x.array[:] = u_old.x.array + p_u # nb: should probably be some kind of line search or backtracking step
         v.x.array[:] = v_old.x.array + p_v
-        # u.vector = u_old.vector + p_u.vector # nb: should probably be some kind of line search or backtracking step
-        # v.vector = v_old.vector + p_v.vector # nb: also not sure how to add these vectors
 
         # Check error and update
         L2_error = ufl.inner(v - v_old, v - v_old) * dx
