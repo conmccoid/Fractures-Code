@@ -136,7 +136,7 @@ def AMEN(u, v, elastic_solver, damage_solver, EN_solver, atol=1e-8, max_iteratio
         u_old.x.array[:] = u.x.array
 
         if monitor:
-          print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
+          print(f"Iteration: {iteration}, Error: {error_L2:3.4e}, Max alpha: {np.max(v.x.array):3.4e}, Min alpha: {np.min(v.x.array):3.4e}")
 
         if error_L2 <= atol:
           return (error_L2,iteration)

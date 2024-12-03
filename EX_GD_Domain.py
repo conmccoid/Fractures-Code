@@ -6,7 +6,7 @@ from petsc4py import PETSc
 from dolfinx import mesh, fem
 
 def w(v): # dissipated energy function (of dmg)
-  return v
+  return v**2
 
 def a(v, k_ell=1.e-6): # stiffness modulation (of dmg & ?)
   return (1-v)**2 + k_ell
@@ -99,8 +99,9 @@ def VariationalFormulation(u,v,domain):
 
     Gc=  fem.Constant(domain, PETSc.ScalarType(1.0))
     ell= fem.Constant(domain, PETSc.ScalarType(0.1))
-    cw=  fem.Constant(domain, PETSc.ScalarType(8/3))
+    cw=  fem.Constant(domain, PETSc.ScalarType(1/2))
     f =  fem.Constant(domain, PETSc.ScalarType((0.,0.)))
+    load_c = np.sqrt(27 * Gc.value * E.value / (256 * ell.value) ) # AT2
 
     elastic_energy = 0.5 * ufl.inner(sigma(u,v,nu,E,ndim), eps(u)) * dx
     dissipated_energy= Gc/cw * ( w(v) / ell + ell * ufl.inner(ufl.grad(v), ufl.grad(v))) * dx
@@ -114,4 +115,4 @@ def VariationalFormulation(u,v,domain):
     E_uv= ufl.derivative(E_u,v,ufl.TrialFunction(V_v))
     E_vu= ufl.derivative(E_v,u,ufl.TrialFunction(V_u))
 
-    return E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy
+    return E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, load_c
