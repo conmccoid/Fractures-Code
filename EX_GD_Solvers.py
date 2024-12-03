@@ -62,6 +62,7 @@ def Newton(E_uu, E_vv, E_uv, E_vu, elastic_problem, damage_problem):
     EN_solver = PETSc.KSP().create()
     EN_solver.setOperators(A)
     EN_solver.setType('gmres')
+    EN_solver.setTolerances(rtol=1.0e-9, max_it=50)
     EN_solver.getPC().setType('none') # there are no PCs for Python matrices (that I've found)
     return EN_solver
 
