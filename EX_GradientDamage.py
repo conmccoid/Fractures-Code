@@ -6,8 +6,9 @@ from dolfinx import fem
 from EX_GD_Domain import domain, BCs, VariationalFormulation
 from EX_GD_Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
 from EX_GD_Visualization import plot_damage_state
+from EX_GD_NewtonSolver import NewtonSolver
 
-def main(method='Newton'):
+def main(method='AltMin'):
     L=1.
     H=0.3
     cell_size=0.1/6
@@ -28,6 +29,9 @@ def main(method='Newton'):
     v_ub.x.array[:] = 1.0
     damage_solver.setVariableBounds(v_lb.vector,v_ub.vector)
     EN_solver = Newton(E_uu, E_vv, E_uv, E_vu, elastic_problem, damage_problem)
+    EN=NewtonSolver(elastic_solver, damage_solver,
+                    elastic_problem, damage_problem,
+                    E_uu, E_uv, E_vu, E_vv)
     
     # Solving the problem and visualizing
     import pyvista
@@ -48,8 +52,12 @@ def main(method='Newton'):
         v_lb.x.array[:] = v.x.array
     
         print(f"-- Solving for t = {t:3.2f} --")
-        if method=='Newton':
+        if method=='AMEN':
             AMEN(u,v, elastic_solver, damage_solver, EN_solver)
+        elif method=='NewtonLS':
+            EN.setUp()
+            uv = PETSc.Vec().createNest([u.vector,v.vector])
+            EN.solver.solve(None,uv)
         else:
             alternate_minimization(u, v, elastic_solver, damage_solver)
         plot_damage_state(u, v)
