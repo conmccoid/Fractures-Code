@@ -32,6 +32,8 @@ def main(method='AltMin'):
     EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
                     E_uu, E_uv, E_vu, E_vv)
+    EN.setUp()
+    uv = PETSc.Vec().createNest([u.vector,v.vector])
     
     # Solving the problem and visualizing
     import pyvista
@@ -55,8 +57,6 @@ def main(method='AltMin'):
         if method=='AMEN':
             AMEN(u,v, elastic_solver, damage_solver, EN_solver)
         elif method=='NewtonLS':
-            EN.setUp()
-            uv = PETSc.Vec().createNest([u.vector,v.vector])
             EN.solver.solve(None,uv)
         else:
             alternate_minimization(u, v, elastic_solver, damage_solver)

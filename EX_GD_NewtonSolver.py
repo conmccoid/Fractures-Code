@@ -44,8 +44,8 @@ class NewtonSolver:
         F.assemble()
         print(f"Residual: {res_v.norm():3.4e}")
         
-        self.v_old.x.array[:] = self.v.x.array
-        self.u_old.x.array[:] = self.u.x.array
+        # self.v_old.x.array[:] = self.v.x.array
+        # self.u_old.x.array[:] = self.u.x.array
 
     def Jn(self, snes, x, J, P):
         J = PETSc.Mat().createPython(J.getSize())
@@ -80,3 +80,10 @@ class NewtonSolver:
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)
         self.solver.setType('newtonls')
+        self.solver.setTolerances(rtol=1.0e-9, max_it=50)
+        self.solver.getKSP().setType("preonly")
+        self.solver.getKSP().setTolerances(rtol=1.0e-9)
+        self.solver.getKSP().getPC().setType("lu")
+        opts=PETSc.Options()
+        opts['snes_linesearch_type']='none'
+        self.solver.setFromOptions()
