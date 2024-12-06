@@ -21,14 +21,17 @@ class NewtonSolverContext:
         self.damage_problem.Jn(None,None,self.Evv,None)
         self.Euv = petsc.assemble_matrix(fem.form(self.E_uv))
         self.Evu = petsc.assemble_matrix(fem.form(self.E_vu))
+        # assemble matrices
         self.Euu.assemble()
         self.Euv.assemble()
         self.Evu.assemble()
         self.Evv.assemble()
+        # initialize vectors
         y1=self.Euu.createVecLeft()
         y2=self.Evv.createVecLeft()
         z1=self.Euv.createVecLeft()
         z2=self.Evv.createVecLeft()
+        # initialize KSPs
         ksp_uu=PETSc.KSP().create(MPI.COMM_WORLD)
         ksp_uu.setOperators(self.Euu)
         ksp_uu.setType('preonly')
@@ -37,11 +40,12 @@ class NewtonSolverContext:
         ksp_vv.setOperators(self.Evv)
         ksp_vv.setType('preonly')
         ksp_vv.getPC().setType('lu')
+        # multiply by Jacobian
         self.Euu.mult(x1,y1)
         self.Evv.mult(x2,y2)
         self.Euv.multAdd(x2,y1,z1)
         self.Evu.multAdd(x1,y2,z2)
-        # w1=self.Euu.createVecRight()
+        # multiply by preconditioner
         ksp_uu.solve(z1,w1)
         w2=self.Evv.createVecRight()
         self.Evu.multAdd(-w1,z2,w2)

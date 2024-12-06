@@ -1,10 +1,12 @@
 from dolfinx import fem
 from petsc4py import PETSc
+from mpi4py import MPI
 from NewtonSolverContext import NewtonSolverContext
 
 class Identity:
     def mult(self, mat, X, Y):
         X.copy(Y)
+        print(f"multiplied!")
 
 class NewtonSolver:
     def __init__(self, solver1, solver2, problem1, problem2, A, B, C, D):
@@ -27,11 +29,11 @@ class NewtonSolver:
         xv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         xu.copy(self.u.vector)
         xv.copy(self.v.vector)
-        self.v_old.x.array[:] = self.v.x.array
-        self.u_old.x.array[:] = self.u.x.array
         self.u.vector.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         self.v.vector.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
 
+        self.v_old.x.array[:] = self.v.x.array
+        self.u_old.x.array[:] = self.u.x.array
         
         self.solver1.solve(None, self.u.vector)
         self.u.x.scatter_forward()
@@ -41,9 +43,10 @@ class NewtonSolver:
         res_u = self.u.vector - self.u_old.vector
         res_v = self.v.vector - self.v_old.vector
         F = PETSc.Vec().createNest([res_u,res_v])
-        F.assemble()
-        print(f"Residual: {res_v.norm():3.4e}")
-        
+        # F.assemble()
+        print(f"Residual: {F.norm():3.4e}")
+        F.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
+
         # self.v_old.x.array[:] = self.v.x.array
         # self.u_old.x.array[:] = self.u.x.array
 
@@ -51,9 +54,10 @@ class NewtonSolver:
         J = PETSc.Mat().createPython(J.getSize())
         J.setPythonContext(self.PJ)
         J.setUp()
+        print(f"matrix set up!")
 
     def setUp(self):
-        self.solver = PETSc.SNES().create()
+        self.solver = PETSc.SNES().create(MPI.COMM_WORLD)
         
         b_u = PETSc.Vec().create()
         b_u.setType('mpi')
@@ -81,9 +85,11 @@ class NewtonSolver:
         self.solver.setJacobian(self.Jn, J)
         self.solver.setType('newtonls')
         self.solver.setTolerances(rtol=1.0e-9, max_it=50)
-        self.solver.getKSP().setType("preonly")
+        self.solver.getKSP().setType("gmres")
         self.solver.getKSP().setTolerances(rtol=1.0e-9)
-        self.solver.getKSP().getPC().setType("lu")
+        self.solver.getKSP().getPC().setType("none")
         opts=PETSc.Options()
-        opts['snes_linesearch_type']='none'
+        opts['snes_linesearch_type']='basic'
         self.solver.setFromOptions()
+        self.solver.setMonitor(lambda snes, it, norm: print(f"Iteration {it}: Residual Norm = {norm:.6e}"))
+        # the residual is being calculated as zero, even when Fn() returns non-zero values

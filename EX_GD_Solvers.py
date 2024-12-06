@@ -7,6 +7,8 @@ from NewtonSolverContext import NewtonSolverContext
 from petsc4py import PETSc
 from mpi4py import MPI
 
+from EX_GD_NewtonSolver import Identity # test case
+
 def Elastic(E, u, bcs, J):
     V = u.function_space
 
@@ -51,6 +53,7 @@ def Newton(E_uu, E_vv, E_uv, E_vu, elastic_problem, damage_problem):
     Euv = petsc.assemble_matrix(fem.form(E_uv))
     Evu = petsc.assemble_matrix(fem.form(E_vu))
     EN=NewtonSolverContext(E_uu, E_uv, E_vu, E_vv,elastic_problem,damage_problem) # replacing Euv with E_uv also works? ditto Evu
+    # EN=Identity() # using this line instead of the above results in identical results to AltMin -> confirmation the EN solver is working correctly, still possible errors in Jacobian
 
     A_test = PETSc.Mat().createNest([[Euu,Euv],[Evu,Evv]])
     # there has to be a better way!
