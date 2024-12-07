@@ -33,11 +33,11 @@ class GlobalProblem:
       """Assemble nested residual vector."""
       xu, xv = x.getNestSubVecs()
       xu.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-      xu.copy(self.u.vector)
-      self.u.vector.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+      xu.copy(self.u.x.petsc_vec)
+      self.u.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
       xv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-      xv.copy(self.v.vector)
-      self.v.vector.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+      xv.copy(self.v.x.petsc_vec)
+      self.v.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
 
       with F.localForm() as f_local:
          f_local.set(0.0)
@@ -78,8 +78,8 @@ class SNESProblem:
     def Fn(self, snes, x, F):
         """Assemble residual vector."""
         x.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-        x.copy(self.u.vector)
-        self.u.vector.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        x.copy(self.u.x.petsc_vec)
+        self.u.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
 
         with F.localForm() as f_local:
             f_local.set(0.0)
@@ -267,7 +267,7 @@ v_lb =  fem.Function(V_v, name="Lower bound")
 v_ub =  fem.Function(V_v, name="Upper bound")
 v_lb.x.array[:] = 0.0
 v_ub.x.array[:] = 1.0
-damage_solver.setVariableBounds(v_lb.vector,v_ub.vector)
+damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
 
 # A global solver that doesn't work
 global_solver=PETSc.SNES().create()
@@ -290,12 +290,12 @@ def alternate_minimization(u, v, atol=1e-8, max_iterations=100, monitor=True):
 
     for iteration in range(max_iterations):
         # Solve for displacement
-        elastic_solver.solve(None, u.vector) # replace None with a rhs function
+        elastic_solver.solve(None, u.x.petsc_vec) # replace None with a rhs function
         # This forward scatter is necessary when `solver_u_snes` is of type `ksponly`.
         u.x.scatter_forward() # why isn't it necessary for v?
 
         # Solve for damage
-        damage_solver.solve(None, v.vector)
+        damage_solver.solve(None, v.x.petsc_vec)
 
         # Check error and update
         L2_error = ufl.inner(v - v_old, v - v_old) * dx

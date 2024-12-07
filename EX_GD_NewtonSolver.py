@@ -26,21 +26,21 @@ class NewtonSolver:
         xu, xv = x.getNestSubVecs()
         xu.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         xv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-        xu.copy(self.u.vector)
-        xv.copy(self.v.vector)
-        self.u.vector.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-        self.v.vector.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        xu.copy(self.u.x.petsc_vec)
+        xv.copy(self.v.x.petsc_vec)
+        self.u.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        self.v.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
 
         self.v_old.x.array[:] = self.v.x.array
         self.u_old.x.array[:] = self.u.x.array
         
-        self.solver1.solve(None, self.u.vector)
+        self.solver1.solve(None, self.u.x.petsc_vec)
         self.u.x.scatter_forward()
-        self.solver2.solve(None, self.v.vector)
+        self.solver2.solve(None, self.v.x.petsc_vec)
         self.v.x.scatter_forward() # should be unnecessary, depending on KSP in solver2
 
-        res_u = -self.u.vector + self.u_old.vector
-        res_v = -self.v.vector + self.v_old.vector
+        res_u = -self.u.x.petsc_vec + self.u_old.x.petsc_vec
+        res_v = -self.v.x.petsc_vec + self.v_old.x.petsc_vec
         res = PETSc.Vec().createNest([res_u,res_v])
         F.array[:] = res.array
 
@@ -56,13 +56,13 @@ class NewtonSolver:
         
         b_u = PETSc.Vec().create()
         b_u.setType('mpi')
-        b_u.setSizes(self.u.vector.getSize())
+        b_u.setSizes(self.u.x.petsc_vec.getSize())
         b_v = PETSc.Vec().create()
         b_v.setType('mpi')
-        b_v.setSizes(self.v.vector.getSize())
+        b_v.setSizes(self.v.x.petsc_vec.getSize())
         b = PETSc.Vec().createNest([b_u,b_v])
         
-        J = PETSc.Mat().createPython(self.u.vector.getSize()+self.v.vector.getSize())
+        J = PETSc.Mat().createPython(self.u.x.petsc_vec.getSize()+self.v.x.petsc_vec.getSize())
 
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)

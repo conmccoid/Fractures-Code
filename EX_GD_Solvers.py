@@ -76,12 +76,12 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-8, max_i
 
     for iteration in range(max_iterations):
         # Solve for displacement
-        elastic_solver.solve(None, u.vector) # replace None with a rhs function
+        elastic_solver.solve(None, u.x.petsc_vec) # replace None with a rhs function
         # This forward scatter is necessary when `solver_u_snes` is of type `ksponly`.
         u.x.scatter_forward() # why isn't it necessary for v?
 
         # Solve for damage
-        damage_solver.solve(None, v.vector)
+        damage_solver.solve(None, v.x.petsc_vec)
 
         # Check error and update
         L2_error = ufl.inner(v - v_old, v - v_old) * ufl.dx
@@ -110,21 +110,21 @@ def AMEN(u, v, elastic_solver, damage_solver, EN_solver, atol=1e-8, max_iteratio
     # initialize Newton step direction
     p_u = fem.Function(u.function_space)
     p_v = fem.Function(v.function_space)
-    p = PETSc.Vec().createNest([p_u.vector,p_v.vector])
+    p = PETSc.Vec().createNest([p_u.x.petsc_vec,p_v.x.petsc_vec])
 
     for iteration in range(max_iterations):
         # Solve for displacement
-        elastic_solver.solve(None, u.vector) # replace None with a rhs function
+        elastic_solver.solve(None, u.x.petsc_vec) # replace None with a rhs function
         # This forward scatter is necessary when `solver_u_snes` is of type `ksponly`.
         u.x.scatter_forward() # why isn't it necessary for v?
 
         # Solve for damage
-        damage_solver.solve(None, v.vector)
+        damage_solver.solve(None, v.x.petsc_vec)
         v.x.scatter_forward() # nb: either need this to update res or don't because it only is required for ksponly solvers
 
         # Exact Newton step
-        res_u = u.vector - u_old.vector
-        res_v = v.vector - v_old.vector
+        res_u = u.x.petsc_vec - u_old.x.petsc_vec
+        res_v = v.x.petsc_vec - v_old.x.petsc_vec
         res = PETSc.Vec().createNest([res_u,res_v]) # residual vector to minimize
           # nb: testing seems to indicate res needs to be redefined at each iteration; pointers are not enough
         
