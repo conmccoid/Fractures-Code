@@ -39,10 +39,10 @@ class NewtonSolver:
         self.solver2.solve(None, self.v.x.petsc_vec)
         self.v.x.scatter_forward() # should be unnecessary, depending on KSP in solver2
 
-        res_u = -self.u.x.petsc_vec + self.u_old.x.petsc_vec
-        res_v = -self.v.x.petsc_vec + self.v_old.x.petsc_vec
+        res_u = self.u.x.petsc_vec - self.u_old.x.petsc_vec
+        res_v = self.v.x.petsc_vec - self.v_old.x.petsc_vec
         res = PETSc.Vec().createNest([res_u,res_v])
-        F.array[:] = res.array
+        F.array[:] = -res.array
 
         # self.v_old.x.array[:] = self.v.x.array
         # self.u_old.x.array[:] = self.u.x.array
@@ -67,12 +67,12 @@ class NewtonSolver:
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)
         self.solver.setType('newtonls')
-        self.solver.setTolerances(rtol=1.0e-9, max_it=50)
+        self.solver.setTolerances(rtol=1.0e-7, max_it=50)
         self.solver.getKSP().setType("gmres")
         self.solver.getKSP().setTolerances(rtol=1.0e-9)
         self.solver.getKSP().getPC().setType("none")
         opts=PETSc.Options()
         opts['snes_linesearch_type']='none'
         self.solver.setFromOptions()
-        self.solver.setMonitor(lambda snes, it, norm: print(f"Iteration {it}: Residual Norm = {norm:.6e}"))
+        self.solver.setMonitor(lambda snes, it, norm: print(f"Iteration {it}: Residual Norm = {norm:3.4e}"))
         # no idea what's wrong now
