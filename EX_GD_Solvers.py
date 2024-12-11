@@ -22,9 +22,9 @@ def Elastic(E, u, bcs, J):
     elastic_solver.setJacobian(elastic_problem.Jn,J_u)
     elastic_solver.setType("ksponly")
     elastic_solver.setTolerances(rtol=1.0e-9, max_it=50)
-    elastic_solver.getKSP().setType("preonly")
+    elastic_solver.getKSP().setType("gmres") # testing
     elastic_solver.getKSP().setTolerances(rtol=1.0e-9)
-    elastic_solver.getKSP().getPC().setType("lu")
+    elastic_solver.getKSP().getPC().setType("none") # testing
     return elastic_problem, elastic_solver
 
 def Damage(E, v, bcs, J):
