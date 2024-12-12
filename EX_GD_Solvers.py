@@ -22,9 +22,9 @@ def Elastic(E, u, bcs, J):
     elastic_solver.setJacobian(elastic_problem.Jn,J_u)
     elastic_solver.setType("ksponly")
     elastic_solver.setTolerances(rtol=1.0e-9, max_it=50)
-    elastic_solver.getKSP().setType("gmres") # testing
+    elastic_solver.getKSP().setType("preonly") # testing
     elastic_solver.getKSP().setTolerances(rtol=1.0e-9)
-    elastic_solver.getKSP().getPC().setType("none") # testing
+    elastic_solver.getKSP().getPC().setType("lu") # testing
     return elastic_problem, elastic_solver
 
 def Damage(E, v, bcs, J):
@@ -73,8 +73,6 @@ def Newton(E_uu, E_vv, E_uv, E_vu, elastic_problem, damage_problem):
 def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-8, max_iterations=100, monitor=True):
     v_old = fem.Function(v.function_space)
     v_old.x.array[:] = v.x.array
-    u_old = fem.Function(u.function_space)
-    u_old.x.array[:] = u.x.array
 
     for iteration in range(max_iterations):
         # Solve for displacement
@@ -89,13 +87,10 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-8, max_i
         L2_error = ufl.inner(v - v_old, v - v_old) * ufl.dx
         error_L2 = np.sqrt(MPI.COMM_WORLD.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
 
-        res = PETSc.Vec().createNest([u.x.petsc_vec - u_old.x.petsc_vec, v.x.petsc_vec - v_old.x.petsc_vec])
-
-        u_old.x.array[:] = u.x.array
         v_old.x.array[:] = v.x.array
 
         if monitor:
-          print(f"Iteration: {iteration}, Error: {res.norm():3.4e}")
+          print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
 
         if error_L2 <= atol:
           return (error_L2,iteration)

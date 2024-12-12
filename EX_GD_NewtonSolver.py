@@ -1,3 +1,5 @@
+import ufl
+import numpy as np
 from dolfinx import fem
 from petsc4py import PETSc
 from mpi4py import MPI
@@ -23,7 +25,11 @@ class NewtonSolver:
         self.PJ=Identity()
 
     def Fn(self, snes, x, F):
-        # store old u and v values?
+        # store old u and v values
+        u_store = self.u.x.petsc_vec.duplicate()
+        v_store = self.v.x.petsc_vec.duplicate()
+        self.u.x.petsc_vec.copy(u_store)
+        self.v.x.petsc_vec.copy(v_store)
         
         xu, xv = x.getNestSubVecs()
         # None of the ghost updates seem to change the results, nor the scatterings
@@ -40,8 +46,8 @@ class NewtonSolver:
         self.v_old.x.array[:] = self.v.x.array
         self.u_old.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         self.v_old.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-        res = PETSc.Vec().createNest([self.u.x.petsc_vec - self.u_old.x.petsc_vec,self.v.x.petsc_vec - self.v_old.x.petsc_vec])
-        print(f"Norm of res after updating u_old: {res.norm():3.4e}")
+        # res = PETSc.Vec().createNest([self.u.x.petsc_vec - self.u_old.x.petsc_vec,self.v.x.petsc_vec - self.v_old.x.petsc_vec])
+        # print(f"Norm of res after updating u_old: {res.norm():3.4e}")
         
         self.solver1.solve(None, self.u.x.petsc_vec)
         self.u.x.scatter_forward() # neither of these lines appears to change anything
@@ -55,10 +61,17 @@ class NewtonSolver:
 
         res = PETSc.Vec().createNest([self.u.x.petsc_vec - self.u_old.x.petsc_vec,self.v.x.petsc_vec - self.v_old.x.petsc_vec])
         F.array[:] = -res.array
-        print(f"Norm of res after solving for u: {res.norm():3.4e}")
+        # print(f"Norm of res after solving for u: {res.norm():3.4e}")
 
         # self.v_old.x.array[:] = self.v.x.array
         # self.u_old.x.array[:] = self.u.x.array
+
+        u_store.copy(self.u.x.petsc_vec)
+        v_store.copy(self.v.x.petsc_vec)
+        self.u.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        self.v.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        u_store.destroy()
+        v_store.destroy()
 
     def Jn(self, snes, x, J, P):
         J.setPythonContext(self.PJ)
@@ -80,22 +93,31 @@ class NewtonSolver:
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)
         self.solver.setType('newtonls')
-        self.solver.setTolerances(rtol=1.0e-7, max_it=50)
+        self.solver.setTolerances(rtol=1.0e-8, max_it=50)
         self.solver.getKSP().setType("gmres")
-        self.solver.getKSP().setTolerances(rtol=1.0e-16)
+        self.solver.getKSP().setTolerances(rtol=1.0e-9)
         self.solver.getKSP().getPC().setType("none")
         opts=PETSc.Options()
         opts['snes_linesearch_type']='none'
         self.solver.setFromOptions()
-        self.solver.setMonitor(lambda snes, it, norm: print(f"Iteration {it}: Residual Norm = {norm:3.4e}"))
+        self.solver.setConvergenceTest(self.customConvergenceTest)
         self.solver.setMonitor(self.customMonitor)
-        # no idea what's wrong now
 
-    def customMonitor(self, snes,its,norm):
-        x = snes.getSolution()
+    def customMonitor(self, snes, its, norm):
+        print(f"Iteration {its}: Residual Norm = {self.error_L2:3.4e}")
+
+    def customConvergenceTest(self, snes, it, reason):
+        atol, rtol, stol, max_it = snes.getTolerances()
         F = snes.getFunction()
-        
-        res = PETSc.Vec().createNest([self.u.x.petsc_vec - self.u_old.x.petsc_vec,self.v.x.petsc_vec - self.v_old.x.petsc_vec])
-
-        test = res - F[0]
-        print(f"Norm of Newton step: {res.norm():3.4e}, Norm of residual: {F[0].norm():3.4e}")
+        _, res_v = F[0].getNestSubVecs()
+        bv = fem.Function(self.v.function_space)
+        bv.x.array[:]=res_v.array
+        L2_error = ufl.inner(bv,bv) * ufl.dx
+        self.error_L2 = np.sqrt(MPI.COMM_WORLD.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
+        if self.error_L2 <= atol:
+            snes.setConvergedReason(PETSc.SNES.ConvergedReason.CONVERGED_FNORM_ABS)
+            return 1
+        elif it >= max_it:
+            snes.setConvergedReason(PETSc.SNES.ConvergedReason.DIVERGED_ITS)
+            return -1
+        return 0
