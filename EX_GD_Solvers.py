@@ -133,6 +133,8 @@ def AMEN(u, v, elastic_solver, damage_solver, EN_solver, atol=1e-8, max_iteratio
         p_u, p_v = p.getNestSubVecs()
         u.x.array[:] = u_old.x.array + p_u # nb: should probably be some kind of line search or backtracking step
         v.x.array[:] = v_old.x.array + p_v
+        u.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        v.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
 
         # Check error and update
         L2_error = ufl.inner(v - v_old, v - v_old) * ufl.dx

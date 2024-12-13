@@ -4,13 +4,15 @@ from petsc4py import PETSc
 from mpi4py import MPI
 
 class NewtonSolverContext:
-    def __init__(self,Euu,Euv,Evu,Evv,elastic_problem,damage_problem):
+    def __init__(self,Euu,Euv,Evu,Evv,elastic_problem,damage_problem, elastic_solver, damage_solver):
         self.E_uu=Euu
         self.E_uv=Euv
         self.E_vu=Evu
         self.E_vv=Evv
         self.elastic_problem=elastic_problem
         self.damage_problem=damage_problem
+        self.elastic_solver=elastic_solver
+        self.damage_solver=damage_solver
         
     def mult(self, mat, X, Y):
         x1, x2 = X.getNestSubVecs()
@@ -32,7 +34,7 @@ class NewtonSolverContext:
         z1=self.Euv.createVecLeft()
         z2=self.Evv.createVecLeft()
         # initialize KSPs
-        ksp_uu=PETSc.KSP().create(MPI.COMM_WORLD)
+        ksp_uu=PETSc.KSP().create(MPI.COMM_WORLD) # re-use, and re-use previous results as initial guess, ksp.setInitialGuessNonzero
         ksp_uu.setOperators(self.Euu)
         ksp_uu.setType('preonly')
         ksp_uu.getPC().setType('lu')

@@ -21,8 +21,8 @@ class NewtonSolver:
         self.v_old.x.array[:] = self.v.x.array
         self.solver1=solver1
         self.solver2=solver2
-        # self.PJ=NewtonSolverContext(A, B, C, D, problem1, problem2) # preconditioned Jacobian
-        self.PJ=Identity()
+        self.PJ=NewtonSolverContext(A, B, C, D, problem1, problem2) # preconditioned Jacobian
+        # self.PJ=Identity()
 
     def Fn(self, snes, x, F):
         # store old u and v values
