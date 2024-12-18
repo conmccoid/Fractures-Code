@@ -28,10 +28,10 @@ def main(method='AltMin'):
     v_lb.x.array[:] = 0.0
     v_ub.x.array[:] = 1.0
     damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
-    EN_solver = Newton(E_uu, E_vv, E_uv, E_vu, elastic_problem, damage_problem)
+    EN_solver = Newton(E_uv, E_vu, elastic_solver, damage_solver)
     EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
-                    E_uu, E_uv, E_vu, E_vv)
+                    E_uv, E_vu)
     EN.setUp()
     uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])
     

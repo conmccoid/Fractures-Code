@@ -45,28 +45,30 @@ def Damage(E, v, bcs, J):
 
     return damage_problem, damage_solver
 
-def Newton(E_uu, E_vv, E_uv, E_vu, elastic_problem, damage_problem):
-    Euu = petsc.assemble_matrix(fem.form(E_uu))
-    Evv = petsc.assemble_matrix(fem.form(E_vv))
-    elastic_problem.Jn(None,None,Euu,None)
-    damage_problem.Jn(None,None,Evv,None)
+def Newton(E_uv, E_vu, elastic_solver, damage_solver):
+    # Euu = petsc.assemble_matrix(fem.form(E_uu))
+    # Evv = petsc.assemble_matrix(fem.form(E_vv))
+    # elastic_problem.Jn(None,None,Euu,None)
+    # damage_problem.Jn(None,None,Evv,None)
     Euv = petsc.assemble_matrix(fem.form(E_uv))
     Evu = petsc.assemble_matrix(fem.form(E_vu))
-    EN=NewtonSolverContext(E_uu, E_uv, E_vu, E_vv,elastic_problem,damage_problem) # replacing Euv with E_uv also works? ditto Evu
+    EN=NewtonSolverContext(E_uv, E_vu, elastic_solver,damage_solver) # replacing Euv with E_uv also works? ditto Evu
     # EN=Identity() # using this line instead of the above results in identical results to AltMin -> confirmation the EN solver is working correctly, still possible errors in Jacobian
 
-    A_test = PETSc.Mat().createNest([[Euu,Euv],[Evu,Evv]])
-    # there has to be a better way!
-
-    A = PETSc.Mat().createPython(A_test.getSize())
+    A = PETSc.Mat().createPython(sum(Euv.getSize()))
     A.setPythonContext(EN)
     A.setUp()
 
     EN_solver = PETSc.KSP().create()
     EN_solver.setOperators(A)
     EN_solver.setType('gmres')
-    EN_solver.setTolerances(rtol=1.0e-9, max_it=50)
+    EN_solver.setTolerances(rtol=1.0e-9, max_it=sum(Euv.getSize()))
     EN_solver.getPC().setType('none') # there are no PCs for Python matrices (that I've found)
+    EN_solver.setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
+    opts=PETSc.Options()
+    opts['ksp_monitor_singular_value']=None
+    opts['ksp_converged_reason']=None
+    EN_solver.setFromOptions()
     return EN_solver
 
 # AltMin definition
@@ -130,6 +132,7 @@ def AMEN(u, v, elastic_solver, damage_solver, EN_solver, atol=1e-8, max_iteratio
           # nb: testing seems to indicate res needs to be redefined at each iteration; pointers are not enough
         
         EN_solver.solve(res,p) # resulting p is the Newton direction in both u and v (needs initialization)
+        print(EN_solver.getConvergedReason()) # debugging, KSP always converges in 30 iterations? can't tell
         p_u, p_v = p.getNestSubVecs()
         u.x.array[:] = u_old.x.array + p_u # nb: should probably be some kind of line search or backtracking step
         v.x.array[:] = v_old.x.array + p_v

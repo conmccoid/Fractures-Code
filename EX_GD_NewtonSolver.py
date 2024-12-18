@@ -10,7 +10,7 @@ class Identity:
         X.copy(Y)
 
 class NewtonSolver:
-    def __init__(self, solver1, solver2, problem1, problem2, A, B, C, D):
+    def __init__(self, solver1, solver2, problem1, problem2, B, C):
         self.u=problem1.u
         self.v=problem2.u
         V_u = self.u.function_space
@@ -21,7 +21,7 @@ class NewtonSolver:
         self.v_old.x.array[:] = self.v.x.array
         self.solver1=solver1
         self.solver2=solver2
-        self.PJ=NewtonSolverContext(A, B, C, D, problem1, problem2) # preconditioned Jacobian
+        self.PJ=NewtonSolverContext(B, C, solver1, solver2) # preconditioned Jacobian
         # self.PJ=Identity()
 
     def Fn(self, snes, x, F):
@@ -95,13 +95,21 @@ class NewtonSolver:
         self.solver.setType('newtonls')
         self.solver.setTolerances(rtol=1.0e-8, max_it=50)
         self.solver.getKSP().setType("gmres")
-        self.solver.getKSP().setTolerances(rtol=1.0e-9)
+        self.solver.getKSP().setTolerances(rtol=1.0e-9, max_it=b.getSize())
         self.solver.getKSP().getPC().setType("none")
         opts=PETSc.Options()
-        opts['snes_linesearch_type']='none'
+        # opts['snes_linesearch_type']='none'
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
         self.solver.setMonitor(self.customMonitor)
+        # self.solver.getKSP().setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
+        opts=PETSc.Options()
+        opts['ksp_monitor_singular_value']=None
+        opts['ksp_converged_reason']=None
+        opts['ksp_gmres_restart']=100 # b.getSize()
+        self.solver.getKSP().setFromOptions()
+        # KSP will only do 30 iterations and does not appear to converge
+        # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
 
     def customMonitor(self, snes, its, norm):
         print(f"Iteration {its}: Residual Norm = {self.error_L2:3.4e}")
