@@ -18,3 +18,12 @@ If I want to extract vectors from the nest, I do:
 ```python
 u_out, v_out = vecs.getNestSubVecs()
 ```
+
+### Custom line search
+
+I need to be able to switch between MSPIN and AltMin based on the residual.
+This will require a custom line search, since this will take advantage of the implicit fixed point iteration,
+which is not common for SNES problems.
+
+Might be an idea to adapt Powell's dogleg method, which chooses a step optimized along a line between two vectors.
+Those two vectors would be the step from the fixed point iteration and the Newton step.

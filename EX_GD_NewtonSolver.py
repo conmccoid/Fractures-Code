@@ -61,6 +61,7 @@ class NewtonSolver:
 
         res = PETSc.Vec().createNest([self.u.x.petsc_vec - self.u_old.x.petsc_vec,self.v.x.petsc_vec - self.v_old.x.petsc_vec])
         F.array[:] = -res.array
+        self.res=F
         # print(f"Norm of res after solving for u: {res.norm():3.4e}")
 
         # self.v_old.x.array[:] = self.v.x.array
@@ -98,23 +99,25 @@ class NewtonSolver:
         self.solver.getKSP().setTolerances(rtol=1.0e-9, max_it=b.getSize())
         self.solver.getKSP().getPC().setType("none")
         opts=PETSc.Options()
-        # opts['snes_linesearch_type']='none'
+        opts['snes_linesearch_type']='none'
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
         self.solver.setMonitor(self.customMonitor)
         # self.solver.getKSP().setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
-        opts=PETSc.Options()
-        opts['ksp_monitor_singular_value']=None
-        opts['ksp_converged_reason']=None
-        opts['ksp_gmres_restart']=100 # b.getSize()
+        # opts=PETSc.Options()
+        # opts['ksp_monitor_singular_value']=None # Returns estimate of condition number of system solved by KSP
+        opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
+        opts['ksp_gmres_restart']=b.getSize() # Number of GMRES iterations before restart (100 doesn't do too bad)
         self.solver.getKSP().setFromOptions()
-        # KSP will only do 30 iterations and does not appear to converge
         # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
+        self.solver.setLineSearchPreCheck(self.customLineSearch)
 
     def customMonitor(self, snes, its, norm):
+        """Returns the same L2-nrom as AltMin for comparable convergence"""
         print(f"Iteration {its}: Residual Norm = {self.error_L2:3.4e}")
 
     def customConvergenceTest(self, snes, it, reason):
+        """Calculates the same L2-norm as AltMin for comparable convergence"""
         atol, rtol, stol, max_it = snes.getTolerances()
         F = snes.getFunction()
         _, res_v = F[0].getNestSubVecs()
@@ -129,3 +132,21 @@ class NewtonSolver:
             snes.setConvergedReason(PETSc.SNES.ConvergedReason.DIVERGED_ITS)
             return -1
         return 0
+
+    def customLineSearch(self, x, y):
+        """Used as a pre-check, this allows custom line search methods
+        -- x: current solution
+        -- y: current search direction"""
+        # self.Fn(self.solver, x, y)
+        # x_new=x.x.petsc_vec.duplicate()
+        res=self.res
+        res_new=self.res.duplicate()
+        self.Fn(self.solver,x+y,res_new)
+        self.Fn(self.solver,x+res,res)
+        print(f"Fixed point iteration: {res.norm()}, Newton step: {res_new.norm()}")
+        if res_new.norm() > res.norm():
+            y.array[:]=res.array
+            print(f"AltMin step")
+        else:
+            print(f"NewtonLS step")
+        # in practice we'll want a combination of self.res and y
