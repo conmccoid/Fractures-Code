@@ -66,7 +66,7 @@ def Newton(E_uv, E_vu, elastic_solver, damage_solver):
     EN_solver.getPC().setType('none') # there are no PCs for Python matrices (that I've found)
     EN_solver.setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
     opts=PETSc.Options()
-    opts['ksp_monitor_singular_value']=None
+    # opts['ksp_monitor_singular_value']=None
     opts['ksp_converged_reason']=None
     EN_solver.setFromOptions()
     return EN_solver

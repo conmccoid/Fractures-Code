@@ -16,7 +16,7 @@ def main(method='AltMin'):
     V_u=u.function_space
     V_v=v.function_space
     bcs_u, bcs_v, u_D = BCs(u,v,dom,L,H)
-    E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, load_c = VariationalFormulation(u,v,dom)
+    E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, load_c, E = VariationalFormulation(u,v,dom)
     
     # now we want to solve E_u(u,v)=0 and E_v(u,v)=0 with alternate minimization with a Newton accelerator
     # first set up solvers for the individual minimizations
@@ -41,7 +41,7 @@ def main(method='AltMin'):
     start_xvfb(wait=0.5)
     
     # load_c = 0.19 * L  # reference value for the loading (imposed displacement)
-    loads = np.linspace(0, 1.5 * load_c * L, 20)
+    loads = np.linspace(0, 1.5 * load_c * L / 10, 20) # (load_c/E)*L
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 3))

@@ -93,7 +93,7 @@ class NewtonSolver:
 
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)
-        self.solver.setType('newtonls')
+        self.solver.setType('newtonls') # other types that work: nrichardson
         self.solver.setTolerances(rtol=1.0e-8, max_it=50)
         self.solver.getKSP().setType("gmres")
         self.solver.getKSP().setTolerances(rtol=1.0e-9, max_it=b.getSize())
@@ -137,16 +137,16 @@ class NewtonSolver:
         """Used as a pre-check, this allows custom line search methods
         -- x: current solution
         -- y: current search direction"""
-        # self.Fn(self.solver, x, y)
-        # x_new=x.x.petsc_vec.duplicate()
-        res=self.res
-        res_new=self.res.duplicate()
-        self.Fn(self.solver,x+y,res_new)
-        self.Fn(self.solver,x+res,res)
-        print(f"Fixed point iteration: {res.norm()}, Newton step: {res_new.norm()}")
-        if res_new.norm() > res.norm():
-            y.array[:]=res.array
-            print(f"AltMin step")
+
+        # best strategy so far: if a>1 then Newton, otherwise AltMin
+        # close second: if (a>1) OR (a<0) then Newton, otherwise AltMin
+        diff = y - self.res
+        a = self.res.norm()**2 / (self.res.norm()**2 + diff.norm()**2 - y.norm()**2)
+        b = diff.norm()/self.res.norm()
+        print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Difference: {diff.norm():3.4e}, Trust: {a:.2%}")
+        if a>1:
+            print(f"    NewtonLS step")
         else:
-            print(f"NewtonLS step")
+            y.array[:]=self.res.array
+            print(f"    AltMin step")
         # in practice we'll want a combination of self.res and y
