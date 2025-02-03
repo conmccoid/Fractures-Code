@@ -27,3 +27,11 @@ which is not common for SNES problems.
 
 Might be an idea to adapt Powell's dogleg method, which chooses a step optimized along a line between two vectors.
 Those two vectors would be the step from the fixed point iteration and the Newton step.
+
+### Creating a .msh from a .geo (copied from MEF++ cheatsheet)
+
+Convert a .geo into a .msh with the line
+```
+gmsh fichier.geo -3 -o nomsortie.msh
+```
+Replace `-3` with `-2` when using 2D meshes.
