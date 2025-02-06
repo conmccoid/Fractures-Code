@@ -51,17 +51,21 @@ def BCs(u,v,domain, cell_tags, facet_tags):
     circle2_dofsy=fem.locate_dofs_topological(V_u.sub(1), fdim, circle2_facets)
     crack_dofs=fem.locate_dofs_topological(V_v, fdim, crack_facets)
 
+circle1_dofsv=fem.locate_dofs_topological(V_v,fdim,circle1_facets)
+circle2_dofsv=fem.locate_dofs_topological(V_v,fdim,circle2_facets)
+
     t1=fem.Constant(domain, PETSc.ScalarType(1.0))
     t2=fem.Constant(domain, PETSc.ScalarType(-1.0))
-    circle1_bcsx=fem.dirichletbc( fem.Constant(domain, PETSc.ScalarType(0.)), circle1_dofsx, V_u.sub(0))
-    circle2_bcsx=fem.dirichletbc( fem.Constant(domain, PETSc.ScalarType(0.)), circle2_dofsx, V_u.sub(0))
+    t0=fem.Constant(domain,PETSc.ScalarType(0.0))
+    circle1_bcsx=fem.dirichletbc( t0, circle1_dofsx, V_u.sub(0))
+    circle2_bcsx=fem.dirichletbc( t0, circle2_dofsx, V_u.sub(0))
     circle1_bcsy=fem.dirichletbc( t1, circle1_dofsy, V_u.sub(1))
     circle2_bcsy=fem.dirichletbc( t2, circle2_dofsy, V_u.sub(1))
     crack_bcs=fem.dirichletbc(fem.Constant(domain, PETSc.ScalarType(1.)), crack_dofs, V_v)
-
+circle1_bcsv=fem.dirichletbc( t0, circle1_dofsv, V_v)
+circle2_bcsv=fem.dirichletbc( t0, circle2_dofsv, V_v)
     bcs_u=[circle1_bcsx, circle2_bcsx, circle1_bcsy, circle2_bcsy]
-    # bcs_u=[circle1_bcsy,circle2_bcsy]
-    bcs_v=[crack_bcs]
+    bcs_v=[crack_bcs,circle1_bcsv,circle2_bcsv]
     return bcs_u, bcs_v, t1, t2
 
 def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
