@@ -4,6 +4,7 @@ from dolfinx import fem
 from petsc4py import PETSc
 from mpi4py import MPI
 from NewtonSolverContext import NewtonSolverContext
+comm=MPI.COMM_WORLD
 
 class Identity:
     def mult(self, mat, X, Y):
@@ -16,9 +17,9 @@ class NewtonSolver:
         V_u = self.u.function_space
         V_v = self.v.function_space
         self.u_old = fem.Function(V_u)
-        self.u_old.x.array[:] = self.u.x.array
+        self.u_old.x.petsc_vec.setArray(self.u.x.petsc_vec.duplicate())
         self.v_old = fem.Function(V_v)
-        self.v_old.x.array[:] = self.v.x.array
+        self.v_old.x.array[:] = self.v.x.array # update this one in the same way as u?
         self.solver1=solver1
         self.solver2=solver2
         self.PJ=NewtonSolverContext(B, C, solver1, solver2) # preconditioned Jacobian
@@ -59,10 +60,17 @@ class NewtonSolver:
         # self.solver2.solve(None, xv)
         # self.v.x.scatter_forward() # should be unnecessary, depending on KSP in solver2
 
-        res = PETSc.Vec().createNest([self.u.x.petsc_vec - self.u_old.x.petsc_vec,self.v.x.petsc_vec - self.v_old.x.petsc_vec])
-        F.array[:] = -res.array
+        resu, resv=F.getNestSubVecs()
+        resu.setArray(self.u_old.x.petsc_vec.array - self.u.x.petsc_vec.array)
+        resv.setArray(self.v_old.x.petsc_vec.array - self.v.x.petsc_vec.array)
+        resu.assemblyBegin()
+        resu.assemblyEnd()
+        resv.assemblyBegin()
+        resv.assemblyEnd()
+        # res = PETSc.Vec().createNest([self.u_old.x.petsc_vec - self.u.x.petsc_vec,self.v_old.x.petsc_vec - self.v.x.petsc_vec])#,None,comm)
+        # F.array[:] = res.array
         self.res=F
-        # print(f"Norm of res after solving for u: {res.norm():3.4e}")
+        # print(f"res: {res.norm():3.4e}, F: {F.norm()}, self.res: {self.res.norm()}")
 
         # self.v_old.x.array[:] = self.v.x.array
         # self.u_old.x.array[:] = self.u.x.array
@@ -79,25 +87,23 @@ class NewtonSolver:
         J.setUp()
 
     def setUp(self):
-        self.solver = PETSc.SNES().create(MPI.COMM_WORLD)
-        
-        b_u = PETSc.Vec().create()
-        b_u.setType('mpi')
-        b_u.setSizes(self.u.x.petsc_vec.getSize())
-        b_v = PETSc.Vec().create()
-        b_v.setType('mpi')
-        b_v.setSizes(self.v.x.petsc_vec.getSize())
-        b = PETSc.Vec().createNest([b_u,b_v])
-        
-        J = PETSc.Mat().createPython(self.u.x.petsc_vec.getSize()+self.v.x.petsc_vec.getSize())
+        self.solver = PETSc.SNES().create(comm)
+
+        b_u = self.u.x.petsc_vec.duplicate()
+        b_v = self.v.x.petsc_vec.duplicate()
+        b = PETSc.Vec().createNest([b_u,b_v])#,None,comm)
+
+        local_size = b.getLocalSize()
+        global_size = b.getSize()
+        J = PETSc.Mat().createPython(((local_size,global_size),(local_size,global_size)),NewtonSolverContext,comm)
 
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)
         self.solver.setType('newtonls') # other types that work: nrichardson
-        self.solver.setTolerances(rtol=1.0e-8, max_it=50)
-        self.solver.getKSP().setType("gmres")
+        self.solver.setTolerances(rtol=1.0e-4, max_it=1000)
+        self.solver.getKSP().setType("cg")
         self.solver.getKSP().setTolerances(rtol=1.0e-9, max_it=b.getSize())
-        self.solver.getKSP().getPC().setType("none")
+        self.solver.getKSP().getPC().setType("bjacobi")
         opts=PETSc.Options()
         opts['snes_linesearch_type']='none'
         self.solver.setFromOptions()
@@ -107,7 +113,7 @@ class NewtonSolver:
         # opts=PETSc.Options()
         # opts['ksp_monitor_singular_value']=None # Returns estimate of condition number of system solved by KSP
         opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
-        opts['ksp_gmres_restart']=b.getSize() # Number of GMRES iterations before restart (100 doesn't do too bad)
+        opts['ksp_gmres_restart']=100 #b.getSize() # Number of GMRES iterations before restart (100 doesn't do too bad)
         self.solver.getKSP().setFromOptions()
         # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
         self.solver.setLineSearchPreCheck(self.customLineSearch)
@@ -122,7 +128,8 @@ class NewtonSolver:
         F = snes.getFunction()
         _, res_v = F[0].getNestSubVecs()
         bv = fem.Function(self.v.function_space)
-        bv.x.array[:]=res_v.array
+        bv.x.petsc_vec.setArray(res_v.array)
+        # bv.x.array[:]=res_v.array
         L2_error = ufl.inner(bv,bv) * ufl.dx
         self.error_L2 = np.sqrt(MPI.COMM_WORLD.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
         if self.error_L2 <= atol:
