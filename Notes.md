@@ -35,3 +35,7 @@ Convert a .geo into a .msh with the line
 gmsh fichier.geo -3 -o nomsortie.msh
 ```
 Replace `-3` with `-2` when using 2D meshes.
+
+## SSH into Graham cluster
+
+`ssh mccoidc@graham.alliancecan.ca`, using SSH key and DUO multi-factor app.
