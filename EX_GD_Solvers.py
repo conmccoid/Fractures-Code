@@ -21,7 +21,7 @@ def Elastic(E, u, bcs, J):
     elastic_solver.setFunction(elastic_problem.Fn,b_u)
     elastic_solver.setJacobian(elastic_problem.Jn,J_u)
     elastic_solver.setType("ksponly")
-    elastic_solver.setTolerances(rtol=1.0e-9, max_it=50)
+    elastic_solver.setTolerances(rtol=1.0e-7, max_it=50)
     elastic_solver.getKSP().setType("preonly") # testing
     elastic_solver.getKSP().setTolerances(rtol=1.0e-9)
     elastic_solver.getKSP().getPC().setType("lu") # testing
@@ -37,8 +37,8 @@ def Damage(E, v, bcs, J):
     damage_solver=PETSc.SNES().create()
     damage_solver.setFunction(damage_problem.Fn, b_v)
     damage_solver.setJacobian(damage_problem.Jn, J_v)
-    damage_solver.setType("vinewtonrsls")
-    damage_solver.setTolerances(rtol=1.0e-9, max_it=50)
+    damage_solver.setType("ksponly")
+    damage_solver.setTolerances(rtol=1.0e-7, max_it=50)
     damage_solver.getKSP().setType("preonly")
     damage_solver.getKSP().setTolerances(rtol=1.0e-9)
     damage_solver.getKSP().getPC().setType("lu")
@@ -72,7 +72,7 @@ def Newton(E_uv, E_vu, elastic_solver, damage_solver):
     return EN_solver
 
 # AltMin definition
-def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-8, max_iterations=100, monitor=True):
+def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_iterations=1000, monitor=True):
     v_old = fem.Function(v.function_space)
     v_old.x.array[:] = v.x.array
 

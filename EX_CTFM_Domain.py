@@ -53,13 +53,14 @@ def BCs(u,v,domain, cell_tags, facet_tags):
 
     t1=fem.Constant(domain, PETSc.ScalarType(1.0))
     t2=fem.Constant(domain, PETSc.ScalarType(-1.0))
-    circle1_bcsx=fem.dirichletbc( t1, circle1_dofsx, V_u.sub(0))
-    circle2_bcsx=fem.dirichletbc( t2, circle2_dofsx, V_u.sub(0))
+    circle1_bcsx=fem.dirichletbc( fem.Constant(domain, PETSc.ScalarType(0.)), circle1_dofsx, V_u.sub(0))
+    circle2_bcsx=fem.dirichletbc( fem.Constant(domain, PETSc.ScalarType(0.)), circle2_dofsx, V_u.sub(0))
     circle1_bcsy=fem.dirichletbc( t1, circle1_dofsy, V_u.sub(1))
     circle2_bcsy=fem.dirichletbc( t2, circle2_dofsy, V_u.sub(1))
     crack_bcs=fem.dirichletbc(fem.Constant(domain, PETSc.ScalarType(1.)), crack_dofs, V_v)
 
     bcs_u=[circle1_bcsx, circle2_bcsx, circle1_bcsy, circle2_bcsy]
+    # bcs_u=[circle1_bcsy,circle2_bcsy]
     bcs_v=[crack_bcs]
     return bcs_u, bcs_v, t1, t2
 
@@ -76,7 +77,7 @@ def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
     ds = ufl.Measure("ds",domain=domain, subdomain_data=facet_tags)
 
     Gc=  fem.Constant(domain, PETSc.ScalarType(1.0))
-    ell= fem.Constant(domain, PETSc.ScalarType(0.1))
+    ell= fem.Constant(domain, PETSc.ScalarType(0.5))
     cw=  fem.Constant(domain, PETSc.ScalarType(1/2))
     f =  fem.Constant(domain, PETSc.ScalarType((0.,0.)))
     load_c = np.sqrt(27 * Gc.value * E.value / (256 * ell.value) ) # AT2
