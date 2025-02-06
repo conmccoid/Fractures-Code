@@ -78,7 +78,7 @@ def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
     Gc=  fem.Constant(domain, PETSc.ScalarType(1.0))
     ell= fem.Constant(domain, PETSc.ScalarType(0.1))
     cw=  fem.Constant(domain, PETSc.ScalarType(1/2))
-    f =  fem.Constant(domain, PETSc.ScalarType((0.,0.,0.)))
+    f =  fem.Constant(domain, PETSc.ScalarType((0.,0.)))
     load_c = np.sqrt(27 * Gc.value * E.value / (256 * ell.value) ) # AT2
 
     elastic_energy = 0.5 * ufl.inner(sigma(u,v,nu,E,ndim), eps(u)) * dx

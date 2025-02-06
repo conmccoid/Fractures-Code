@@ -5,7 +5,7 @@ from dolfinx import fem
 
 from EX_CTFM_Domain import domain, BCs, VariationalFormulation
 from EX_GD_Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
-from EX_GD_Visualization import plot_damage_state
+from EX_CTFM_Visualization import plot_damage_state
 from EX_GD_NewtonSolver import NewtonSolver
 
 def main(method='AltMin'):
@@ -30,7 +30,7 @@ def main(method='AltMin'):
                     elastic_problem, damage_problem,
                     E_uv, E_vu)
     EN.setUp()
-    uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])
+    uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
     
     # Solving the problem and visualizing
     import pyvista
@@ -38,7 +38,7 @@ def main(method='AltMin'):
     start_xvfb(wait=0.5)
     
     # load_c = 0.19 * L  # reference value for the loading (imposed displacement)
-    loads = np.linspace(0, 1.5 * load_c * 1 / 10, 20) # (load_c/E)*L
+    loads = np.linspace(0, 1.5 * load_c * 10 / 10, 20) # (load_c/E)*L
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 3))
@@ -69,3 +69,6 @@ def main(method='AltMin'):
             fem.assemble_scalar(fem.form(dissipated_energy)),
             op=MPI.SUM,
         )
+
+if __name__ == "__main__":
+    main('NewtonLS')
