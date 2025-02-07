@@ -16,9 +16,9 @@ class NewtonSolver:
         V_u = self.u.function_space
         V_v = self.v.function_space
         self.u_old = fem.Function(V_u)
-        self.u_old.x.array[:] = self.u.x.array
+        self.u_old.x.petsc_vec.setArray(self.u.x.petsc_vec.duplicate())
         self.v_old = fem.Function(V_v)
-        self.v_old.x.array[:] = self.v.x.array
+        self.v_old.x.petsc_vec.setArray(self.v.x.petsc_vec.duplicate())
         self.solver1=solver1
         self.solver2=solver2
         self.PJ=NewtonSolverContext(B, C, solver1, solver2) # preconditioned Jacobian
@@ -59,8 +59,13 @@ class NewtonSolver:
         # self.solver2.solve(None, xv)
         # self.v.x.scatter_forward() # should be unnecessary, depending on KSP in solver2
 
-        res = PETSc.Vec().createNest([self.u.x.petsc_vec - self.u_old.x.petsc_vec,self.v.x.petsc_vec - self.v_old.x.petsc_vec])
-        F.array[:] = -res.array
+        resu, resv=F.getNestSubVecs()
+        resu.setArray(self.u_old.x.petsc_vec.array - self.u.x.petsc_vec.array)
+        resv.setArray(self.v_old.x.petsc_vec.array - self.v.x.petsc_vec.array)
+        resu.assemblyBegin()
+        resu.assemblyEnd()
+        resv.assemblyBegin()
+        resv.assemblyEnd()
         self.res=F
         # print(f"Norm of res after solving for u: {res.norm():3.4e}")
 
