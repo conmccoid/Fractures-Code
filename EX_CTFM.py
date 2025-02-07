@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 from EX_CTFM_Domain import domain, BCs, VariationalFormulation
 from EX_GD_Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
-from EX_CTFM_Visualization import plot_damage_state
+from PLOT_DamageState import plot_damage_state
 from EX_GD_NewtonSolver import NewtonSolver
 
 def main(method='AltMin'):
@@ -40,7 +40,7 @@ def main(method='AltMin'):
     start_xvfb(wait=0.5)
     
     # load_c = 0.19 * L  # reference value for the loading (imposed displacement)
-    loads = np.linspace(0, 1.5 * load_c * 30 / 10, 20) # (load_c/E)*L
+    loads = np.linspace(0, 1.5 * load_c * 15 / 10, 20) # (load_c/E)*L
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 4 ))
@@ -60,7 +60,7 @@ def main(method='AltMin'):
             EN.solver.solve(None,uv)
         else:
             alternate_minimization(u, v, elastic_solver, damage_solver)
-        plot_damage_state(u, v)
+        plot_damage_state(u, v, None, [1400, 850])
     
         # Calculate the energies
         energies[i_t, 1] = MPI.COMM_WORLD.allreduce(
@@ -83,6 +83,7 @@ def main(method='AltMin'):
     ax.set_xlabel('t')
     ax.set_ylabel('Energy')
     ax.legend()
+    plt.savefig('output/PLOT_CTFM_energy.png')
     plt.show()
 
 if __name__ == "__main__":

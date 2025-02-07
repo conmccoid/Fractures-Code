@@ -3,7 +3,7 @@ import numpy as np
 from dolfinx import plot
 
 # visualization function
-def plot_damage_state(u, alpha, load=None):
+def plot_damage_state(u, alpha, load=None, window=[800,300]):
     """
     Plot the displacement and damage field with pyvista
     """
@@ -11,7 +11,7 @@ def plot_damage_state(u, alpha, load=None):
     mesh = u.function_space.mesh
 
     plotter = pyvista.Plotter(
-        title="damage, warped by displacement", window_size=[800, 300], shape=(1, 2)
+        title="damage, warped by displacement", window_size=window, shape=(1, 2)
     )
 
     topology, cell_types, geometry = plot.vtk_mesh(mesh)

@@ -5,7 +5,7 @@ from dolfinx import fem
 
 from EX_GD_Domain import domain, BCs, VariationalFormulation
 from EX_GD_Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
-from EX_GD_Visualization import plot_damage_state
+from PLOT_DamageState import plot_damage_state
 from EX_GD_NewtonSolver import NewtonSolver
 
 def main(method='AltMin'):
@@ -60,7 +60,7 @@ def main(method='AltMin'):
             EN.solver.solve(None,uv)
         else:
             alternate_minimization(u, v, elastic_solver, damage_solver)
-        plot_damage_state(u, v)
+        plot_damage_state(u, v, None, [800,300])
     
         # Calculate the energies
         energies[i_t, 1] = MPI.COMM_WORLD.allreduce(
