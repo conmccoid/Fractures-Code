@@ -27,7 +27,7 @@ def main(method='AltMin'):
     v_ub =  fem.Function(V_v, name="Upper bound")
     v_lb.x.array[:] = 0.0
     v_ub.x.array[:] = 1.0
-    damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
+    # damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
     EN_solver = Newton(E_uv, E_vu, elastic_solver, damage_solver)
     EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
