@@ -40,7 +40,7 @@ def main(method='AltMin'):
     start_xvfb(wait=0.5)
     
     # load_c = 0.19 * L  # reference value for the loading (imposed displacement)
-    loads = np.linspace(0, 1.5 * load_c * 15 / 10, 20) # (load_c/E)*L
+    loads = np.linspace(0, 1.5 * load_c * 10 / 10, 20) # (load_c/E)*L
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 4 ))
