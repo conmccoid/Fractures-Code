@@ -3,6 +3,10 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from dolfinx import fem
 
+import pyvista
+from pyvista.utilities.xvfb import start_xvfb
+import matplotlib.pyplot as plt
+
 from EX_CTFM_Domain import domain, BCs, VariationalFormulation
 from EX_GD_Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
 from EX_CTFM_Visualization import plot_damage_state
@@ -13,7 +17,7 @@ def main(method='AltMin'):
     V_u=u.function_space
     V_v=v.function_space
     bcs_u, bcs_v, t1, t2 = BCs(u,v,dom,cell_tags, facet_tags)
-    E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, load_c, = VariationalFormulation(u,v,dom,cell_tags,facet_tags)
+    E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, load_c, total_energy = VariationalFormulation(u,v,dom,cell_tags,facet_tags)
     
     # now we want to solve E_u(u,v)=0 and E_v(u,v)=0 with alternate minimization with a Newton accelerator
     # first set up solvers for the individual minimizations
@@ -33,15 +37,13 @@ def main(method='AltMin'):
     uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
     
     # Solving the problem and visualizing
-    import pyvista
-    from pyvista.utilities.xvfb import start_xvfb
     start_xvfb(wait=0.5)
     
     # load_c = 0.19 * L  # reference value for the loading (imposed displacement)
-    loads = np.linspace(0, 1.5 * load_c * 120 / 10, 20) # (load_c/E)*L
+    loads = np.linspace(0, 1.5 * load_c * 30 / 10, 20) # (load_c/E)*L
     
     # Array to store results
-    energies = np.zeros((loads.shape[0], 3))
+    energies = np.zeros((loads.shape[0], 4 ))
     
     for i_t, t in enumerate(loads):
         t1.value = t
@@ -69,6 +71,19 @@ def main(method='AltMin'):
             fem.assemble_scalar(fem.form(dissipated_energy)),
             op=MPI.SUM,
         )
+        energies[i_t, 3] = MPI.COMM_WORLD.allreduce(
+            fem.assemble_scalar(fem.form(total_energy)),
+            op=MPI.SUM,
+        )
+
+    fig, ax=plt.subplots()
+    ax.plot(energies[:,0],energies[:,1],label='elastic energy')
+    ax.plot(energies[:,0],energies[:,2],label='dissipated energy')
+    ax.plot(energies[:,0],energies[:,3],label='total energy')
+    ax.set_xlabel('t')
+    ax.set_ylabel('Energy')
+    ax.legend()
+    plt.show()
 
 if __name__ == "__main__":
     main('NewtonLS')

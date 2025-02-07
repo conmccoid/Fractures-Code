@@ -98,4 +98,4 @@ def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
     E_uv= ufl.derivative(E_u,v,ufl.TrialFunction(V_v))
     E_vu= ufl.derivative(E_v,u,ufl.TrialFunction(V_u))
 
-    return E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, load_c
+    return E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, load_c, total_energy
