@@ -98,7 +98,7 @@ class NewtonSolver:
         self.solver.setJacobian(self.Jn, J)
         self.solver.setType('newtonls') # other types that work: nrichardson
         self.solver.setTolerances(rtol=1.0e-4, max_it=1000)
-        self.solver.getKSP().setType("cg")
+        self.solver.getKSP().setType("gmres")
         self.solver.getKSP().setTolerances(rtol=1.0e-9, max_it=b.getSize())
         self.solver.getKSP().getPC().setType("none")
         opts=PETSc.Options()
@@ -107,7 +107,6 @@ class NewtonSolver:
         self.solver.setConvergenceTest(self.customConvergenceTest)
         self.solver.setMonitor(self.customMonitor)
         # self.solver.getKSP().setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
-        # opts=PETSc.Options()
         # opts['ksp_monitor_singular_value']=None # Returns estimate of condition number of system solved by KSP
         opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
         opts['ksp_gmres_restart']=100 # Number of GMRES iterations before restart (100 doesn't do too bad)
@@ -141,13 +140,13 @@ class NewtonSolver:
         -- x: current solution
         -- y: current search direction"""
 
-        # best strategy so far: if a>1 then Newton, otherwise AltMin
-        # close second: if (a>1) OR (a<0) then Newton, otherwise AltMin
+        # best strategy so far: if a/c>1 then Newton, otherwise AltMin
+        # close second: if (a/c>1) OR (a/c<0) then Newton, otherwise AltMin
         diff = y - self.res
         c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
         a = self.res.norm()**2
         b = diff.norm()/self.res.norm()
-        print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Difference: {diff.norm():3.4e}, Trust: {a:.2%}")
+        print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Difference: {diff.norm():3.4e}, Trust: {a-c:3.4e}")
         if a>c:
             print(f"    NewtonLS step")
         else:
