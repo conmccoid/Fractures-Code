@@ -86,21 +86,19 @@ class NewtonSolver:
     def setUp(self):
         self.solver = PETSc.SNES().create(MPI.COMM_WORLD)
         
-        b_u = PETSc.Vec().create()
-        b_u.setType('mpi')
-        b_u.setSizes(self.u.x.petsc_vec.getSize())
-        b_v = PETSc.Vec().create()
-        b_v.setType('mpi')
-        b_v.setSizes(self.v.x.petsc_vec.getSize())
+        b_u = self.u.x.petsc_vec.duplicate()
+        b_v = self.v.x.petsc_vec.duplicate()
         b = PETSc.Vec().createNest([b_u,b_v])
-        
-        J = PETSc.Mat().createPython(self.u.x.petsc_vec.getSize()+self.v.x.petsc_vec.getSize())
 
+        local_size = b.getLocalSize()
+        global_size = b.getSize()
+        J = PETSc.Mat().createPython(((local_size,global_size),(local_size,global_size)),NewtonSolverContext,MPI.COMM_WORLD)
+        
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)
         self.solver.setType('newtonls') # other types that work: nrichardson
-        self.solver.setTolerances(rtol=1.0e-8, max_it=50)
-        self.solver.getKSP().setType("gmres")
+        self.solver.setTolerances(rtol=1.0e-4, max_it=1000)
+        self.solver.getKSP().setType("cg")
         self.solver.getKSP().setTolerances(rtol=1.0e-9, max_it=b.getSize())
         self.solver.getKSP().getPC().setType("none")
         opts=PETSc.Options()
@@ -112,7 +110,7 @@ class NewtonSolver:
         # opts=PETSc.Options()
         # opts['ksp_monitor_singular_value']=None # Returns estimate of condition number of system solved by KSP
         opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
-        opts['ksp_gmres_restart']=b.getSize() # Number of GMRES iterations before restart (100 doesn't do too bad)
+        opts['ksp_gmres_restart']=100 # Number of GMRES iterations before restart (100 doesn't do too bad)
         self.solver.getKSP().setFromOptions()
         # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
         self.solver.setLineSearchPreCheck(self.customLineSearch)
@@ -127,7 +125,7 @@ class NewtonSolver:
         F = snes.getFunction()
         _, res_v = F[0].getNestSubVecs()
         bv = fem.Function(self.v.function_space)
-        bv.x.array[:]=res_v.array
+        bv.x.petsc_vec.setArray(res_v.array)
         L2_error = ufl.inner(bv,bv) * ufl.dx
         self.error_L2 = np.sqrt(MPI.COMM_WORLD.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
         if self.error_L2 <= atol:
@@ -146,10 +144,11 @@ class NewtonSolver:
         # best strategy so far: if a>1 then Newton, otherwise AltMin
         # close second: if (a>1) OR (a<0) then Newton, otherwise AltMin
         diff = y - self.res
-        a = self.res.norm()**2 / (self.res.norm()**2 + diff.norm()**2 - y.norm()**2)
+        c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
+        a = self.res.norm()**2
         b = diff.norm()/self.res.norm()
         print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Difference: {diff.norm():3.4e}, Trust: {a:.2%}")
-        if a>1:
+        if a>c:
             print(f"    NewtonLS step")
         else:
             y.array[:]=self.res.array
