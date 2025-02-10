@@ -23,6 +23,7 @@ class NewtonSolver:
         self.solver2=solver2
         self.PJ=NewtonSolverContext(B, C, solver1, solver2) # preconditioned Jacobian
         # self.PJ=Identity()
+        self.output=[]
 
     def Fn(self, snes, x, F):
         # store old u and v values
@@ -99,7 +100,7 @@ class NewtonSolver:
         self.solver.setType('newtonls') # other types that work: nrichardson
         self.solver.setTolerances(rtol=1.0e-4, max_it=1000)
         self.solver.getKSP().setType("gmres")
-        self.solver.getKSP().setTolerances(rtol=1.0e-9, max_it=b.getSize())
+        self.solver.getKSP().setTolerances(rtol=1.0e-4, max_it=b.getSize())
         self.solver.getKSP().getPC().setType("none")
         opts=PETSc.Options()
         opts['snes_linesearch_type']='none'
@@ -146,10 +147,18 @@ class NewtonSolver:
         c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
         a = self.res.norm()**2
         b = diff.norm()/self.res.norm()
-        print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Difference: {diff.norm():3.4e}, Trust: {a-c:3.4e}")
-        if a>c:
+        print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {a/c:%}")
+        if a>c or c<0:
             print(f"    NewtonLS step")
         else:
             y.array[:]=self.res.array
             print(f"    AltMin step")
         # in practice we'll want a combination of self.res and y
+        # save iteration count
+        self.output.append([
+            self.solver1.getKSP().getIterationNumber(),
+            self.solver2.getKSP().getIterationNumber(),
+            self.solver.getKSP().getIterationNumber(),
+            self.res.norm(),
+            y.norm()
+        ])

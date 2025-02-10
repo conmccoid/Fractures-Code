@@ -6,6 +6,7 @@ from dolfinx import fem
 import pyvista
 from pyvista.utilities.xvfb import start_xvfb
 import matplotlib.pyplot as plt
+import csv
 
 from EX_CTFM_Domain import domain, BCs, VariationalFormulation
 from EX_GD_Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
@@ -40,10 +41,13 @@ def main(method='AltMin'):
     start_xvfb(wait=0.5)
     
     # load_c = 0.19 * L  # reference value for the loading (imposed displacement)
-    loads = np.linspace(0, 1.5 * load_c * 10 / 10, 20) # (load_c/E)*L
+    loads = np.linspace(0, 1.5 * load_c * 12 / 10, 20) # (load_c/E)*L
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 4 ))
+    with open('output/TBL_CTFM_energy.csv','w') as csv.file:
+        writer=csv.writer(csv.file,delimiter=',')
+        writer.writerow(['t','Elastic energy','Dissipated energy','Total energy'])
     
     for i_t, t in enumerate(loads):
         t1.value = t
@@ -58,8 +62,9 @@ def main(method='AltMin'):
             AMEN(u,v, elastic_solver, damage_solver, EN_solver)
         elif method=='NewtonLS':
             EN.solver.solve(None,uv)
+            iter_count = EN.output
         else:
-            alternate_minimization(u, v, elastic_solver, damage_solver)
+            iter_count = alternate_minimization(u, v, elastic_solver, damage_solver)
         plot_damage_state(u, v, None, [1400, 850])
     
         # Calculate the energies
@@ -75,6 +80,13 @@ def main(method='AltMin'):
             fem.assemble_scalar(fem.form(total_energy)),
             op=MPI.SUM,
         )
+        with open('output/TBL_CTFM_energy.csv','w') as csv.file:
+            writer=csv.writer(csv.file,delimiter=',')
+            writer.writerow(energies[i_t,:])
+        with open(f"output/TBL_CTFM_its_{i_t}.csv",'w') as csv.file:
+            writer=csv.writer(csv.file,delimiter=',')
+            writer.writerow(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
+            writer.writerows(iter_count)
 
     fig, ax=plt.subplots()
     ax.plot(energies[:,0],energies[:,1],label='elastic energy')
@@ -87,4 +99,4 @@ def main(method='AltMin'):
     plt.show()
 
 if __name__ == "__main__":
-    main('NewtonLS')
+    main('AltMin')

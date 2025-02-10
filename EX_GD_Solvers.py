@@ -76,6 +76,8 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_i
     v_old = fem.Function(v.function_space)
     v_old.x.array[:] = v.x.array
 
+    output=[]
+
     for iteration in range(max_iterations):
         # Solve for displacement
         elastic_solver.solve(None, u.x.petsc_vec) # replace None with a rhs function
@@ -91,11 +93,19 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_i
 
         v_old.x.array[:] = v.x.array
 
+        output.append([
+            elastic_solver.getKSP().getIterationNumber(),
+            damage_solver.getKSP().getIterationNumber(),
+            1.0,
+            error_L2,
+            0.0
+        ])
+
         if monitor:
           print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
 
         if error_L2 <= atol:
-          return (error_L2,iteration)
+          return output #(error_L2,iteration)
 
     raise RuntimeError(
         f"Could not converge after {max_iterations} iterations, error {error_L2:3.4e}"
