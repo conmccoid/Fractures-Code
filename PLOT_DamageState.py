@@ -3,7 +3,7 @@ import numpy as np
 from dolfinx import plot
 
 # visualization function
-def plot_damage_state(u, alpha, load=None, window=[800,300]):
+def plot_damage_state(u, alpha, load=None, window=[800,300], filename=''):
     """
     Plot the displacement and damage field with pyvista
     """
@@ -41,3 +41,5 @@ def plot_damage_state(u, alpha, load=None, window=[800,300]):
     plotter.view_xy()
     if not pyvista.OFF_SCREEN:
         plotter.show()
+    else:
+        plotter.screenshot(filename)

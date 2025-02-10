@@ -96,9 +96,11 @@ def main(method='AltMin'):
     ax.set_xlabel('t')
     ax.set_ylabel('Energy')
     ax.legend()
-    plt.savefig('output/PLOT_CTFM_energy.png')
+    plt.savefig('output/FIG_CTFM_energy.png')
     # plt.show()
+    plot_damage_state(u, v, None, [1400, 850],'output/FIG_CTFM_final.png')
 
 if __name__ == "__main__":
+    pyvista.OFF_SCREEN=True
     main('NewtonLS')
     sys.exit()
