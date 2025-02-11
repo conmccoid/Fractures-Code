@@ -101,7 +101,7 @@ class NewtonSolver:
         self.solver.setTolerances(rtol=1.0e-4, max_it=1000)
         self.solver.getKSP().setType("gmres")
         self.solver.getKSP().setTolerances(rtol=1.0e-4, max_it=b.getSize())
-        self.solver.getKSP().getPC().setType("none")
+        self.solver.getKSP().getPC().setType("none") # try different preconditioners, i.e. bjacobi
         opts=PETSc.Options()
         opts['snes_linesearch_type']='none'
         self.solver.setFromOptions()
@@ -147,7 +147,11 @@ class NewtonSolver:
         c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
         a = self.res.norm()**2
         b = diff.norm()/self.res.norm()
-        print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {a/c:%}")
+        if c==0:
+            trust=1
+        else:
+            trust=a/c
+        print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
         if a>c or c<0:
             print(f"    NewtonLS step")
         else:
