@@ -100,8 +100,9 @@ class NewtonSolver:
         self.solver.setType('newtonls') # other types that work: nrichardson
         self.solver.setTolerances(rtol=1.0e-4, max_it=1000)
         self.solver.getKSP().setType("gmres")
-        self.solver.getKSP().setTolerances(rtol=1.0e-4, max_it=b.getSize())
+        self.solver.getKSP().setTolerances(rtol=1.0e-4, max_it=100)
         self.solver.getKSP().getPC().setType("none") # try different preconditioners, i.e. bjacobi
+        # each preconditioner requires information from the matrix, i.e. jacobi needs a getDiagonal method
         opts=PETSc.Options()
         opts['snes_linesearch_type']='none'
         self.solver.setFromOptions()
@@ -132,7 +133,10 @@ class NewtonSolver:
             snes.setConvergedReason(PETSc.SNES.ConvergedReason.CONVERGED_FNORM_ABS)
             return 1
         elif it >= max_it:
-            snes.setConvergedReason(PETSc.SNES.ConvergedReason.DIVERGED_ITS)
+            snes.setConvergedReason(PETSc.SNES.ConvergedReason.DIVERGED_MAX_IT)
+            return -1
+        elif snes.getKSP().getConvergedReason()==PETSc.KSP.ConvergedReason.DIVERGED_MAX_IT:
+            snes.getKSP().setConvergedReason(-1)
             return -1
         return 0
 
@@ -152,13 +156,15 @@ class NewtonSolver:
         else:
             trust=a/c
         print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
-        if a>c or c<0:
-            print(f"    NewtonLS step")
-        else:
+        if self.solver.getKSP().getConvergedReason()<0 or (a<c and c>0):
             y.array[:]=self.res.array
             print(f"    AltMin step")
+        else:
+            print(f"    NewtonLS step")
         # in practice we'll want a combination of self.res and y
         # save iteration count
+        if self.solver.getIterationNumber()==0:
+            self.output.append(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
         self.output.append([
             self.solver1.getKSP().getIterationNumber(),
             self.solver2.getKSP().getIterationNumber(),

@@ -50,7 +50,7 @@ def main(method='AltMin'):
         writer=csv.writer(csv.file,delimiter=',')
         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy'])
     
-    for i_t, t in enumerate(loads):
+    for i_t, t in enumerate(loads[2:]):
         t1.value = t
         t2.value =-t
         energies[i_t, 0] = t
@@ -86,7 +86,7 @@ def main(method='AltMin'):
             writer.writerow(energies[i_t,:])
         with open(f"output/TBL_CTFM_its_{i_t}.csv",'w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
-            writer.writerow(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
+            # writer.writerow(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
             writer.writerows(iter_count) # find some way to combine these files into one
 
     fig, ax=plt.subplots()
