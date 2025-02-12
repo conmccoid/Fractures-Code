@@ -50,7 +50,7 @@ def main(method='AltMin'):
         writer=csv.writer(csv.file,delimiter=',')
         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy'])
     
-    for i_t, t in enumerate(loads[2:]):
+    for i_t, t in enumerate(loads[2:4]):
         t1.value = t
         t2.value =-t
         energies[i_t, 0] = t
@@ -99,6 +99,7 @@ def main(method='AltMin'):
     plt.savefig('output/FIG_CTFM_energy.png')
     # plt.show()
     plot_damage_state(u, v, None, [1400, 850],'output/FIG_CTFM_final.png')
+    return EN
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True

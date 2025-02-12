@@ -100,7 +100,7 @@ class NewtonSolver:
         self.solver.setType('newtonls') # other types that work: nrichardson
         self.solver.setTolerances(rtol=1.0e-4, max_it=1000)
         self.solver.getKSP().setType("gmres")
-        self.solver.getKSP().setTolerances(rtol=1.0e-4, max_it=100)
+        self.solver.getKSP().setTolerances(rtol=1.0e-4, max_it=101)
         self.solver.getKSP().getPC().setType("none") # try different preconditioners, i.e. bjacobi
         # each preconditioner requires information from the matrix, i.e. jacobi needs a getDiagonal method
         opts=PETSc.Options()
@@ -113,8 +113,10 @@ class NewtonSolver:
         opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
         opts['ksp_gmres_restart']=100 # Number of GMRES iterations before restart (100 doesn't do too bad)
         self.solver.getKSP().setFromOptions()
+        self.solver.getKSP().setPostSolve(self.customPostSolve)
         # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
         self.solver.setLineSearchPreCheck(self.customLineSearch)
+        self.solver.setForceIteration(True)
 
     def customMonitor(self, snes, its, norm):
         """Returns the same L2-nrom as AltMin for comparable convergence"""
@@ -133,6 +135,7 @@ class NewtonSolver:
             snes.setConvergedReason(PETSc.SNES.ConvergedReason.CONVERGED_FNORM_ABS)
             return 1
         elif it >= max_it:
+            print(f"LINEAR SOLVE FAILURE")
             snes.setConvergedReason(PETSc.SNES.ConvergedReason.DIVERGED_MAX_IT)
             return -1
         elif snes.getKSP().getConvergedReason()==PETSc.KSP.ConvergedReason.DIVERGED_MAX_IT:
@@ -156,11 +159,15 @@ class NewtonSolver:
         else:
             trust=a/c
         print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
-        if self.solver.getKSP().getConvergedReason()<0 or (a<c and c>0):
+        if self.solver.getKSP().getConvergedReason()==0:
+            print(f"LINEAR SOLVE FAILURE: {PETSc.KSP.ConvergedReason(self.solver.getKSP().getConvergedReason())}")
             y.array[:]=self.res.array
             print(f"    AltMin step")
-        else:
+        elif a>c or c<0:
             print(f"    NewtonLS step")
+        else:
+            y.array[:]=self.res.array
+            print(f"    AltMin step")
         # in practice we'll want a combination of self.res and y
         # save iteration count
         if self.solver.getIterationNumber()==0:
@@ -172,3 +179,13 @@ class NewtonSolver:
             self.res.norm(),
             y.norm()
         ])
+
+    def customPostSolve(self,ksp,rhs,x):
+        """Post solve function for the KSP in an attempt to rout unnecessary divergence breaks"""
+        reason=ksp.getConvergedReason()
+        if reason>0:
+            print(f"    KSP converged")
+        elif reason<0:
+            print(f"    KSP diverged with reason {PETSc.KSP.ConvergedReason(reason)}")
+            ksp.setConvergedReason(10)
+            x.zeroEntries
