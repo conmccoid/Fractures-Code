@@ -113,7 +113,8 @@ class NewtonSolver:
         opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
         opts['ksp_gmres_restart']=100 # Number of GMRES iterations before restart (100 doesn't do too bad)
         self.solver.getKSP().setFromOptions()
-        self.solver.getKSP().setPostSolve(self.customPostSolve)
+        # self.solver.getKSP().setPostSolve(self.customPostSolve)
+        self.solver.setMaxLinearSolveFailures(1)
         # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
         self.solver.setLineSearchPreCheck(self.customLineSearch)
         # self.solver.setForceIteration(True)
@@ -155,7 +156,8 @@ class NewtonSolver:
         else:
             trust=a/c
         print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
-        if self.solver.getKSP().getConvergedReason()==10:
+        # if self.solver.getKSP().getConvergedReason()==10:
+        if self.solver.getKSP().getConvergedReason()<0:
             print(f"LINEAR SOLVE FAILURE")
             y.array[:]=self.res.array
             print(f"    AltMin step")
