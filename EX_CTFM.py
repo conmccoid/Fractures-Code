@@ -63,10 +63,9 @@ def main(method='AltMin'):
             AMEN(u,v, elastic_solver, damage_solver, EN_solver)
         elif method=='NewtonLS':
             EN.solver.solve(None,uv)
-            iter_count = EN.output
         else:
             iter_count = alternate_minimization(u, v, elastic_solver, damage_solver)
-        # plot_damage_state(u, v, None, [1400, 850])
+        plot_damage_state(u, v, None, [1400, 850])
     
         # Calculate the energies
         energies[i_t, 1] = MPI.COMM_WORLD.allreduce(
@@ -84,10 +83,10 @@ def main(method='AltMin'):
         with open('output/TBL_CTFM_energy.csv','w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             writer.writerow(energies[i_t,:])
-        with open(f"output/TBL_CTFM_its_{i_t}.csv",'w') as csv.file:
-            writer=csv.writer(csv.file,delimiter=',')
-            # writer.writerow(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
-            writer.writerows(iter_count) # find some way to combine these files into one
+    with open(f"output/TBL_CTFM_its.csv",'w') as csv.file:
+        writer=csv.writer(csv.file,delimiter=',')
+        # writer.writerow(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
+        writer.writerows(EN.output) # find some way to combine these files into one
 
     fig, ax=plt.subplots()
     ax.plot(energies[:,0],energies[:,1],label='elastic energy')
@@ -98,7 +97,7 @@ def main(method='AltMin'):
     ax.legend()
     plt.savefig('output/FIG_CTFM_energy.png')
     # plt.show()
-    plot_damage_state(u, v, None, [1400, 850],'output/FIG_CTFM_final.png')
+    # plot_damage_state(u, v, None, [1400, 850],'output/FIG_CTFM_final.png')
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
