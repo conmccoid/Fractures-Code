@@ -159,11 +159,11 @@ class NewtonSolver:
             print(f"LINEAR SOLVE FAILURE")
             y.array[:]=self.res.array
             print(f"    AltMin step")
-        elif a>c or c<0:
+        elif a>np.abs(c):
             print(f"    NewtonLS step")
         else:
-            y.array[:]=self.res.array
-            print(f"    AltMin step")
+            y.array[:]=self.res.array + (self.res.norm()*2/y.norm())*y.array
+            print(f"    Augmented AltMin step")
         # in practice we'll want a combination of self.res and y
         # save iteration count
         if self.solver.getIterationNumber()==0:

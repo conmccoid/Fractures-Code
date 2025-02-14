@@ -36,6 +36,23 @@ gmsh fichier.geo -3 -o nomsortie.msh
 ```
 Replace `-3` with `-2` when using 2D meshes.
 
+### Running code in Docker container from command line
+
+First make sure the Docker container is running.
+Open bash in the container with
+```
+docker exec -it <container name> sh
+```
+Change directory to the shared folder:
+```
+cd shared
+```
+Now anything can be run in the shared folder with standard commands:
+```
+mpiexec -n 8 python -u EX_CTFM.py
+```
+(Include the `-u` to output to the terminal.)
+
 ## SSH into Graham cluster
 
 `ssh mccoidc@graham.alliancecan.ca`, using SSH key and DUO multi-factor app.

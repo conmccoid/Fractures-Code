@@ -65,7 +65,7 @@ def main(method='AltMin'):
             EN.solver.solve(None,uv)
         else:
             iter_count = alternate_minimization(u, v, elastic_solver, damage_solver)
-        plot_damage_state(u, v, None, [1400, 850])
+        # plot_damage_state(u, v, None, [1400, 850])
     
         # Calculate the energies
         energies[i_t, 1] = MPI.COMM_WORLD.allreduce(
@@ -97,7 +97,7 @@ def main(method='AltMin'):
     ax.legend()
     plt.savefig('output/FIG_CTFM_energy.png')
     # plt.show()
-    # plot_damage_state(u, v, None, [1400, 850],'output/FIG_CTFM_final.png')
+    plot_damage_state(u, v, None, [1400, 850],'output/FIG_CTFM_final.png')
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
