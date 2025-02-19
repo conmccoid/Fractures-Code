@@ -72,11 +72,9 @@ def Newton(E_uv, E_vu, elastic_solver, damage_solver):
     return EN_solver
 
 # AltMin definition
-def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_iterations=1000, monitor=True):
+def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_iterations=1000, monitor=True, output=[]):
     v_old = fem.Function(v.function_space)
     v_old.x.array[:] = v.x.array
-
-    output=[]
 
     for iteration in range(max_iterations):
         # Solve for displacement
@@ -93,6 +91,8 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_i
 
         v_old.x.array[:] = v.x.array
 
+        if iteration==0:
+            output.append(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
         output.append([
             elastic_solver.getKSP().getIterationNumber(),
             damage_solver.getKSP().getIterationNumber(),
