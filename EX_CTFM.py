@@ -46,6 +46,7 @@ def main(method='AltMin'):
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 4 ))
+    iter_count=[]
     with open(f"output/TBL_CTFM_{method}_energy.csv",'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy'])
@@ -64,8 +65,12 @@ def main(method='AltMin'):
         elif method=='NewtonLS':
             EN.solver.solve(None,uv)
         else:
-            iter_count = alternate_minimization(u, v, elastic_solver, damage_solver)
-        # plot_damage_state(u, v, None, [1400, 850])
+            iter_count.append(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
+            iter_count.append(alternate_minimization(u, v, elastic_solver, damage_solver))
+        if i_t<len(loads):
+            plot_damage_state(u, v, None, [1400, 850])
+        else:
+            plot_damage_state(u, v, None, [1400, 850],f"output/FIG_CTFM_{method}_final.png")
     
         # Calculate the energies
         energies[i_t, 1] = MPI.COMM_WORLD.allreduce(
@@ -85,8 +90,10 @@ def main(method='AltMin'):
             writer.writerow(energies[i_t,:])
     with open(f"output/TBL_CTFM_{method}_its.csv",'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
-        # writer.writerow(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
-        writer.writerows(EN.output) # find some way to combine these files into one
+        if method=='NewtonLS':
+            writer.writerows(EN.output) # find some way to combine these files into one
+        elif method=='AltMin':
+            writer.writerows(iter_count)
 
     fig, ax=plt.subplots()
     ax.plot(energies[:,0],energies[:,1],label='elastic energy')
@@ -97,9 +104,8 @@ def main(method='AltMin'):
     ax.legend()
     plt.savefig(f"output/FIG_CTFM_{method}_energy.png")
     # plt.show()
-    plot_damage_state(u, v, None, [1400, 850],f"output/FIG_CTFM_{method}_final.png")
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
-    main('NewtonLS')
+    main('AltMin')
     sys.exit()
