@@ -66,7 +66,7 @@ def main(method='AltMin'):
             EN.solver.solve(None,uv)
         else:
             iter_count = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, True, iter_count)
-        if i_t<len(loads)-1:
+        if i_t!=len(loads)-1:
             plot_damage_state(u, v, None, [1400, 850])
         else:
             plot_damage_state(u, v, None, [1400, 850],f"output/FIG_CTFM_{method}_final.png")
