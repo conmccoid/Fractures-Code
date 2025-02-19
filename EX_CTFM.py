@@ -46,7 +46,7 @@ def main(method='AltMin'):
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 4 ))
-    with open('output/TBL_CTFM_energy.csv','w') as csv.file:
+    with open(f"output/TBL_CTFM_{method}_energy.csv",'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy'])
     
@@ -80,10 +80,10 @@ def main(method='AltMin'):
             fem.assemble_scalar(fem.form(total_energy)),
             op=MPI.SUM,
         )
-        with open('output/TBL_CTFM_energy.csv','w') as csv.file:
+        with open(f"output/TBL_CTFM_{method}_energy.csv",'w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             writer.writerow(energies[i_t,:])
-    with open(f"output/TBL_CTFM_its.csv",'w') as csv.file:
+    with open(f"output/TBL_CTFM_{method}_its.csv",'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
         # writer.writerow(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
         writer.writerows(EN.output) # find some way to combine these files into one
@@ -95,9 +95,9 @@ def main(method='AltMin'):
     ax.set_xlabel('t')
     ax.set_ylabel('Energy')
     ax.legend()
-    plt.savefig('output/FIG_CTFM_energy.png')
+    plt.savefig(f"output/FIG_CTFM_{method}_energy.png")
     # plt.show()
-    plot_damage_state(u, v, None, [1400, 850],'output/FIG_CTFM_final.png')
+    plot_damage_state(u, v, None, [1400, 850],f"output/FIG_CTFM_{method}_final.png")
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
