@@ -85,7 +85,7 @@ def main(method='AltMin'):
             fem.assemble_scalar(fem.form(total_energy)),
             op=MPI.SUM,
         )
-        with open(f"output/TBL_CTFM_{method}_energy.csv",'w') as csv.file:
+        with open(f"output/TBL_CTFM_{method}_energy.csv",'a') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             writer.writerow(energies[i_t,:])
     with open(f"output/TBL_CTFM_{method}_its.csv",'w') as csv.file:
