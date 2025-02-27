@@ -40,14 +40,16 @@ class NewtonSolverContext:
         z2=Evv.createVecLeft()
         
         # initialize KSPs
-        ksp_uu=PETSc.KSP().create(MPI.COMM_WORLD) # re-use, and re-use previous results as initial guess, ksp.setInitialGuessNonzero
-        ksp_uu.setOperators(Euu)
-        ksp_uu.setType('preonly')
-        ksp_uu.getPC().setType('lu')
-        ksp_vv=PETSc.KSP().create(MPI.COMM_WORLD)
-        ksp_vv.setOperators(Evv)
-        ksp_vv.setType('preonly')
-        ksp_vv.getPC().setType('lu')
+        # ksp_uu=PETSc.KSP().create(MPI.COMM_WORLD) # re-use, and re-use previous results as initial guess, ksp.setInitialGuessNonzero
+        # ksp_uu.setOperators(Euu)
+        # ksp_uu.setType('preonly')
+        # ksp_uu.getPC().setType('lu')
+        # ksp_vv=PETSc.KSP().create(MPI.COMM_WORLD)
+        # ksp_vv.setOperators(Evv)
+        # ksp_vv.setType('preonly')
+        # ksp_vv.getPC().setType('lu')
+        ksp_uu=self.elastic_solver.getKSP()
+        ksp_vv=self.damage_solver.getKSP()
         
         # multiply by Jacobian
         Euu.mult(x1,y1)
@@ -64,6 +66,6 @@ class NewtonSolverContext:
         # self.damage_solver.solve(w2,v2)
         # then w1 and v2 get put into Y
 
-        # destroy KSPs (& vectors?)
-        ksp_uu.destroy()
-        ksp_vv.destroy()
+        # # destroy KSPs (& vectors?)
+        # ksp_uu.destroy()
+        # ksp_vv.destroy()
