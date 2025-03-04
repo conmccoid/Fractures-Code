@@ -10,9 +10,9 @@ import csv
 import sys
 
 from EX_Surf_Domain import domain, BCs, VariationalFormulation
-from EX_GD_Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
+from Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
 from PLOT_DamageState import plot_damage_state
-from EX_GD_NewtonSolver import NewtonSolver
+from NewtonSolver import NewtonSolver
 
 def main(method='AltMin'):
     u, v, dom, cell_tags, facet_tags=domain()
@@ -41,8 +41,6 @@ def main(method='AltMin'):
     # Solving the problem and visualizing
     start_xvfb(wait=0.5)
     
-    # load_c = 0.19 * L  # reference value for the loading (imposed displacement)
-    loads = np.linspace(0, 1.5 * p.load_c * 12 / 10, 20) # (load_c/E)*L
     loads = np.linspace(0.01,65,20)
     
     # Array to store results
@@ -53,7 +51,7 @@ def main(method='AltMin'):
         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy'])
     
     for i_t, t in enumerate(loads):
-        t0.value = t
+        t0 = t
         energies[i_t, 0] = t
     
         # Update the lower bound to ensure irreversibility of damage field.

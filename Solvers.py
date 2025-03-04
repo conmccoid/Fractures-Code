@@ -7,8 +7,6 @@ from NewtonSolverContext import NewtonSolverContext
 from petsc4py import PETSc
 from mpi4py import MPI
 
-from EX_GD_NewtonSolver import Identity # test case
-
 def Elastic(E, u, bcs, J):
     V = u.function_space
 

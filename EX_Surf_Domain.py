@@ -17,11 +17,7 @@ class Parameters:
         self.kappa = (3.0-self.nu)/(1.0+self.nu)
         self.mu = self.E / (2.0* (1.0+self.nu))
         self.lmbda = self.E * self.nu / (1.0 - self.nu**2)
-
-def cart2polar(x, y):
-    r = np.sqrt(x**2 + y**2)
-    theta = np.arctan2(y, x)
-    return r, theta
+        self.K = 1
 
 def w(v): # dissipated energy function (of dmg)
   return v**2
@@ -51,6 +47,13 @@ def domain():
     v = fem.Function(V_v, name="Damage")
     return u, v, domain, cell_tags, facet_tags
 
+def SurfBC(x,t0,p):
+    r=np.sqrt((x[0]-t0)**2 + x[1]**2)
+    theta=np.arctan2(x[1],x[0]-t0)
+    Ux= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.kappa - np.cos(theta)) * np.cos(theta/2)
+    Uy= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.kappa - np.cos(theta)) * np.sin(theta/2)
+    return np.vstack((Ux,Uy))
+
 def BCs(u,v,domain, cell_tags, facet_tags, p):
     V_u=u.function_space
     V_v=v.function_space
@@ -65,15 +68,12 @@ def BCs(u,v,domain, cell_tags, facet_tags, p):
     bdry_dofs_ux=fem.locate_dofs_topological(V_u.sub(0), fdim, bdry_facets)
     bdry_dofs_uy=fem.locate_dofs_topological(V_u.sub(1), fdim, bdry_facets)
 
-    t0=fem.Constant(domain,PETSc.ScalarType(0.0))
-    r=fem.Function(V_u)
-    r.interpolate(lambda x: np.sqrt((x[0]-t0)**2 + x[1]**2))
-    theta=fem.Function(V_u)
-    theta.interpolate(lambda x: np.arctan2(x[1],x[0]-t0))
-    Ux= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.kappa - np.cos(theta)) * np.cos(theta/2)
-    Uy= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.kappa - np.cos(theta)) * np.sin(theta/2)
-    bc_ux = fem.dirichletbc(Ux, bdry_dofs_ux, V_u.sub(0))
-    bc_uy = fem.dirichletbc(Uy, bdry_dofs_uy, V_u.sub(1))
+    # t0=fem.Constant(domain,PETSc.ScalarType(0.0))
+    t0=0.0
+    U=fem.Function(V_u)
+    U.interpolate(lambda x: SurfBC(x,t0,p))
+    bc_ux = fem.dirichletbc(U.sub(0), bdry_dofs_ux)
+    bc_uy = fem.dirichletbc(U.sub(1), bdry_dofs_uy)
 
     crack_bcs=fem.dirichletbc(fem.Constant(domain, PETSc.ScalarType(1.)), crack_dofs_v, V_v)
     bcs_u=[bc_ux, bc_uy]
