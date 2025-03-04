@@ -10,9 +10,9 @@ import csv
 import sys
 
 from EX_CTFM_Domain import domain, BCs, VariationalFormulation
-from EX_GD_Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
+from Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
 from PLOT_DamageState import plot_damage_state
-from EX_GD_NewtonSolver import NewtonSolver
+from NewtonSolver import NewtonSolver
 
 def main(method='AltMin'):
     u, v, dom, cell_tags, facet_tags=domain()

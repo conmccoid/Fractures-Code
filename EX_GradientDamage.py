@@ -4,9 +4,9 @@ from petsc4py import PETSc
 from dolfinx import fem
 
 from EX_GD_Domain import domain, BCs, VariationalFormulation
-from EX_GD_Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
+from Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
 from PLOT_DamageState import plot_damage_state
-from EX_GD_NewtonSolver import NewtonSolver
+from NewtonSolver import NewtonSolver
 
 def main(method='AltMin'):
     L=1.
