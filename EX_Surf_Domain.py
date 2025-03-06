@@ -8,16 +8,16 @@ from dolfinx.io.gmshio import read_from_msh
 
 class Parameters:
     def __init__(self,domain):
-        self.Gc=  fem.Constant(domain, PETSc.ScalarType(1.0))
-        self.ell= fem.Constant(domain, PETSc.ScalarType(0.5))
-        self.cw=  fem.Constant(domain, PETSc.ScalarType(1/2))
-        self.E= fem.Constant(domain, PETSc.ScalarType(100.0))
-        self.nu= fem.Constant(domain, PETSc.ScalarType(0.3))
+        self.Gc =fem.Constant(domain, PETSc.ScalarType(1.0))
+        self.ell=fem.Constant(domain, PETSc.ScalarType(0.5))
+        self.cw =fem.Constant(domain, PETSc.ScalarType(1/2))
+        self.E  =fem.Constant(domain, PETSc.ScalarType(1.0))
+        self.nu =fem.Constant(domain, PETSc.ScalarType(0.3))
         self.load_c = np.sqrt(27 * self.Gc.value * self.E.value / (256 * self.ell.value) ) # AT2
         self.kappa = (3.0-self.nu)/(1.0+self.nu)
         self.mu = self.E / (2.0* (1.0+self.nu))
         self.lmbda = self.E * self.nu / (1.0 - self.nu**2)
-        self.K = 1
+        self.K = fem.Constant(domain, PETSc.ScalarType(1.0))
 
 def w(v): # dissipated energy function (of dmg)
   return v**2
@@ -47,9 +47,9 @@ def domain():
     v = fem.Function(V_v, name="Damage")
     return u, v, domain, cell_tags, facet_tags
 
-def SurfBC(x,t0,p):
-    r=np.sqrt((x[0]-t0)**2 + x[1]**2)
-    theta=np.arctan2(x[1],x[0]-t0)
+def SurfBC(x,t,p):
+    r=np.sqrt((x[0]-t)**2 + x[1]**2)
+    theta=np.arctan2(x[1],x[0]-t)
     Ux= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.kappa - np.cos(theta)) * np.cos(theta/2)
     Uy= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.kappa - np.cos(theta)) * np.sin(theta/2)
     return np.vstack((Ux,Uy))
@@ -60,25 +60,23 @@ def BCs(u,v,domain, cell_tags, facet_tags, p):
     fdim=domain.topology.dim-1
 
     crack_facets=facet_tags.find(40)
-    bdry_facets=facet_tags.find(2)
+    bdry_facets=facet_tags.find(20)
 
     crack_dofs_v=fem.locate_dofs_topological(V_v, fdim, crack_facets)
-    crack_dofs_ux=fem.locate_dofs_topological(V_u.sub(0), fdim, crack_facets)
-    crack_dofs_uy=fem.locate_dofs_topological(V_u.sub(1), fdim, crack_facets)
+    # bdry_dofs_u =fem.locate_dofs_topological(V_u, fdim, bdry_facets)
     bdry_dofs_ux=fem.locate_dofs_topological(V_u.sub(0), fdim, bdry_facets)
     bdry_dofs_uy=fem.locate_dofs_topological(V_u.sub(1), fdim, bdry_facets)
 
-    # t0=fem.Constant(domain,PETSc.ScalarType(0.0))
-    t0=0.0
     U=fem.Function(V_u)
-    U.interpolate(lambda x: SurfBC(x,t0,p))
+    # U.interpolate(lambda x: SurfBC(x,0.0,p), bdry_facets)
+    U.interpolate(lambda x: np.vstack((10,0)), bdry_facets)
     bc_ux = fem.dirichletbc(U.sub(0), bdry_dofs_ux)
     bc_uy = fem.dirichletbc(U.sub(1), bdry_dofs_uy)
 
     crack_bcs=fem.dirichletbc(fem.Constant(domain, PETSc.ScalarType(1.)), crack_dofs_v, V_v)
     bcs_u=[bc_ux, bc_uy]
     bcs_v=[crack_bcs]
-    return bcs_u, bcs_v, t0
+    return bcs_u, bcs_v, U, bdry_facets
 
 def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
     V_u=u.function_space

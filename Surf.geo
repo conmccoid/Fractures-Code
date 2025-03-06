@@ -1,10 +1,10 @@
 //Définition des valeurs physiques
 L = 65; //Longeur selon x
 H = 120; //Longuer selon y
-y0 = 5;  // y-coord of teh initial crack
+y0 = 0;  // y-coord of teh initial crack
 l0 = 10; // Length initial crack
 eps = 0.01; // Width of initial crack
-h = 0.25; //0.1; //0.3; //1.5; //2 //Taille du maillage
+h = 1; //0.25; //0.1; //0.3; //1.5; //2 //Taille du maillage
 hc = 1.;
 
 //Plate
@@ -33,4 +33,4 @@ Plane Surface(1) = {1};
 //Outputs
 Physical Surface(1) = {1};
 Physical Line(40) = {6,7};
-Physical Line(2) = {1};
+Physical Line(20) = {1};

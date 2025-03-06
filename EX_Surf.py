@@ -1,7 +1,7 @@
 import numpy as np
 from mpi4py import MPI
 from petsc4py import PETSc
-from dolfinx import fem
+from dolfinx import fem, io
 
 import pyvista
 from pyvista.utilities.xvfb import start_xvfb
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import csv
 import sys
 
-from EX_Surf_Domain import domain, BCs, VariationalFormulation
+from EX_Surf_Domain import domain, BCs, VariationalFormulation, SurfBC
 from Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
 from PLOT_DamageState import plot_damage_state
 from NewtonSolver import NewtonSolver
@@ -19,7 +19,7 @@ def main(method='AltMin'):
     V_u=u.function_space
     V_v=v.function_space
     E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, p, total_energy = VariationalFormulation(u,v,dom,cell_tags,facet_tags)
-    bcs_u, bcs_v, t0 = BCs(u,v,dom,cell_tags, facet_tags, p)
+    bcs_u, bcs_v, U, bdry_facets = BCs(u,v,dom,cell_tags, facet_tags, p)
     
     # now we want to solve E_u(u,v)=0 and E_v(u,v)=0 with alternate minimization with a Newton accelerator
     # first set up solvers for the individual minimizations
@@ -41,7 +41,7 @@ def main(method='AltMin'):
     # Solving the problem and visualizing
     start_xvfb(wait=0.5)
     
-    loads = np.linspace(0.01,65,20)
+    loads = np.linspace(0,65,14)
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 4 ))
@@ -49,9 +49,14 @@ def main(method='AltMin'):
     with open(f"output/TBL_Surf_{method}_energy.csv",'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy'])
-    
+    with io.XDMFFile(dom.comm, "output/EX_Surf.xdmf","w") as xdmf:
+        xdmf.write_mesh(dom)
+
+    print(f"LOOP COMMENCES")
     for i_t, t in enumerate(loads):
-        t0 = t
+        # U.interpolate(lambda x: SurfBC(x,t,p),bdry_facets)
+        U.interpolate(lambda x: np.vstack((10,0)), bdry_facets)
+        print(f"INTERPOLATION COMPLETE")
         energies[i_t, 0] = t
     
         # Update the lower bound to ensure irreversibility of damage field.
@@ -63,7 +68,7 @@ def main(method='AltMin'):
         elif method=='NewtonLS':
             EN.solver.solve(None,uv)
         else:
-            iter_count = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, True, iter_count)
+            iter_count = alternate_minimization(u, v, elastic_solver, damage_solver, 1e0, 10, True, iter_count)
         if i_t!=len(loads)-1:
             plot_damage_state(u, v, None, [1400, 850])
         else:
@@ -85,6 +90,10 @@ def main(method='AltMin'):
         with open(f"output/TBL_Surf_{method}_energy.csv",'a') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             writer.writerow(energies[i_t,:])
+        with io.XDMFFile(dom.comm, "output/EX_Surf.xdmf","a") as xdmf:
+            xdmf.write_function(u, t)
+            xdmf.write_function(v, t)
+            xdmf.write_function(U, t)
     with open(f"output/TBL_Surf_{method}_its.csv",'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
         if method=='NewtonLS':
