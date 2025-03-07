@@ -37,7 +37,7 @@ def sigma(u,v, p,ndim): # stress tensor of damaged material (of disp & dmg)
 def domain():
     # Domain set-up
     (domain, cell_tags, facet_tags) = read_from_msh('Surf.msh',MPI.COMM_WORLD,gdim=2)
-
+    
     # Function space and solution initialization
     element_u = basix.ufl.element("Lagrange", domain.basix_cell(), degree=1, shape=(2,)) 
     element_v = basix.ufl.element("Lagrange", domain.basix_cell(), degree=1)
@@ -59,24 +59,24 @@ def BCs(u,v,domain, cell_tags, facet_tags, p):
     V_v=v.function_space
     fdim=domain.topology.dim-1
 
-    crack_facets=facet_tags.find(40)
-    bdry_facets=facet_tags.find(20)
+    crack_facets=facet_tags.find(4000)
+    bdry_facets=facet_tags.find(2000)
+    bdry_cells=mesh.compute_incident_entities(domain.topology,bdry_facets,fdim,domain.topology.dim)
 
     crack_dofs_v=fem.locate_dofs_topological(V_v, fdim, crack_facets)
-    # bdry_dofs_u =fem.locate_dofs_topological(V_u, fdim, bdry_facets)
+    bdry_dofs_u =fem.locate_dofs_topological(V_u, fdim, bdry_facets)
     bdry_dofs_ux=fem.locate_dofs_topological(V_u.sub(0), fdim, bdry_facets)
     bdry_dofs_uy=fem.locate_dofs_topological(V_u.sub(1), fdim, bdry_facets)
 
     U=fem.Function(V_u)
-    # U.interpolate(lambda x: SurfBC(x,0.0,p), bdry_facets)
-    U.interpolate(lambda x: np.vstack((10,0)), bdry_facets)
+    U.interpolate(lambda x: SurfBC(x,0.0,p),bdry_cells)
     bc_ux = fem.dirichletbc(U.sub(0), bdry_dofs_ux)
     bc_uy = fem.dirichletbc(U.sub(1), bdry_dofs_uy)
 
     crack_bcs=fem.dirichletbc(fem.Constant(domain, PETSc.ScalarType(1.)), crack_dofs_v, V_v)
     bcs_u=[bc_ux, bc_uy]
     bcs_v=[crack_bcs]
-    return bcs_u, bcs_v, U, bdry_facets
+    return bcs_u, bcs_v, U, bdry_cells
 
 def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
     V_u=u.function_space

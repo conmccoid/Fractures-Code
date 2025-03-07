@@ -19,7 +19,7 @@ def main(method='AltMin'):
     V_u=u.function_space
     V_v=v.function_space
     E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, p, total_energy = VariationalFormulation(u,v,dom,cell_tags,facet_tags)
-    bcs_u, bcs_v, U, bdry_facets = BCs(u,v,dom,cell_tags, facet_tags, p)
+    bcs_u, bcs_v, U, bdry_cells = BCs(u,v,dom,cell_tags, facet_tags, p)
     
     # now we want to solve E_u(u,v)=0 and E_v(u,v)=0 with alternate minimization with a Newton accelerator
     # first set up solvers for the individual minimizations
@@ -52,11 +52,8 @@ def main(method='AltMin'):
     with io.XDMFFile(dom.comm, "output/EX_Surf.xdmf","w") as xdmf:
         xdmf.write_mesh(dom)
 
-    print(f"LOOP COMMENCES")
     for i_t, t in enumerate(loads):
-        # U.interpolate(lambda x: SurfBC(x,t,p),bdry_facets)
-        U.interpolate(lambda x: np.vstack((10,0)), bdry_facets)
-        print(f"INTERPOLATION COMPLETE")
+        U.interpolate(lambda x: SurfBC(x,t,p),bdry_cells)
         energies[i_t, 0] = t
     
         # Update the lower bound to ensure irreversibility of damage field.
@@ -68,7 +65,7 @@ def main(method='AltMin'):
         elif method=='NewtonLS':
             EN.solver.solve(None,uv)
         else:
-            iter_count = alternate_minimization(u, v, elastic_solver, damage_solver, 1e0, 10, True, iter_count)
+            iter_count = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, True, iter_count)
         if i_t!=len(loads)-1:
             plot_damage_state(u, v, None, [1400, 850])
         else:

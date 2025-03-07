@@ -32,5 +32,5 @@ Plane Surface(1) = {1};
 
 //Outputs
 Physical Surface(1) = {1};
-Physical Line(40) = {6,7};
-Physical Line(20) = {1};
+Physical Line(4000) = {6,7};
+Physical Line(2000) = {1:5};
