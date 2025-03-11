@@ -35,7 +35,7 @@ def main(method='AltMin'):
     EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
                     E_uv, E_vu)
-    EN.setUp()
+    EN.setUp(rtol=1.0e-8,max_it_SNES=100,max_it_KSP=100,ksp_restarts=100)
     uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
     
     # Solving the problem and visualizing

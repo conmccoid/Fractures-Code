@@ -84,7 +84,7 @@ class NewtonSolver:
         J.setPythonContext(self.PJ)
         J.setUp()
 
-    def setUp(self):
+    def setUp(self,rtol=1.0e-8, max_it_SNES=1000, max_it_KSP=100, ksp_restarts=100):
         self.solver = PETSc.SNES().create(MPI.COMM_WORLD)
         
         b_u = self.u.x.petsc_vec.duplicate()
@@ -98,9 +98,9 @@ class NewtonSolver:
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)
         self.solver.setType('newtonls') # other types that work: nrichardson
-        self.solver.setTolerances(rtol=1.0e-4, max_it=1000)
+        self.solver.setTolerances(rtol=rtol, max_it=max_it_SNES)
         self.solver.getKSP().setType("gmres")
-        self.solver.getKSP().setTolerances(rtol=1.0e-4, max_it=100)
+        self.solver.getKSP().setTolerances(rtol=rtol, max_it=max_it_KSP)
         self.solver.getKSP().getPC().setType("none") # try different preconditioners, i.e. bjacobi
         # each preconditioner requires information from the matrix, i.e. jacobi needs a getDiagonal method
         opts=PETSc.Options()
@@ -110,8 +110,8 @@ class NewtonSolver:
         self.solver.setMonitor(self.customMonitor)
         # self.solver.getKSP().setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
         # opts['ksp_monitor_singular_value']=None # Returns estimate of condition number of system solved by KSP
-        opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
-        opts['ksp_gmres_restart']=100 # Number of GMRES iterations before restart (100 doesn't do too bad)
+        # opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
+        opts['ksp_gmres_restart']=ksp_restarts # Number of GMRES iterations before restart (100 doesn't do too bad)
         self.solver.getKSP().setFromOptions()
         # self.solver.getKSP().setPostSolve(self.customPostSolve) # in the event of a failed solve of the Newton direction, falls back to a fixed point iteration
         # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
