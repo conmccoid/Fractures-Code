@@ -5,6 +5,11 @@ from petsc4py import PETSc
 from mpi4py import MPI
 from NewtonSolverContext import NewtonSolverContext
 
+# plotter
+import pyvista
+from pyvista.utilities.xvfb import start_xvfb
+from PLOT_DamageState import plot_damage_state
+
 class Identity:
     def mult(self, mat, X, Y):
         X.copy(Y)
@@ -121,6 +126,12 @@ class NewtonSolver:
     def customMonitor(self, snes, its, norm):
         """Returns the same L2-nrom as AltMin for comparable convergence"""
         print(f"Iteration {its}: Residual Norm = {self.error_L2:3.4e}")
+        resu, resv=self.res.getNestSubVecs()
+        bu = fem.Function(self.u.function_space)
+        bv = fem.Function(self.v.function_space)
+        bu.x.petsc_vec.setArray(resu.array)
+        bv.x.petsc_vec.setArray(resv.array)
+        plot_damage_state(bu, bv, None, [1400, 850])
 
     def customConvergenceTest(self, snes, it, reason):
         """Calculates the same L2-norm as AltMin for comparable convergence"""

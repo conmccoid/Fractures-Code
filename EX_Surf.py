@@ -41,7 +41,8 @@ def main(method='AltMin'):
     # Solving the problem and visualizing
     start_xvfb(wait=0.5)
     
-    loads = np.linspace(0,65,14)
+    # loads = np.linspace(0,65,14)
+    loads = np.array([25])
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 4 ))
