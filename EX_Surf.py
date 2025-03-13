@@ -31,7 +31,7 @@ def main(method='AltMin'):
     v_lb.x.array[:] = 0.0
     v_ub.x.array[:] = 1.0
     # damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
-    EN_solver = Newton(E_uv, E_vu, elastic_solver, damage_solver)
+    # EN_solver = Newton(E_uv, E_vu, elastic_solver, damage_solver)
     EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
                     E_uv, E_vu)
@@ -62,7 +62,8 @@ def main(method='AltMin'):
     
         print(f"-- Solving for t = {t:3.2f} --")
         if method=='AMEN':
-            AMEN(u,v, elastic_solver, damage_solver, EN_solver)
+            # AMEN(u,v, elastic_solver, damage_solver, EN_solver)
+            print(f"AMEN deprecated")
         elif method=='NewtonLS':
             EN.solver.solve(None,uv)
         else:
