@@ -144,7 +144,8 @@ class NewtonSolver:
         elif it >= max_it:
             snes.setConvergedReason(PETSc.SNES.ConvergedReason.DIVERGED_MAX_IT)
             return -1
-        return 0
+        else:
+            return 0
 
     def customLineSearch(self, x, y):
         """Used as a pre-check, this allows custom line search methods
