@@ -12,12 +12,12 @@ class Parameters:
         self.ell=fem.Constant(domain, PETSc.ScalarType(0.5))
         self.cw =fem.Constant(domain, PETSc.ScalarType(1/2))
         self.E  =fem.Constant(domain, PETSc.ScalarType(1.0))
-        self.nu =fem.Constant(domain, PETSc.ScalarType(0.3))
+        self.nu =fem.Constant(domain, PETSc.ScalarType(0.2))
         self.load_c = np.sqrt(27 * self.Gc.value * self.E.value / (256 * self.ell.value) ) # AT2
-        self.kappa = (3.0-self.nu)/(1.0+self.nu)
+        self.k = (3.0-self.nu)/(1.0+self.nu)
         self.mu = self.E / (2.0* (1.0+self.nu))
         self.lmbda = self.E * self.nu / (1.0 - self.nu**2)
-        self.K = fem.Constant(domain, PETSc.ScalarType(1.0))
+        self.K = fem.Constant(domain, PETSc.ScalarType(1.5))
 
 def w(v): # dissipated energy function (of dmg)
   return v**2
@@ -50,8 +50,8 @@ def domain():
 def SurfBC(x,t,p):
     r=np.sqrt((x[0]-t)**2 + x[1]**2)
     theta=np.arctan2(x[1],x[0]-t)
-    Ux= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.kappa - np.cos(theta)) * np.cos(theta/2)
-    Uy= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.kappa - np.cos(theta)) * np.sin(theta/2)
+    Ux= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.k - np.cos(theta)) * np.cos(theta/2)
+    Uy= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.k - np.cos(theta)) * np.sin(theta/2)
     return np.vstack((Ux,Uy))
 
 def BCs(u,v,domain, cell_tags, facet_tags, p):
