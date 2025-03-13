@@ -109,7 +109,7 @@ class NewtonSolver:
         self.solver.getKSP().getPC().setType("none") # try different preconditioners, i.e. bjacobi
         # each preconditioner requires information from the matrix, i.e. jacobi needs a getDiagonal method
         opts=PETSc.Options()
-        # opts['snes_linesearch_type']='none'
+        opts['snes_linesearch_type']='none'
         opts['snes_converged_reason']=None
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
@@ -127,7 +127,7 @@ class NewtonSolver:
 
     def customMonitor(self, snes, its, norm):
         """Returns the same L2-nrom as AltMin for comparable convergence"""
-        print(f"Iteration {its}: Residual Norm = {self.error_L2:3.4e}")
+        print(f"Iteration {its}: Residual Norm = {self.error_L2:3.4e}, KSP Iterations = {self.solver.getKSP().getIterationNumber()}")
 
     def customConvergenceTest(self, snes, it, reason):
         """Calculates the same L2-norm as AltMin for comparable convergence"""
