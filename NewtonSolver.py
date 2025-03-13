@@ -122,6 +122,7 @@ class NewtonSolver:
         # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
         # self.solver.setLineSearchPreCheck(self.customLineSearch) # forces a custom line search
         # self.solver.setForceIteration(True)
+        opts.destroy() # destroy options database so it isn't used elsewhere by accident
 
     def customMonitor(self, snes, its, norm):
         """Returns the same L2-nrom as AltMin for comparable convergence"""

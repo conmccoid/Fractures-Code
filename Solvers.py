@@ -67,6 +67,7 @@ def Newton(E_uv, E_vu, elastic_solver, damage_solver):
     # opts['ksp_monitor_singular_value']=None
     opts['ksp_converged_reason']=None
     EN_solver.setFromOptions()
+    opts.destroy() # destroy options database so it isn't used elsewhere by accident
     return EN_solver
 
 # AltMin definition
