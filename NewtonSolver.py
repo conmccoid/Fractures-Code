@@ -119,9 +119,9 @@ class NewtonSolver:
         # opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
         opts['ksp_gmres_restart']=ksp_restarts # Number of GMRES iterations before restart (100 doesn't do too bad)
         self.solver.getKSP().setFromOptions()
-        # self.solver.getKSP().setPostSolve(self.customPostSolve) # in the event of a failed solve of the Newton direction, falls back to a fixed point iteration
+        self.solver.getKSP().setPostSolve(self.customPostSolve) # in the event of a failed solve of the Newton direction, falls back to a fixed point iteration
         # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
-        # self.solver.setLineSearchPreCheck(self.customLineSearch) # forces a custom line search
+        self.solver.setLineSearchPreCheck(self.customLineSearch) # forces a custom line search
         # self.solver.setForceIteration(True)
         opts.destroy() # destroy options database so it isn't used elsewhere by accident
 
