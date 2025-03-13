@@ -28,6 +28,8 @@ which is not common for SNES problems.
 Might be an idea to adapt Powell's dogleg method, which chooses a step optimized along a line between two vectors.
 Those two vectors would be the step from the fixed point iteration and the Newton step.
 
+New idea (03.13.2025): Davidenko-Branin trick, using analysis on 2D hyperplane containing fixed point iteration and the line connecting the Newton and anti-Newton directions.
+
 ### Creating a .msh from a .geo (copied from MEF++ cheatsheet)
 
 Convert a .geo into a .msh with the line
