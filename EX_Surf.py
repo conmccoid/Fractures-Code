@@ -35,14 +35,14 @@ def main(method='AltMin'):
     EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
                     E_uv, E_vu)
-    EN.setUp(rtol=1.0e-8,max_it_SNES=100,max_it_KSP=100,ksp_restarts=100)
+    EN.setUp(rtol=1.0e-6,max_it_SNES=100,max_it_KSP=100,ksp_restarts=100)
     uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
     
     # Solving the problem and visualizing
     start_xvfb(wait=0.5)
     
-    # loads = np.linspace(0,65,14)
-    loads = np.array([25])
+    loads = np.linspace(0,65,14)
+    # loads = np.array([25]) # 2-cycle appears when using Newton w/o line search
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 4 ))
