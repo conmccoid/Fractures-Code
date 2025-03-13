@@ -109,7 +109,8 @@ class NewtonSolver:
         self.solver.getKSP().getPC().setType("none") # try different preconditioners, i.e. bjacobi
         # each preconditioner requires information from the matrix, i.e. jacobi needs a getDiagonal method
         opts=PETSc.Options()
-        opts['snes_linesearch_type']='none'
+        # opts['snes_linesearch_type']='none'
+        opts['snes_converged_reason']=None
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
         self.solver.setMonitor(self.customMonitor)
