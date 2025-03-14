@@ -89,7 +89,7 @@ class NewtonSolver:
         J.setPythonContext(self.PJ)
         J.setUp()
 
-    def setUp(self,rtol=1.0e-8, max_it_SNES=1000, max_it_KSP=100, ksp_restarts=100):
+    def setUp(self,rtol=1.0e-8, max_it_SNES=1000, max_it_KSP=100, ksp_restarts=30):
         self.solver = PETSc.SNES().create(MPI.COMM_WORLD)
         
         b_u = self.u.x.petsc_vec.duplicate()
@@ -117,10 +117,9 @@ class NewtonSolver:
         # self.solver.getKSP().setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
         # opts['ksp_monitor_singular_value']=None # Returns estimate of condition number of system solved by KSP
         # opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
-        opts['ksp_gmres_restart']=ksp_restarts # Number of GMRES iterations before restart (100 doesn't do too bad)
+        opts['ksp_gmres_restart']=ksp_restarts # Number of GMRES iterations before restart (default 30)
         self.solver.getKSP().setFromOptions()
         self.solver.getKSP().setPostSolve(self.customPostSolve) # in the event of a failed solve of the Newton direction, falls back to a fixed point iteration
-        # GMRES restarts after 30 iterations; stopping at a multiple of 30 iterations indicates breakdown and generally a singularity
         self.solver.setLineSearchPreCheck(self.customLineSearch) # forces a custom line search
         # self.solver.setForceIteration(True)
         opts.destroy() # destroy options database so it isn't used elsewhere by accident
