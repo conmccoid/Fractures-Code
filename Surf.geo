@@ -1,10 +1,10 @@
 //Définition des valeurs physiques
 L = 65; //Longeur selon x
-H = 60; //Longuer selon y
+H = 6; //Longuer selon y
 y0 = 0;  // y-coord of teh initial crack
 l0 = 10; // Length initial crack
 eps = 0.01; // Width of initial crack
-h = 0.1; // Taille du maillage
+h = 0.01; // Taille du maillage
 hc = 1.;
 
 //Plate
