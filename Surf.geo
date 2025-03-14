@@ -1,6 +1,6 @@
 //Définition des valeurs physiques
 L = 65; //Longeur selon x
-H = 120; //Longuer selon y
+H = 60; //Longuer selon y
 y0 = 0;  // y-coord of teh initial crack
 l0 = 10; // Length initial crack
 eps = 0.01; // Width of initial crack
