@@ -104,7 +104,7 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_i
           print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
 
         if error_L2 <= atol:
-          return output #(error_L2,iteration)
+          return output, iteration #(error_L2,iteration)
 
     raise RuntimeError(
         f"Could not converge after {max_iterations} iterations, error {error_L2:3.4e}"

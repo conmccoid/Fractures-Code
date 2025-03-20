@@ -68,8 +68,8 @@ def main(method='AltMin'):
             EN.solver.solve(None,uv)
             energies[i_t,4] = EN.solver.getIterationNumber()
         else:
-            iter_count = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, True, iter_count)
-            energies[i_t,4] = len(iter_count)-1
+            iter_count, iteration = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, True, iter_count)
+            energies[i_t,4] = iteration
         if i_t!=len(loads)-1:
             plot_damage_state(u, v, None, [1400, 850])
         else:
