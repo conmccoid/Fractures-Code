@@ -41,15 +41,15 @@ def main(method='AltMin'):
     # Solving the problem and visualizing
     start_xvfb(wait=0.5)
     
-    loads = np.linspace(0,65,14)
+    loads = np.linspace(0.5,6,18)
     # loads = np.array([25]) # 2-cycle appears when using Newton w/o line search
     
     # Array to store results
-    energies = np.zeros((loads.shape[0], 4 ))
+    energies = np.zeros((loads.shape[0], 5 ))
     iter_count=[]
     with open(f"output/TBL_Surf_{method}_energy.csv",'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
-        writer.writerow(['t','Elastic energy','Dissipated energy','Total energy'])
+        writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
     with io.XDMFFile(dom.comm, "output/EX_Surf.xdmf","w") as xdmf:
         xdmf.write_mesh(dom)
 
@@ -66,8 +66,10 @@ def main(method='AltMin'):
             print(f"AMEN deprecated")
         elif method=='NewtonLS':
             EN.solver.solve(None,uv)
+            energies[i_t,4] = EN.solver.getIterationNumber()
         else:
             iter_count = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, True, iter_count)
+            energies[i_t,4] = len(iter_count)-1
         if i_t!=len(loads)-1:
             plot_damage_state(u, v, None, [1400, 850])
         else:
@@ -112,5 +114,5 @@ def main(method='AltMin'):
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
-    main('NewtonLS')
+    main('AltMin')
     sys.exit()
