@@ -51,7 +51,7 @@ def main(method='AltMin'):
     with open(f"output/TBL_Surf_{method}_energy.csv",'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
-    with io.XDMFFile(dom.comm, "output/EX_Surf.xdmf","w") as xdmf:
+    with io.XDMFFile(dom.comm, f"output/EX_Surf_{method}.xdmf","w") as xdmf:
         xdmf.write_mesh(dom)
 
     for i_t, t in enumerate(loads):
@@ -87,7 +87,7 @@ def main(method='AltMin'):
         with open(f"output/TBL_Surf_{method}_energy.csv",'a') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             writer.writerow(energies[i_t,:])
-        with io.XDMFFile(dom.comm, "output/EX_Surf.xdmf","a") as xdmf:
+        with io.XDMFFile(dom.comm, f"output/EX_Surf_{method}.xdmf","a") as xdmf:
             xdmf.write_function(u, t)
             xdmf.write_function(v, t)
             xdmf.write_function(U, t)
@@ -110,5 +110,5 @@ def main(method='AltMin'):
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
-    main('AltMin')
+    main('NewtonLS')
     sys.exit()
