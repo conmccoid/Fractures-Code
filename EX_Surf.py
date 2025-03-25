@@ -10,7 +10,7 @@ import csv
 import sys
 
 from EX_Surf_Domain import domain, BCs, VariationalFormulation, SurfBC
-from Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
+from Solvers import Elastic, Damage, alternate_minimization
 from PLOT_DamageState import plot_damage_state
 from NewtonSolver import NewtonSolver
 
@@ -31,7 +31,6 @@ def main(method='AltMin'):
     v_lb.x.array[:] = 0.0
     v_ub.x.array[:] = 1.0
     # damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
-    # EN_solver = Newton(E_uv, E_vu, elastic_solver, damage_solver)
     EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
                     E_uv, E_vu)
@@ -42,7 +41,6 @@ def main(method='AltMin'):
     start_xvfb(wait=0.5)
     
     loads = np.linspace(0.5,6,18)
-    # loads = np.array([25]) # 2-cycle appears when using Newton w/o line search
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 5 ))
@@ -59,12 +57,9 @@ def main(method='AltMin'):
     
         # Update the lower bound to ensure irreversibility of damage field.
         v_lb.x.array[:] = v.x.array
-    
         print(f"-- Solving for t = {t:3.2f} --")
-        if method=='AMEN':
-            # AMEN(u,v, elastic_solver, damage_solver, EN_solver)
-            print(f"AMEN deprecated")
-        elif method=='NewtonLS':
+
+        if method=='NewtonLS':
             EN.solver.solve(None,uv)
             energies[i_t,4] = EN.solver.getIterationNumber()
         else:
