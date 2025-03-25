@@ -184,13 +184,14 @@ class NewtonSolver:
         # save iteration count
         if self.solver.getIterationNumber()==0:
             self.output.append(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
-        self.output.append([
-            self.solver1.getKSP().getIterationNumber(),
-            self.solver2.getKSP().getIterationNumber(),
-            self.solver.getKSP().getIterationNumber(),
-            self.res.norm(),
-            y.norm()
-        ])
+        if self.rank==0:
+            self.output.append([
+                self.solver1.getKSP().getIterationNumber(),
+                self.solver2.getKSP().getIterationNumber(),
+                self.solver.getKSP().getIterationNumber(),
+                self.res.norm(),
+                y.norm()
+            ])
 
     def customPostSolve(self,ksp,rhs,x):
         """Post solve function for the KSP in an attempt to rout unnecessary divergence breaks"""

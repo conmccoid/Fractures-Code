@@ -65,13 +65,14 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_i
 
         if iteration==0:
             output.append(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
-        output.append([
-            elastic_solver.getKSP().getIterationNumber(),
-            damage_solver.getKSP().getIterationNumber(),
-            1.0,
-            error_L2,
-            0.0
-        ])
+        if MPI.COMM_WORLD.rank==0:
+            output.append([
+                elastic_solver.getKSP().getIterationNumber(),
+                damage_solver.getKSP().getIterationNumber(),
+                1.0,
+                error_L2,
+                0.0
+            ])
 
         if monitor & MPI.COMM_WORLD.rank==0:
           print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
