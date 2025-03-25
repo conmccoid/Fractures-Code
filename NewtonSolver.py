@@ -29,7 +29,8 @@ class NewtonSolver:
         self.PJ=NewtonSolverContext(B, C, solver1, solver2) # preconditioned Jacobian
         # self.PJ=Identity()
         self.output=[]
-        self.rank=MPI.COMM_WORLD.rank
+        self.comm=MPI.COMM_WORLD
+        self.rank=self.comm.rank
 
     def Fn(self, snes, x, F):
         # store old u and v values
@@ -61,11 +62,6 @@ class NewtonSolver:
         self.solver2.solve(None, self.v.x.petsc_vec)
         self.v.x.scatter_forward() # should be unnecessary, depending on KSP in solver2
 
-        # self.solver1.solve(None, xu)
-        # self.u.x.scatter_forward() # neither of these lines appears to change anything
-        # self.solver2.solve(None, xv)
-        # self.v.x.scatter_forward() # should be unnecessary, depending on KSP in solver2
-
         resu, resv=F.getNestSubVecs()
         resu.setArray(self.u_old.x.petsc_vec.array - self.u.x.petsc_vec.array)
         resv.setArray(self.v_old.x.petsc_vec.array - self.v.x.petsc_vec.array)
@@ -91,15 +87,15 @@ class NewtonSolver:
         J.setUp()
 
     def setUp(self,rtol=1.0e-8, max_it_SNES=1000, max_it_KSP=100, ksp_restarts=30):
-        self.solver = PETSc.SNES().create(MPI.COMM_WORLD)
+        self.solver = PETSc.SNES().create(self.comm)
         
         b_u = self.u.x.petsc_vec.duplicate()
         b_v = self.v.x.petsc_vec.duplicate()
-        b = PETSc.Vec().createNest([b_u,b_v])
+        b = PETSc.Vec().createNest([b_u,b_v],None,self.comm)
 
         local_size = b.getLocalSize()
         global_size = b.getSize()
-        J = PETSc.Mat().createPython(((local_size,global_size),(local_size,global_size)),NewtonSolverContext,MPI.COMM_WORLD)
+        J = PETSc.Mat().createPython(((local_size,global_size),(local_size,global_size)),NewtonSolverContext,self.comm)
         
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)
@@ -138,7 +134,7 @@ class NewtonSolver:
         bv = fem.Function(self.v.function_space)
         bv.x.petsc_vec.setArray(res_v.array)
         L2_error = ufl.inner(bv,bv) * ufl.dx
-        self.error_L2 = np.sqrt(MPI.COMM_WORLD.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
+        self.error_L2 = np.sqrt(self.comm.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
         if self.error_L2 <= atol:
             snes.setConvergedReason(PETSc.SNES.ConvergedReason.CONVERGED_FNORM_ABS)
             return 1

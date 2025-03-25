@@ -12,6 +12,8 @@ class NewtonSolverContext:
         
     def mult(self, mat, X, Y):
         x1, x2 = X.getNestSubVecs()
+        x1.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        x2.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         w1, v2 = Y.getNestSubVecs()
         Euu, _, _ = self.elastic_solver.getJacobian()
         Evv, _, _ = self.damage_solver.getJacobian()
