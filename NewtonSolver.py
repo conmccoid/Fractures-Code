@@ -29,6 +29,7 @@ class NewtonSolver:
         self.PJ=NewtonSolverContext(B, C, solver1, solver2) # preconditioned Jacobian
         # self.PJ=Identity()
         self.output=[]
+        self.rank=MPI.COMM_WORLD.rank
 
     def Fn(self, snes, x, F):
         # store old u and v values
@@ -126,7 +127,8 @@ class NewtonSolver:
 
     def customMonitor(self, snes, its, norm):
         """Returns the same L2-nrom as AltMin for comparable convergence"""
-        print(f"Iteration {its}: Residual Norm = {self.error_L2:3.4e}, KSP Iterations = {self.solver.getKSP().getIterationNumber()}")
+        if self.rank==0:
+            print(f"Iteration {its}: Residual Norm = {self.error_L2:3.4e}, KSP Iterations = {self.solver.getKSP().getIterationNumber()}")
 
     def customConvergenceTest(self, snes, it, reason):
         """Calculates the same L2-norm as AltMin for comparable convergence"""
@@ -149,8 +151,7 @@ class NewtonSolver:
     def customLineSearch(self, x, y):
         """Used as a pre-check, this allows custom line search methods
         -- x: current solution
-        -- y: current search direction"""
-
+        -- y: current search direction"""        
         # best strategy so far: if a/c>1 then Newton, otherwise AltMin
         # close second: if (a/c>1) OR (a/c<0) then Newton, otherwise AltMin
         diff = y - self.res
@@ -161,19 +162,25 @@ class NewtonSolver:
             trust=1
         else:
             trust=a/c
-        print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
+        if self.rank==0:
+            print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
+
         if self.solver.getKSP().getConvergedReason()==10:
-            print(f"LINEAR SOLVE FAILURE")
             y.array[:]=self.res.array
-            print(f"    AltMin step")
+            if self.rank==0:
+                print(f"LINEAR SOLVE FAILURE")
+                print(f"    AltMin step")
         elif b<0.5:
-            print(f"    NewtonLS step")
+            if self.rank==0:
+                print(f"    NewtonLS step")
         else:
             # y.array[:]=0.1*y.array + 0.9*self.res.array # relaxed Newton step
             # print(f"    Relaxed Newton step (10% Newton, 90% FP)")
             y.array[:]=self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array
-            print(f"    Augmented AltMin step")
+            if self.rank==0:
+                print(f"    Augmented AltMin step")
         # in practice we'll want a combination of self.res and y
+        
         # save iteration count
         if self.solver.getIterationNumber()==0:
             self.output.append(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
@@ -189,6 +196,7 @@ class NewtonSolver:
         """Post solve function for the KSP in an attempt to rout unnecessary divergence breaks"""
         reason=ksp.getConvergedReason()
         if reason<0:
-            print(f"    KSP diverged with reason {reason}")
+            if self.rank==0:
+                print(f"    KSP diverged with reason {reason}")
             ksp.setConvergedReason(10)
             x.zeroEntries()
