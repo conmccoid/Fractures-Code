@@ -5,22 +5,14 @@ from mpi4py import MPI
 
 class NewtonSolverContext:
     def __init__(self,Euv,Evu, elastic_solver, damage_solver):
-        # self.E_uu=Euu
         self.E_uv=Euv
         self.E_vu=Evu
-        # self.E_vv=Evv
-        # self.elastic_problem=elastic_problem
-        # self.damage_problem=damage_problem
         self.elastic_solver=elastic_solver
         self.damage_solver=damage_solver
         
     def mult(self, mat, X, Y):
         x1, x2 = X.getNestSubVecs()
         w1, v2 = Y.getNestSubVecs()
-        # self.Euu = petsc.assemble_matrix(fem.form(self.E_uu))
-        # self.Evv = petsc.assemble_matrix(fem.form(self.E_vv))
-        # self.elastic_problem.Jn(None,None,self.Euu,None)
-        # self.damage_problem.Jn(None,None,self.Evv,None)
         Euu, _, _ = self.elastic_solver.getJacobian()
         Evv, _, _ = self.damage_solver.getJacobian()
         self.Euv = petsc.assemble_matrix(fem.form(self.E_uv))
@@ -41,15 +33,13 @@ class NewtonSolverContext:
         
         # initialize KSPs
         # ksp_uu=PETSc.KSP().create(MPI.COMM_WORLD) # re-use, and re-use previous results as initial guess, ksp.setInitialGuessNonzero
-        # ksp_uu.setOperators(Euu)
-        # ksp_uu.setType('preonly')
-        # ksp_uu.getPC().setType('lu')
-        # ksp_vv=PETSc.KSP().create(MPI.COMM_WORLD)
-        # ksp_vv.setOperators(Evv)
-        # ksp_vv.setType('preonly')
-        # ksp_vv.getPC().setType('lu')
         ksp_uu=self.elastic_solver.getKSP()
         ksp_vv=self.damage_solver.getKSP()
+        opts=PETSc.Options()
+        opts['ksp_reuse_preconditioner']=True
+        ksp_uu.setFromOptions()
+        ksp_vv.setFromOptions()
+        opts.destroy()
         
         # multiply by Jacobian
         Euu.mult(x1,y1)
