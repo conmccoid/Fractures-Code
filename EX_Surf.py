@@ -15,6 +15,9 @@ from PLOT_DamageState import plot_damage_state
 from NewtonSolver import NewtonSolver
 
 def main(method='AltMin'):
+    comm=MPI.COMM_WORLD
+    rank=comm.rank
+    
     u, v, dom, cell_tags, facet_tags=domain()
     V_u=u.function_space
     V_v=v.function_space
@@ -57,29 +60,27 @@ def main(method='AltMin'):
     
         # Update the lower bound to ensure irreversibility of damage field.
         v_lb.x.array[:] = v.x.array
-        print(f"-- Solving for t = {t:3.2f} --")
 
+        if rank==0:
+            print(f"-- Solving for t = {t:3.2f} --")
         if method=='NewtonLS':
             EN.solver.solve(None,uv)
             energies[i_t,4] = EN.solver.getIterationNumber()
         else:
             iter_count, iteration = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, True, iter_count)
             energies[i_t,4] = iteration
-        if i_t!=len(loads)-1:
-            plot_damage_state(u, v, None, [1400, 850])
-        else:
-            plot_damage_state(u, v, None, [1400, 850],f"output/FIG_Surf_{method}_final.png")
-    
+        plot_damage_state(u, v, None, [1400, 850])
+        
         # Calculate the energies
-        energies[i_t, 1] = MPI.COMM_WORLD.allreduce(
+        energies[i_t, 1] = comm.allreduce(
             fem.assemble_scalar(fem.form(elastic_energy)),
             op=MPI.SUM,
         )
-        energies[i_t, 2] = MPI.COMM_WORLD.allreduce(
+        energies[i_t, 2] = comm.allreduce(
             fem.assemble_scalar(fem.form(dissipated_energy)),
             op=MPI.SUM,
         )
-        energies[i_t, 3] = MPI.COMM_WORLD.allreduce(
+        energies[i_t, 3] = comm.allreduce(
             fem.assemble_scalar(fem.form(total_energy)),
             op=MPI.SUM,
         )
