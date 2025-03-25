@@ -84,9 +84,10 @@ def main(method='AltMin'):
             fem.assemble_scalar(fem.form(total_energy)),
             op=MPI.SUM,
         )
-        with open(f"output/TBL_Surf_{method}_energy.csv",'a') as csv.file:
-            writer=csv.writer(csv.file,delimiter=',')
-            writer.writerow(energies[i_t,:])
+        if rank==0:
+            with open(f"output/TBL_Surf_{method}_energy.csv",'a') as csv.file:
+                writer=csv.writer(csv.file,delimiter=',')
+                writer.writerow(energies[i_t,:])
         with io.XDMFFile(dom.comm, f"output/EX_Surf_{method}.xdmf","a") as xdmf:
             xdmf.write_function(u, t)
             xdmf.write_function(v, t)

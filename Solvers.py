@@ -74,8 +74,9 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_i
                 0.0
             ])
 
-        if monitor & MPI.COMM_WORLD.rank==0:
-          print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
+        if monitor:
+            if MPI.COMM_WORLD.rank==0:
+                print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
 
         if error_L2 <= atol:
           return output, iteration #(error_L2,iteration)
