@@ -21,9 +21,17 @@ class NewtonSolver:
         V_u = self.u.function_space
         V_v = self.v.function_space
         self.u_old = fem.Function(V_u)
-        self.u_old.x.petsc_vec.setArray(self.u.x.petsc_vec.duplicate())
+        # self.u_old.x.petsc_vec.setArray(self.u.x.petsc_vec.duplicate())
+        self.u.x.petsc_vec.copy(self.u_old.x.petsc_vec)
+        self.u_old.x.scatter_forward()
+        # self.u_old.x.petsc_vec.assemblyBegin()
+        # self.u_old.x.petsc_vec.assemblyEnd()
         self.v_old = fem.Function(V_v)
-        self.v_old.x.petsc_vec.setArray(self.v.x.petsc_vec.duplicate())
+        # self.v_old.x.petsc_vec.setArray(self.v.x.petsc_vec.duplicate())
+        self.v.x.petsc_vec.copy(self.v_old.x.petsc_vec)
+        self.v_old.x.scatter_forward()
+        # self.v_old.x.petsc_vec.assemblyBegin()
+        # self.v_old.x.petsc_vec.assemblyEnd()
         self.solver1=solver1
         self.solver2=solver2
         self.PJ=NewtonSolverContext(B, C, solver1, solver2) # preconditioned Jacobian
@@ -38,6 +46,10 @@ class NewtonSolver:
         v_store = self.v.x.petsc_vec.duplicate()
         self.u.x.petsc_vec.copy(u_store)
         self.v.x.petsc_vec.copy(v_store)
+        # u_store.assemblyBegin()
+        # u_store.assemblyEnd()
+        # v_store.assemblyBegin()
+        # v_store.assemblyEnd()
         
         xu, xv = x.getNestSubVecs()
         # None of the ghost updates seem to change the results, nor the scatterings
@@ -45,15 +57,29 @@ class NewtonSolver:
         xv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         xu.copy(self.u.x.petsc_vec)
         xv.copy(self.v.x.petsc_vec)
+        # self.u.x.petsc_vec.assemblyBegin()
+        # self.u.x.petsc_vec.assemblyEnd()
+        # self.v.x.petsc_vec.assemblyBegin()
+        # self.v.x.petsc_vec.assemblyEnd()
         # self.u.x.array[:] = xu.array # alternative that seems to work just as well
         # self.v.x.array[:] = xv.array
-        self.u.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-        self.v.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        # self.u.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        # self.v.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
 
-        self.u_old.x.array[:] = self.u.x.array
-        self.v_old.x.array[:] = self.v.x.array
-        self.u_old.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-        self.v_old.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        self.u.x.scatter_forward()
+        self.v.x.scatter_forward()
+        self.u.x.petsc_vec.copy(self.u_old.x.petsc_vec)
+        self.v.x.petsc_vec.copy(self.v_old.x.petsc_vec)
+        self.u_old.x.scatter_forward()
+        self.v_old.x.scatter_forward()
+        # self.u_old.x.petsc_vec.assemblyBegin()
+        # self.u_old.x.petsc_vec.assemblyEnd()
+        # self.v_old.x.petsc_vec.assemblyBegin()
+        # self.v_old.x.petsc_vec.assemblyEnd()
+        # self.u_old.x.array[:] = self.u.x.array
+        # self.v_old.x.array[:] = self.v.x.array
+        # self.u_old.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        # self.v_old.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         # res = PETSc.Vec().createNest([self.u.x.petsc_vec - self.u_old.x.petsc_vec,self.v.x.petsc_vec - self.v_old.x.petsc_vec])
         # print(f"Norm of res after updating u_old: {res.norm():3.4e}")
         
@@ -65,10 +91,12 @@ class NewtonSolver:
         resu, resv=F.getNestSubVecs()
         resu.setArray(self.u_old.x.petsc_vec.array - self.u.x.petsc_vec.array)
         resv.setArray(self.v_old.x.petsc_vec.array - self.v.x.petsc_vec.array)
-        resu.assemblyBegin()
-        resu.assemblyEnd()
-        resv.assemblyBegin()
-        resv.assemblyEnd()
+        # resu.assemblyBegin()
+        # resu.assemblyEnd()
+        # resv.assemblyBegin()
+        # resv.assemblyEnd()
+        resu.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        resv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         self.res=F
         # print(f"Norm of res after solving for u: {res.norm():3.4e}")
 
@@ -77,8 +105,8 @@ class NewtonSolver:
 
         u_store.copy(self.u.x.petsc_vec)
         v_store.copy(self.v.x.petsc_vec)
-        self.u.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-        self.v.x.petsc_vec.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        self.u.x.scatter_forward()
+        self.v.x.scatter_forward()
         u_store.destroy()
         v_store.destroy()
 
@@ -106,7 +134,7 @@ class NewtonSolver:
         self.solver.getKSP().getPC().setType("none") # try different preconditioners, i.e. bjacobi
         # each preconditioner requires information from the matrix, i.e. jacobi needs a getDiagonal method
         opts=PETSc.Options()
-        opts['snes_linesearch_type']='none'
+        # opts['snes_linesearch_type']='none'
         opts['snes_converged_reason']=None
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
@@ -116,8 +144,8 @@ class NewtonSolver:
         # opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
         opts['ksp_gmres_restart']=ksp_restarts # Number of GMRES iterations before restart (default 30)
         self.solver.getKSP().setFromOptions()
-        self.solver.getKSP().setPostSolve(self.customPostSolve) # in the event of a failed solve of the Newton direction, falls back to a fixed point iteration
-        self.solver.setLineSearchPreCheck(self.customLineSearch) # forces a custom line search
+        # self.solver.getKSP().setPostSolve(self.customPostSolve) # in the event of a failed solve of the Newton direction, falls back to a fixed point iteration
+        # self.solver.setLineSearchPreCheck(self.customLineSearch) # forces a custom line search
         # self.solver.setForceIteration(True)
         opts.destroy() # destroy options database so it isn't used elsewhere by accident
 
@@ -133,6 +161,7 @@ class NewtonSolver:
         _, res_v = F[0].getNestSubVecs()
         bv = fem.Function(self.v.function_space)
         bv.x.petsc_vec.setArray(res_v.array)
+        bv.x.scatter_forward()
         L2_error = ufl.inner(bv,bv) * ufl.dx
         self.error_L2 = np.sqrt(self.comm.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
         if self.error_L2 <= atol:
@@ -162,7 +191,10 @@ class NewtonSolver:
             print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
 
         if self.solver.getKSP().getConvergedReason()==10:
-            y.array[:]=self.res.array
+            # y.array[:]=self.res.array
+            self.res.copy(y)
+            # y.assemblyBegin()
+            # y.assemblyEnd()
             if self.rank==0:
                 print(f"LINEAR SOLVE FAILURE")
                 print(f"    AltMin step")
@@ -172,7 +204,10 @@ class NewtonSolver:
         else:
             # y.array[:]=0.1*y.array + 0.9*self.res.array # relaxed Newton step
             # print(f"    Relaxed Newton step (10% Newton, 90% FP)")
-            y.array[:]=self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array
+            # y.array[:]=self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array
+            y.setArray(self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array)
+            # y.assemblyBegin()
+            # y.assemblyEnd()
             if self.rank==0:
                 print(f"    Augmented AltMin step")
         # in practice we'll want a combination of self.res and y
