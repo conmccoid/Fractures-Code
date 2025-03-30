@@ -55,6 +55,13 @@ mpiexec -n 8 python -u EX_CTFM.py
 ```
 (Include the `-u` to output to the terminal.)
 
+### Parallelization
+
+It's important that objects used in multiple places are properly gathered and scattered when they are needed.
+
+For example, a recent hurdle, the vectors 'u' and 'v' must be updated when assembling 'Euv' and 'Evu'.
+This is not done in the course of the iteration, and so must be done when 'Euv' and 'Evu' are needed when multiplying by the Jacobian.
+
 ## SSH into Graham cluster
 
 `ssh mccoidc@graham.alliancecan.ca`, using SSH key and DUO multi-factor app.

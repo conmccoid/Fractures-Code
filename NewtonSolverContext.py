@@ -4,12 +4,13 @@ from petsc4py import PETSc
 from mpi4py import MPI
 
 class NewtonSolverContext:
-    def __init__(self,Euv,Evu, elastic_solver, damage_solver):
+    def __init__(self,Euv,Evu, elastic_solver, damage_solver, u, v):
         self.E_uv=fem.form(Euv)
         self.E_vu=fem.form(Evu)
         self.elastic_solver=elastic_solver
         self.damage_solver=damage_solver
-        # self.count = 0 # for debugging
+        self.u = u
+        self.v = v
         
     def mult(self, mat, X, Y):
         x1, x2 = X.getNestSubVecs()
@@ -18,6 +19,8 @@ class NewtonSolverContext:
         w1, v2 = Y.getNestSubVecs()
         Euu, _, _ = self.elastic_solver.getJacobian()
         Evv, _, _ = self.damage_solver.getJacobian()
+        self.u.x.scatter_forward()
+        self.v.x.scatter_forward()
         Euv = petsc.assemble_matrix(self.E_uv)
         Evu = petsc.assemble_matrix(self.E_vu) # issue here: this way of assembling these matrices will not work in parallel
         
@@ -30,30 +33,20 @@ class NewtonSolverContext:
         # Evu.assemblyEnd()
         Euu.assemble()
         Evv.assemble()
-        # self.count+=1
-        # if self.count==3:
-        #     viewer = PETSc.Viewer().createASCII("output/Euv_matrix_parallel.txt",mode="w",comm=MPI.COMM_WORLD)
-        #     Euv.view(viewer)
-        
+
         # initialize vectors
-        # y1=Euu.createVecLeft()
-        # y2=Evv.createVecLeft()
-        # z1=self.Euv.createVecLeft()
-        # z2=Evv.createVecLeft()
         y1=x1.duplicate()
         y2=x2.duplicate()
         z1=x1.duplicate()
         z2=x2.duplicate()
         
         # initialize KSPs
-        # ksp_uu=PETSc.KSP().create(MPI.COMM_WORLD) # re-use, and re-use previous results as initial guess, ksp.setInitialGuessNonzero
         ksp_uu=self.elastic_solver.getKSP()
         ksp_vv=self.damage_solver.getKSP()
         opts=PETSc.Options()
         opts['ksp_reuse_preconditioner']=True
         ksp_uu.setFromOptions()
         ksp_vv.setFromOptions()
-        opts.destroy()
         
         # multiply by Jacobian
         Euu.mult(x1,y1)
@@ -78,8 +71,10 @@ class NewtonSolverContext:
         # self.damage_solver.solve(w2,v2)
         # then w1 and v2 get put into Y
 
-        # # destroy KSPs (& vectors?)
-        # ksp_uu.destroy()
-        # ksp_vv.destroy()
+        # clean-up
+        opts['ksp_reuse_preconditioner']=False
+        ksp_uu.setFromOptions()
+        ksp_vv.setFromOptions()
+        opts.destroy()
         Evu.destroy()
         Euv.destroy()
