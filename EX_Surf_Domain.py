@@ -70,6 +70,7 @@ def BCs(u,v,domain, cell_tags, facet_tags, p):
 
     U=fem.Function(V_u)
     U.interpolate(lambda x: SurfBC(x,0.0,p),bdry_cells)
+    U.x.scatter_forward()
     bc_ux = fem.dirichletbc(U.sub(0), bdry_dofs_ux)
     bc_uy = fem.dirichletbc(U.sub(1), bdry_dofs_uy)
 
