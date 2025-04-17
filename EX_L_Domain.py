@@ -3,7 +3,7 @@ import basix
 import numpy as np
 from mpi4py import MPI
 from petsc4py import PETSc
-from dolfinx import mesh, fem
+from dolfinx import mesh, fem, io
 import meshio
 from dolfinx.io.gmshio import read_from_msh
 
@@ -16,8 +16,8 @@ class Parameters:
         self.nu =fem.Constant(domain, PETSc.ScalarType(0.2)) #?
         self.load_c = np.sqrt(27 * self.Gc.value * self.E.value / (256 * self.ell.value) ) # AT2
         self.k = (3.0-self.nu)/(1.0+self.nu) #? 1e-9?
-        self.mu = self.E / (2.0* (1.0+self.nu)) #10.95 kN/mm^2?
-        self.lmbda = self.E * self.nu / (1.0 - self.nu**2) #6.16 kN/mm^2?
+        self.mu = 10.95 #in kN/mm^2
+        self.lmbda = 6.16 #in kN/mm^2
         self.K = fem.Constant(domain, PETSc.ScalarType(1.5))
 
 def w(v): # dissipated energy function (of dmg)
@@ -37,10 +37,8 @@ def sigma(u,v, p,ndim): # stress tensor of damaged material (of disp & dmg)
 
 def domain():
     # Domain set-up
-    with XDMFFile(MPI.COMM_WORLD, "3K replication/MESH_L.xdmf", "r") as xdmf:
-        mesh = xdmf.read_mesh(name="Grid")
-        cell_tags = xdmf.read_meshtags(mesh, name="CellTags") # these are going to do nothing
-        facet_tags = xdmf.read_meshtags(mesh, name="FacetTags") #
+    with io.XDMFFile(MPI.COMM_WORLD, "3K replication/MESH_L.xdmf", "r") as xdmf:
+        domain = xdmf.read_mesh(name="Grid")
     
     # Function space and solution initialization
     element_u = basix.ufl.element("Lagrange", domain.basix_cell(), degree=1, shape=(2,)) 
@@ -49,55 +47,47 @@ def domain():
     V_v = fem.functionspace(domain, element_v)
     u = fem.Function(V_u, name="Displacement")
     v = fem.Function(V_v, name="Damage")
-    return u, v, domain, cell_tags, facet_tags
+    return u, v, domain
 
-def SurfBC(x,t,p):
-    r=np.sqrt((x[0]-t)**2 + x[1]**2)
-    theta=np.arctan2(x[1],x[0]-t)
-    Ux= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.k - np.cos(theta)) * np.cos(theta/2)
-    Uy= (p.K/(2*p.mu)) * np.sqrt(r/(2*np.pi)) * (p.k - np.cos(theta)) * np.sin(theta/2)
-    return np.vstack((Ux,Uy))
-
-def BCs(u,v,domain, cell_tags, facet_tags, p):
+def BCs(u,v,domain):
     V_u=u.function_space
     V_v=v.function_space
     fdim=domain.topology.dim-1
 
-    crack_facets=facet_tags.find(4000)
-    bdry_facets=facet_tags.find(2000)
-    bdry_cells=mesh.compute_incident_entities(domain.topology,bdry_facets,fdim,domain.topology.dim)
+    def forcepoint(x):
+        return np.isclose(x[0],250) & np.isclose(x[1],470)
 
-    crack_dofs_v=fem.locate_dofs_topological(V_v, fdim, crack_facets)
-    bdry_dofs_v =fem.locate_dofs_topological(V_v, fdim, bdry_facets)
-    bdry_dofs_ux=fem.locate_dofs_topological(V_u.sub(0), fdim, bdry_facets)
-    bdry_dofs_uy=fem.locate_dofs_topological(V_u.sub(1), fdim, bdry_facets)
+    fp_facets = mesh.locate_entities_boundary(domain, fdim, forcepoint)
+    bdry_dofs_uy = fem.locate_dofs_topological(V_u.sub(1), fdim, facets)
+    uD = fem.Constant(domain,PETSc.ScalarType(1.))
+    bc_u = fem.dirichletbc(uD, bdry_dofs_uy, V_u.sub(1))
+    
+    def outer_bdry(x):
+        return np.isclose(x[0],0) | np.isclose(x[1],0) | np.isclose(x[0],500) | np.isclose(x[1],500)
+    def corner(x):
+        return (np.isclose(x[0],250) & x[1]<200) | (np.isclose(x[1],250) & x[0]>200)
 
-    U=fem.Function(V_u)
-    U.interpolate(lambda x: SurfBC(x,0.0,p),bdry_cells)
-    U.x.scatter_forward()
-    bc_ux = fem.dirichletbc(U.sub(0), bdry_dofs_ux)
-    bc_uy = fem.dirichletbc(U.sub(1), bdry_dofs_uy)
+    bdry_facets=mesh.locate_entities_boundary(domain, fdim, outer_dry)
+    corner_facets=mesh.locate_entities_boundary(domain, fdim, corner)
+    bdry_dofs=fem.locate_dofs_topological(V_v, fdim, bdry_facets)
+    corner_dofs=fem.locate_dofs_topological(V_v, fdim, corner_facets)
+    bc_v_bdry = fem.dirichletbc(0.0, bdry_dofs, V_v)
+    bc_v_corner = fem.dirichletbc(0.0, corner_dofs, V_v)
+    bcs_v = [bc_v_bdry, bc_v_corner]
+    return bc_u, bcs_v, uD
 
-    crack_bcs=fem.dirichletbc(fem.Constant(domain, PETSc.ScalarType(1.)), crack_dofs_v, V_v)
-    bc_v = fem.dirichletbc(fem.Constant(domain, PETSc.ScalarType(0.0)), bdry_dofs_v, V_v)
-    bcs_u=[bc_ux, bc_uy]
-    bcs_v=[crack_bcs, bc_v]
-    return bcs_u, bcs_v, U, bdry_cells
-
-def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
+def VariationalFormulation(u,v,domain):
     V_u=u.function_space
     V_v=v.function_space
-    ndim=domain.geometry.dim
+    ndim=domain.topology.dim
 
     # Variational formulation
     p=Parameters(domain)
     f =  fem.Constant(domain, PETSc.ScalarType((0.,0.)))
-    dx = ufl.Measure("dx",domain=domain, subdomain_data=cell_tags)
-    ds = ufl.Measure("ds",domain=domain, subdomain_data=facet_tags)
 
-    elastic_energy = 0.5 * ufl.inner(sigma(u,v,p,ndim), eps(u)) * dx
-    dissipated_energy= p.Gc/p.cw * ( w(v) / p.ell + p.ell * ufl.inner(ufl.grad(v), ufl.grad(v))) * dx
-    external_work=ufl.inner(f,u)*dx
+    elastic_energy = 0.5 * ufl.inner(sigma(u,v,p,ndim), eps(u)) * ufl.dx
+    dissipated_energy= p.Gc/p.cw * ( w(v) / p.ell + p.ell * ufl.inner(ufl.grad(v), ufl.grad(v))) * ufl.dx
+    external_work=ufl.inner(f,u)*ufl.dx
     total_energy=elastic_energy + dissipated_energy - external_work
 
     E_u = ufl.derivative(total_energy, u, ufl.TestFunction(V_u))
