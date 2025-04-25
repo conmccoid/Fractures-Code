@@ -22,7 +22,7 @@ def main(method='AltMin'):
     V_u=u.function_space
     V_v=v.function_space
     E_u, E_v, E_uu, E_vv, E_uv, E_vu, elastic_energy, dissipated_energy, p, total_energy = VariationalFormulation(u,v,dom)
-    bcs_u, bcs_v, U = BCs(u,v,dom)
+    bcs_u, bcs_v, uD = BCs(u,v,dom)
     
     # now we want to solve E_u(u,v)=0 and E_v(u,v)=0 with alternate minimization with a Newton accelerator
     # first set up solvers for the individual minimizations
@@ -43,7 +43,7 @@ def main(method='AltMin'):
     # Solving the problem and visualizing
     start_xvfb(wait=0.5)
     
-    loads = np.linspace(0,0.8,0.8/1e-3)
+    loads = np.linspace(0,0.8,8011)
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 5 ))
@@ -55,14 +55,14 @@ def main(method='AltMin'):
         xdmf.write_mesh(dom)
 
     for i_t, t in enumerate(loads):
-        U.value=t
+        uD.value=t
         energies[i_t, 0] = t
     
         # Update the lower bound to ensure irreversibility of damage field.
         v_lb.x.array[:] = v.x.array
 
         if rank==0:
-            print(f"-- Solving for t = {t:3.2f} --")
+            print(f"-- Solving for t = {t:3.2e} --")
         if method=='NewtonLS':
             EN.solver.solve(None,uv)
             energies[i_t,4] = EN.solver.getIterationNumber()
@@ -91,7 +91,6 @@ def main(method='AltMin'):
         with io.XDMFFile(dom.comm, f"output/EX_L_{method}.xdmf","a") as xdmf:
             xdmf.write_function(u, t)
             xdmf.write_function(v, t)
-            xdmf.write_function(U, t)
     with open(f"output/TBL_L_{method}_its.csv",'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
         if method=='NewtonLS':

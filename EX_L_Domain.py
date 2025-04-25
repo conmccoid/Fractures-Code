@@ -37,8 +37,20 @@ def sigma(u,v, p,ndim): # stress tensor of damaged material (of disp & dmg)
 
 def domain():
     # Domain set-up
-    with io.XDMFFile(MPI.COMM_WORLD, "3K replication/MESH_L.xdmf", "r") as xdmf:
-        domain = xdmf.read_mesh(name="Grid")
+    cell='quadrilateral'
+    co_el=basix.ufl.element("Lagrange",cell,1,shape=(2,))
+    el=basix.ufl.element("Lagrange",cell,1)
+    msh = meshio.read('3K replication/L_shape.e')
+    points_2d = msh.points[:,:2]
+    cells_2d = msh.cells[0].data
+    domain = mesh.create_mesh(
+        comm=MPI.COMM_WORLD,
+        cells=cells_2d,
+        x=points_2d,
+        e=ufl.Mesh(co_el)
+    )
+    # with io.XDMFFile(MPI.COMM_WORLD, "3K replication/MESH_L.xdmf", "r") as xdmf:
+    #     domain = xdmf.read_mesh(name="Grid")
     
     # Function space and solution initialization
     element_u = basix.ufl.element("Lagrange", domain.basix_cell(), degree=1, shape=(2,)) 
@@ -58,23 +70,24 @@ def BCs(u,v,domain):
         return np.isclose(x[0],250) & np.isclose(x[1],470)
 
     fp_facets = mesh.locate_entities_boundary(domain, fdim, forcepoint)
-    bdry_dofs_uy = fem.locate_dofs_topological(V_u.sub(1), fdim, facets)
+    bdry_dofs_uy = fem.locate_dofs_topological(V_u.sub(1), fdim, fp_facets)
     uD = fem.Constant(domain,PETSc.ScalarType(1.))
     bc_u = fem.dirichletbc(uD, bdry_dofs_uy, V_u.sub(1))
+    bcs_u= [bc_u]
     
     def outer_bdry(x):
         return np.isclose(x[0],0) | np.isclose(x[1],0) | np.isclose(x[0],500) | np.isclose(x[1],500)
     def corner(x):
-        return (np.isclose(x[0],250) & x[1]<200) | (np.isclose(x[1],250) & x[0]>200)
+        return (np.isclose(x[0],250) & np.less(x[1],200)) | (np.isclose(x[1],250) & np.greater(x[0],200))
 
-    bdry_facets=mesh.locate_entities_boundary(domain, fdim, outer_dry)
+    bdry_facets=mesh.locate_entities_boundary(domain, fdim, outer_bdry)
     corner_facets=mesh.locate_entities_boundary(domain, fdim, corner)
     bdry_dofs=fem.locate_dofs_topological(V_v, fdim, bdry_facets)
     corner_dofs=fem.locate_dofs_topological(V_v, fdim, corner_facets)
     bc_v_bdry = fem.dirichletbc(0.0, bdry_dofs, V_v)
     bc_v_corner = fem.dirichletbc(0.0, corner_dofs, V_v)
     bcs_v = [bc_v_bdry, bc_v_corner]
-    return bc_u, bcs_v, uD
+    return bcs_u, bcs_v, uD
 
 def VariationalFormulation(u,v,domain):
     V_u=u.function_space
@@ -83,7 +96,7 @@ def VariationalFormulation(u,v,domain):
 
     # Variational formulation
     p=Parameters(domain)
-    f =  fem.Constant(domain, PETSc.ScalarType((0.,0.)))
+    f=fem.Constant(domain, PETSc.ScalarType((0.,0.)))
 
     elastic_energy = 0.5 * ufl.inner(sigma(u,v,p,ndim), eps(u)) * ufl.dx
     dissipated_energy= p.Gc/p.cw * ( w(v) / p.ell + p.ell * ufl.inner(ufl.grad(v), ufl.grad(v))) * ufl.dx
