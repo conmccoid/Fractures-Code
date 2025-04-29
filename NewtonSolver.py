@@ -15,7 +15,7 @@ class Identity:
         X.copy(Y)
 
 class NewtonSolver:
-    def __init__(self, solver1, solver2, problem1, problem2, B, C):
+    def __init__(self, solver1, solver2, problem1, problem2, B, C, linesearch='backtrack'):
         self.u=problem1.u
         self.v=problem2.u
         V_u = self.u.function_space
@@ -31,6 +31,7 @@ class NewtonSolver:
         self.output=[]
         self.comm=MPI.COMM_WORLD
         self.rank=self.comm.rank
+        self.linesearch=linesearch
 
     def Fn(self, snes, x, F):
         # store old u and v values
@@ -99,7 +100,10 @@ class NewtonSolver:
         self.solver.getKSP().getPC().setType("none") # try different preconditioners, i.e. bjacobi
         # each preconditioner requires information from the matrix, i.e. jacobi needs a getDiagonal method
         opts=PETSc.Options()
-        opts['snes_linesearch_type']='none'
+        if self.linesearch=='mixed':
+            opts['snes_linesearch_type']='none'
+        else:
+            opts['snes_linesearch_type']='bt'
         opts['snes_converged_reason']=None
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
@@ -144,49 +148,50 @@ class NewtonSolver:
         -- y: current search direction"""        
         # best strategy so far: if a/c>1 then Newton, otherwise AltMin
         # close second: if (a/c>1) OR (a/c<0) then Newton, otherwise AltMin
-        diff = y - self.res
-        c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
-        a = self.res.norm()**2
-        b = diff.norm()/self.res.norm()
-        if c==0:
-            trust=1
-        else:
-            trust=a/c
-        if self.rank==0:
-            print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
-
-        if self.solver.getKSP().getConvergedReason()==10:
-            # y.array[:]=self.res.array
-            self.res.copy(y)
-            # y.assemblyBegin()
-            # y.assemblyEnd()
+        if self.linesearch=='mixed':
+            diff = y - self.res
+            c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
+            a = self.res.norm()**2
+            b = diff.norm()/self.res.norm()
+            if c==0:
+                trust=1
+            else:
+                trust=a/c
             if self.rank==0:
-                print(f"LINEAR SOLVE FAILURE")
-                print(f"    AltMin step")
-        elif b<0.5:
-            if self.rank==0:
-                print(f"    NewtonLS step")
-        else:
-            # y.array[:]=0.1*y.array + 0.9*self.res.array # relaxed Newton step
-            # print(f"    Relaxed Newton step (10% Newton, 90% FP)")
-
-            # Augmented AltMin
-            # dummy = y.duplicate()
-            # y.copy(dummy)
-            # y.setArray((1/(2*b))*dummy.array + (1 - 1/(2*b))*self.res.array)
-            # dummy.destroy()
-            y.setArray(self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array)
-            # y.array[:]=self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array
-
-            # # AltMin
-            # self.res.copy(y)
-
-            y.assemblyBegin()
-            y.assemblyEnd()
-
-            if self.rank==0:
-                print(f"    Augmented AltMin step")
-        # in practice we'll want a combination of self.res and y
+                print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
+    
+            if self.solver.getKSP().getConvergedReason()==10:
+                # y.array[:]=self.res.array
+                self.res.copy(y)
+                # y.assemblyBegin()
+                # y.assemblyEnd()
+                if self.rank==0:
+                    print(f"LINEAR SOLVE FAILURE")
+                    print(f"    AltMin step")
+            elif b<0.5:
+                if self.rank==0:
+                    print(f"    NewtonLS step")
+            else:
+                # y.array[:]=0.1*y.array + 0.9*self.res.array # relaxed Newton step
+                # print(f"    Relaxed Newton step (10% Newton, 90% FP)")
+    
+                # Augmented AltMin
+                # dummy = y.duplicate()
+                # y.copy(dummy)
+                # y.setArray((1/(2*b))*dummy.array + (1 - 1/(2*b))*self.res.array)
+                # dummy.destroy()
+                y.setArray(self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array)
+                # y.array[:]=self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array
+    
+                # # AltMin
+                # self.res.copy(y)
+    
+                y.assemblyBegin()
+                y.assemblyEnd()
+    
+                if self.rank==0:
+                    print(f"    Augmented AltMin step")
+            # in practice we'll want a combination of self.res and y
         
         # save iteration count
         self.res.norm()

@@ -36,14 +36,15 @@ def main(method='AltMin'):
     # damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
     EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
-                    E_uv, E_vu)
+                    E_uv, E_vu,
+                   'backtrack')
     EN.setUp(rtol=1.0e-4,max_it_SNES=1000,max_it_KSP=100,ksp_restarts=100)
     uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
     
     # Solving the problem and visualizing
     start_xvfb(wait=0.5)
     
-    loads = np.linspace(0,0.8,8011)
+    loads = np.linspace(0,0.6,81)
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 5 ))
@@ -67,7 +68,7 @@ def main(method='AltMin'):
             EN.solver.solve(None,uv)
             energies[i_t,4] = EN.solver.getIterationNumber()
         else:
-            iter_count, iteration = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, True, iter_count)
+            iter_count, iteration = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-6, 1000, True, iter_count)
             energies[i_t,4] = iteration
         plot_damage_state(u, v, None, [1400, 850])
         

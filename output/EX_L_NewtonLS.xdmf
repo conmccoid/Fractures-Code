@@ -2,11 +2,11 @@
 <Xdmf Version="3.0" xmlns:xi="https://www.w3.org/2001/XInclude">
   <Domain>
     <Grid Name="mesh" GridType="Uniform">
-      <Topology TopologyType="Quadrilateral" NumberOfElements="30000" NodesPerElement="4">
-        <DataItem Dimensions="30000 4" NumberType="Int" Format="HDF">EX_L_NewtonLS.h5:/Mesh/mesh/topology</DataItem>
+      <Topology TopologyType="Triangle" NumberOfElements="69686" NodesPerElement="3">
+        <DataItem Dimensions="69686 3" NumberType="Int" Format="HDF">EX_L_NewtonLS.h5:/Mesh/mesh/topology</DataItem>
       </Topology>
       <Geometry GeometryType="XY">
-        <DataItem Dimensions="30401 2" Format="HDF">EX_L_NewtonLS.h5:/Mesh/mesh/geometry</DataItem>
+        <DataItem Dimensions="35244 2" Format="HDF">EX_L_NewtonLS.h5:/Mesh/mesh/geometry</DataItem>
       </Geometry>
     </Grid>
     <Grid Name="Displacement" GridType="Collection" CollectionType="Temporal">
@@ -14,329 +14,511 @@
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
         <Time Value="0" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0010012515644555696" />
+        <Time Value="0.0074999999999999997" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0010012515644555696</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0074999999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0020025031289111392" />
+        <Time Value="0.014999999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0020025031289111392</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_014999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0030037546933667086" />
+        <Time Value="0.022499999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0030037546933667086</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_022499999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0040050062578222785" />
+        <Time Value="0.029999999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0040050062578222785</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_029999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0050062578222778483" />
+        <Time Value="0.037499999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0050062578222778483</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_037499999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0060075093867334173" />
+        <Time Value="0.044999999999999998" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0060075093867334173</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_044999999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0070087609511889871" />
+        <Time Value="0.052499999999999998" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0070087609511889871</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_052499999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0080100125156445569" />
+        <Time Value="0.059999999999999998" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0080100125156445569</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_059999999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0090112640801001259" />
+        <Time Value="0.067500000000000004" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_0090112640801001259</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_067500000000000004</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.010012515644555697" />
+        <Time Value="0.074999999999999997" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_010012515644555697</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_074999999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.011013767209011266" />
+        <Time Value="0.08249999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_011013767209011266</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_08249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.012015018773466835" />
+        <Time Value="0.089999999999999997" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_012015018773466835</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_089999999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.013016270337922405" />
+        <Time Value="0.097500000000000003" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_013016270337922405</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_097500000000000003</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.014017521902377974" />
+        <Time Value="0.105" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_014017521902377974</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_105</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.015018773466833545" />
+        <Time Value="0.11249999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_015018773466833545</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_11249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.016020025031289114" />
+        <Time Value="0.12" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_016020025031289114</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_12</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.017021276595744685" />
+        <Time Value="0.1275" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_017021276595744685</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_1275</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.018022528160200252" />
+        <Time Value="0.13500000000000001" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_018022528160200252</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_13500000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.019023779724655823" />
+        <Time Value="0.14249999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_019023779724655823</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_14249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.020025031289111393" />
+        <Time Value="0.14999999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_020025031289111393</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_14999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.02102628285356696" />
+        <Time Value="0.1575" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_02102628285356696</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_1575</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.022027534418022531" />
+        <Time Value="0.16499999999999998" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_022027534418022531</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_16499999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.023028785982478102" />
+        <Time Value="0.17249999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_023028785982478102</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_17249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.024030037546933669" />
+        <Time Value="0.17999999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_024030037546933669</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_17999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.02503128911138924" />
+        <Time Value="0.1875" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_02503128911138924</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_1875</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.026032540675844811" />
+        <Time Value="0.19500000000000001" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_026032540675844811</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_19500000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.027033792240300381" />
+        <Time Value="0.20249999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_027033792240300381</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_20249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.028035043804755948" />
+        <Time Value="0.20999999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_028035043804755948</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_20999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.029036295369211519" />
+        <Time Value="0.2175" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_029036295369211519</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_2175</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.03003754693366709" />
+        <Time Value="0.22499999999999998" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_03003754693366709</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_22499999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.031038798498122657" />
+        <Time Value="0.23249999999999998" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_031038798498122657</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_23249999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.032040050062578228" />
+        <Time Value="0.23999999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_032040050062578228</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_23999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.033041301627033795" />
+        <Time Value="0.2475" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_033041301627033795</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_2475</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.034042553191489369" />
+        <Time Value="0.255" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_034042553191489369</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_255</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.035043804755944936" />
+        <Time Value="0.26250000000000001" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_035043804755944936</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_26250000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.036045056320400504" />
+        <Time Value="0.27000000000000002" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_036045056320400504</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_27000000000000002</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.037046307884856078" />
+        <Time Value="0.27749999999999997" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_037046307884856078</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_27749999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.038047559449311645" />
+        <Time Value="0.28499999999999998" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_038047559449311645</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_28499999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.039048811013767212" />
+        <Time Value="0.29249999999999998" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_039048811013767212</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_29249999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.040050062578222786" />
+        <Time Value="0.29999999999999999" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_040050062578222786</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_29999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.041051314142678354" />
+        <Time Value="0.3075" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_041051314142678354</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_3075</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.042052565707133921" />
+        <Time Value="0.315" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_042052565707133921</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_315</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.043053817271589495" />
+        <Time Value="0.32250000000000001" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_043053817271589495</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_32250000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.044055068836045062" />
+        <Time Value="0.32999999999999996" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_044055068836045062</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_32999999999999996</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.04505632040050063" />
+        <Time Value="0.33749999999999997" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_04505632040050063</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_33749999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Displacement" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.046057571964956204" />
+        <Time Value="0.34499999999999997" />
         <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
-          <DataItem Dimensions="30401 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_046057571964956204</DataItem>
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_34499999999999997</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.35249999999999998" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_35249999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.35999999999999999" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_35999999999999999</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.36749999999999999" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_36749999999999999</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.375" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_375</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.38250000000000001" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_38250000000000001</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.39000000000000001" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_39000000000000001</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.39749999999999996" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_39749999999999996</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.40499999999999997" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_40499999999999997</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.41249999999999998" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_41249999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.41999999999999998" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_41999999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.42749999999999999" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_42749999999999999</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.435" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_435</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.4425" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_4425</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.44999999999999996" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_44999999999999996</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.45749999999999996" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_45749999999999996</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.46499999999999997" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_46499999999999997</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.47249999999999998" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_47249999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.47999999999999998" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_47999999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.48749999999999999" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_48749999999999999</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.495" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_495</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.50249999999999995" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_50249999999999995</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.51000000000000001" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_51000000000000001</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.51749999999999996" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_51749999999999996</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.52500000000000002" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_52500000000000002</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.53249999999999997" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_53249999999999997</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.54000000000000004" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="35244 3" Format="HDF">EX_L_NewtonLS.h5:/Function/Displacement/0_54000000000000004</DataItem>
         </Attribute>
       </Grid>
     </Grid>
@@ -345,329 +527,511 @@
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
         <Time Value="0" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0010012515644555696" />
+        <Time Value="0.0074999999999999997" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0010012515644555696</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0074999999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0020025031289111392" />
+        <Time Value="0.014999999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0020025031289111392</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_014999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0030037546933667086" />
+        <Time Value="0.022499999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0030037546933667086</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_022499999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0040050062578222785" />
+        <Time Value="0.029999999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0040050062578222785</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_029999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0050062578222778483" />
+        <Time Value="0.037499999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0050062578222778483</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_037499999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0060075093867334173" />
+        <Time Value="0.044999999999999998" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0060075093867334173</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_044999999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0070087609511889871" />
+        <Time Value="0.052499999999999998" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0070087609511889871</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_052499999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0080100125156445569" />
+        <Time Value="0.059999999999999998" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0080100125156445569</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_059999999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.0090112640801001259" />
+        <Time Value="0.067500000000000004" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_0090112640801001259</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_067500000000000004</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.010012515644555697" />
+        <Time Value="0.074999999999999997" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_010012515644555697</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_074999999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.011013767209011266" />
+        <Time Value="0.08249999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_011013767209011266</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_08249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.012015018773466835" />
+        <Time Value="0.089999999999999997" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_012015018773466835</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_089999999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.013016270337922405" />
+        <Time Value="0.097500000000000003" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_013016270337922405</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_097500000000000003</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.014017521902377974" />
+        <Time Value="0.105" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_014017521902377974</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_105</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.015018773466833545" />
+        <Time Value="0.11249999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_015018773466833545</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_11249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.016020025031289114" />
+        <Time Value="0.12" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_016020025031289114</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_12</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.017021276595744685" />
+        <Time Value="0.1275" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_017021276595744685</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_1275</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.018022528160200252" />
+        <Time Value="0.13500000000000001" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_018022528160200252</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_13500000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.019023779724655823" />
+        <Time Value="0.14249999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_019023779724655823</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_14249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.020025031289111393" />
+        <Time Value="0.14999999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_020025031289111393</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_14999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.02102628285356696" />
+        <Time Value="0.1575" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_02102628285356696</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_1575</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.022027534418022531" />
+        <Time Value="0.16499999999999998" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_022027534418022531</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_16499999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.023028785982478102" />
+        <Time Value="0.17249999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_023028785982478102</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_17249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.024030037546933669" />
+        <Time Value="0.17999999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_024030037546933669</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_17999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.02503128911138924" />
+        <Time Value="0.1875" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_02503128911138924</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_1875</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.026032540675844811" />
+        <Time Value="0.19500000000000001" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_026032540675844811</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_19500000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.027033792240300381" />
+        <Time Value="0.20249999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_027033792240300381</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_20249999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.028035043804755948" />
+        <Time Value="0.20999999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_028035043804755948</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_20999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.029036295369211519" />
+        <Time Value="0.2175" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_029036295369211519</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_2175</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.03003754693366709" />
+        <Time Value="0.22499999999999998" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_03003754693366709</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_22499999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.031038798498122657" />
+        <Time Value="0.23249999999999998" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_031038798498122657</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_23249999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.032040050062578228" />
+        <Time Value="0.23999999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_032040050062578228</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_23999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.033041301627033795" />
+        <Time Value="0.2475" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_033041301627033795</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_2475</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.034042553191489369" />
+        <Time Value="0.255" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_034042553191489369</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_255</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.035043804755944936" />
+        <Time Value="0.26250000000000001" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_035043804755944936</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_26250000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.036045056320400504" />
+        <Time Value="0.27000000000000002" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_036045056320400504</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_27000000000000002</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.037046307884856078" />
+        <Time Value="0.27749999999999997" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_037046307884856078</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_27749999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.038047559449311645" />
+        <Time Value="0.28499999999999998" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_038047559449311645</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_28499999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.039048811013767212" />
+        <Time Value="0.29249999999999998" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_039048811013767212</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_29249999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.040050062578222786" />
+        <Time Value="0.29999999999999999" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_040050062578222786</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_29999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.041051314142678354" />
+        <Time Value="0.3075" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_041051314142678354</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_3075</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.042052565707133921" />
+        <Time Value="0.315" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_042052565707133921</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_315</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.043053817271589495" />
+        <Time Value="0.32250000000000001" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_043053817271589495</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_32250000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.044055068836045062" />
+        <Time Value="0.32999999999999996" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_044055068836045062</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_32999999999999996</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.04505632040050063" />
+        <Time Value="0.33749999999999997" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_04505632040050063</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_33749999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="Damage" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.046057571964956204" />
+        <Time Value="0.34499999999999997" />
         <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="30401 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_046057571964956204</DataItem>
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_34499999999999997</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.35249999999999998" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_35249999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.35999999999999999" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_35999999999999999</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.36749999999999999" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_36749999999999999</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.375" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_375</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.38250000000000001" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_38250000000000001</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.39000000000000001" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_39000000000000001</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.39749999999999996" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_39749999999999996</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.40499999999999997" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_40499999999999997</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.41249999999999998" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_41249999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.41999999999999998" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_41999999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.42749999999999999" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_42749999999999999</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.435" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_435</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.4425" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_4425</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.44999999999999996" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_44999999999999996</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.45749999999999996" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_45749999999999996</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.46499999999999997" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_46499999999999997</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.47249999999999998" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_47249999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.47999999999999998" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_47999999999999998</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.48749999999999999" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_48749999999999999</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.495" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_495</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.50249999999999995" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_50249999999999995</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.51000000000000001" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_51000000000000001</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.51749999999999996" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_51749999999999996</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.52500000000000002" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_52500000000000002</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.53249999999999997" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_53249999999999997</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.54000000000000004" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="35244 1" Format="HDF">EX_L_NewtonLS.h5:/Function/Damage/0_54000000000000004</DataItem>
         </Attribute>
       </Grid>
     </Grid>
