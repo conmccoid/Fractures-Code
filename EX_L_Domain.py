@@ -66,7 +66,7 @@ def BCs(u,v,domain):
     fdim=domain.topology.dim-1
 
     def forcepoint(x): # point at which force is applied
-        return np.isclose(x[1],250,atol=2.5) & np.isclose(x[0],470,atol=2.5)
+        return np.isclose(x[1],250,atol=2.5) & np.isclose(x[0],470,atol=20)
     # Boundaries: start at bottom and proceed clockwise
     def bdry1(x):
         return np.isclose(x[1],0)
@@ -116,7 +116,7 @@ def BCs(u,v,domain):
     bc_v_bdry = fem.dirichletbc(0.0, bdry_dofs, V_v)
     bc_v_int  = fem.dirichletbc(0.0, int_dofs, V_v)
     # bc_v_corner = fem.dirichletbc(0.0, corner_dofs, V_v)
-    bcs_v = [bc_v_bdry, bc_v_int]
+    bcs_v = []#[bc_v_bdry, bc_v_int]
     return bcs_u, bcs_v, uD
 
 def VariationalFormulation(u,v,domain):

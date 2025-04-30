@@ -111,5 +111,5 @@ def main(method='AltMin'):
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
-    main('NewtonLS')
+    main('AltMin')
     sys.exit()
