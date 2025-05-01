@@ -20,10 +20,14 @@ Line(6) = {6,7};
 Line(7) = {7,8};
 Line(8) = {8,1};
 
+Line(9) = {1,6};
+//Transfinite Curve{9}=1000;
+
 Line Loop(1) = {1:8};
 
 //Surface
 Plane Surface(1)={1};
 Physical Surface(1) = {1};
+Curve{9} In Surface {1};
 Physical Line(10) = {7};
 Physical Point(100) = {5};
