@@ -17,6 +17,7 @@ from NewtonSolver import NewtonSolver
 def main(method='AltMin'):
     comm=MPI.COMM_WORLD
     rank=comm.rank
+    rtol=1.0e-6
     
     u, v, dom =domain()
     V_u=u.function_space
@@ -38,7 +39,7 @@ def main(method='AltMin'):
                     elastic_problem, damage_problem,
                     E_uv, E_vu,
                    'backtrack')
-    EN.setUp(rtol=1.0e-4,max_it_SNES=1000,max_it_KSP=100,ksp_restarts=100)
+    EN.setUp(rtol=rtol,max_it_SNES=1000,max_it_KSP=100,ksp_restarts=100)
     uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
     
     # Solving the problem and visualizing
@@ -68,7 +69,7 @@ def main(method='AltMin'):
             EN.solver.solve(None,uv)
             energies[i_t,4] = EN.solver.getIterationNumber()
         else:
-            iter_count, iteration = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-6, 1000, True, iter_count)
+            iter_count, iteration = alternate_minimization(u, v, elastic_solver, damage_solver, rtol, 1000, True, iter_count)
             energies[i_t,4] = iteration
         plot_damage_state(u, v, None, [1400, 850])
         
@@ -111,5 +112,5 @@ def main(method='AltMin'):
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
-    main('AltMin')
+    main('NewtonLS')
     sys.exit()
