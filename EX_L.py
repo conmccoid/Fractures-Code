@@ -30,16 +30,29 @@ def main(method='AltMin'):
     
     elastic_problem, elastic_solver = Elastic(E_u, u, bcs_u, E_uu)
     damage_problem, damage_solver = Damage(E_v, v, bcs_v, E_vv)
-    v_lb =  fem.Function(V_v, name="Lower bound")
-    v_ub =  fem.Function(V_v, name="Upper bound")
-    v_lb.x.array[:] = 0.0
-    v_ub.x.array[:] = 1.0
+    # v_lb =  fem.Function(V_v, name="Lower bound")
+    # v_ub =  fem.Function(V_v, name="Upper bound")
+    # v_lb.x.array[:] = 0.0
+    # v_ub.x.array[:] = 1.0
     # damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
+    
+    u_lb = u.x.petsc_vec.duplicate()
+    u_ub = u.x.petsc_vec.duplicate()
+    v_lb = v.x.petsc_vec.duplicate()
+    v_ub = v.x.petsc_vec.duplicate()
+    u_lb.array[:]=PETSc.NINFINITY
+    u_ub.array[:]=PETSc.INFINITY
+    v_lb.array[:]=0.0
+    v_ub.array[:]=1.0
+    b_lb = PETSc.Vec().createNest([u_lb,v_lb],None,MPI.COMM_WORLD)
+    b_ub = PETSc.Vec().createNest([u_ub,v_ub],None,MPI.COMM_WORLD)
+
     EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
                     E_uv, E_vu,
                    'backtrack')
     EN.setUp(rtol=rtol,max_it_SNES=1000,max_it_KSP=100,ksp_restarts=100)
+    EN.solver.setVariableBounds(b_lb,b_ub)
     uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
     
     # Solving the problem and visualizing
@@ -61,7 +74,7 @@ def main(method='AltMin'):
         energies[i_t, 0] = t
     
         # Update the lower bound to ensure irreversibility of damage field.
-        v_lb.x.array[:] = v.x.array
+        # v_lb.x.array[:] = v.x.array
 
         if rank==0:
             print(f"-- Solving for t = {t:3.2e} --")

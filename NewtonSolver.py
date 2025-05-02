@@ -93,7 +93,8 @@ class NewtonSolver:
         
         self.solver.setFunction(self.Fn, b)
         self.solver.setJacobian(self.Jn, J)
-        self.solver.setType('newtonls') # other types that work: nrichardson
+        # self.solver.setType('newtonls') # other types that work: nrichardson
+        self.solver.setType('vinewtonrsls')
         self.solver.setTolerances(rtol=rtol, max_it=max_it_SNES)
         self.solver.getKSP().setType("gmres")
         self.solver.getKSP().setTolerances(rtol=rtol, max_it=max_it_KSP)
@@ -105,6 +106,8 @@ class NewtonSolver:
         else:
             opts['snes_linesearch_type']='bt'
         opts['snes_converged_reason']=None
+        opts['snes_type']='vinewtonrsls'
+        # opts['snes_mf']=None # this is doing something...
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
         self.solver.setMonitor(self.customMonitor)
