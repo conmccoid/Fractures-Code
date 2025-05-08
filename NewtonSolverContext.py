@@ -13,21 +13,10 @@ class NewtonSolverContext:
         self.v = v
         
     def mult(self, mat, X, Y):
-        print(f"X type: {X.getType()}, X size: {X.getSize()}")
-        if X.getType() != PETSc.Vec.Type.NEST:
-            is_u = PETSc.IS().createStride(self.u.x.petsc_vec.getSize())
-            is_v = PETSc.IS().createStride(self.v.x.petsc_vec.getSize(),self.u.x.petsc_vec.getSize())
-            x1 = X.getSubVector(is_u)
-            x2 = X.getSubVector(is_v)
-            x1.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-            x2.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-            w1 = Y.getSubVector(is_u)
-            v2 = Y.getSubVector(is_v)
-        else:
-            x1, x2 = X.getNestSubVecs()
-            x1.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-            x2.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-            w1, v2 = Y.getNestSubVecs()
+        x1, x2 = X.getNestSubVecs()
+        x1.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        x2.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        w1, v2 = Y.getNestSubVecs()
         Euu, _, _ = self.elastic_solver.getJacobian()
         Evv, _, _ = self.damage_solver.getJacobian()
         self.u.x.scatter_forward()
@@ -91,6 +80,13 @@ class NewtonSolverContext:
         Euv.destroy()
         Euu.destroy()
         Evv.destroy()
+
+    def createVecs(self, mat):
+        vec1=self.u.x.petsc_vec.duplicate()
+        vec2=self.v.x.petsc_vec.duplicate()
+        left=PETSc.Vec().createNest([vec1,vec2],None,MPI.COMM_WORLD)
+        right=PETSc.Vec().createNest([vec1,vec2],None,MPI.COMM_WORLD)
+        return left, right
 
     def getDiagonal(self, mat, diag):
         Euu, _, _ = self.elastic_solver.getJacobian()
