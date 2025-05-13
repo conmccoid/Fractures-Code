@@ -105,6 +105,7 @@ class NewtonSolver:
         else:
             opts['snes_linesearch_type']='bt'
         opts['snes_converged_reason']=None
+        opts['snes_linesearch_monitor']=None
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
         self.solver.setMonitor(self.customMonitor)
