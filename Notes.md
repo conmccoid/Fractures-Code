@@ -65,3 +65,36 @@ This is not done in the course of the iteration, and so must be done when 'Euv' 
 ## SSH into Graham cluster
 
 `ssh mccoidc@graham.alliancecan.ca`, using SSH key and DUO multi-factor app.
+
+## 3K replication
+
+### Building MOOSE
+
+1. Create a volume called `projects`:
+```
+docker volume create projects
+```
+2. Build the latest image of MOOSE into the volume:
+```
+docker run -it -v projects:/projects idaholab/moose:latest
+```
+3. Test the MOOSE build by running an electromagnetics example:
+```
+cd /projects
+moose-opt --copy-inputs electromagnetics
+cd moose/electromagnetics
+moose-opt --run -j 4
+```
+
+### Building Utopia in the new volume
+
+1. Use the same `projects` folder as MOOSE.
+2. Build the image:
+```
+docker run -it -v projects:/projects utopiadev/utopia
+```
+
+This did not work.
+I need to somehow combine the two into a single volume/container.
+
+### 3K files
