@@ -117,7 +117,8 @@ FROM idaholab/moose:latest AS moose
 Having another `FROM moose AS setup` line will split up the build, with the next part starting from the previous.
 Using `--target moose` in the `docker build` will cause the build to stop after the first part.
 
-2. Update and install dependencies for Utopia:
+
+1. Update and install dependencies for Utopia:
 ```
 RUN dnf update -y && dnf install -y gcc-c++ make cmake openmpi openmpi-devel blas-devel git && dnf clean all
 ENV MPI_C=mpi-cc MPI_CXX=mpi-c++ CMAKE_PREFIX_PATH=/usr/lib64/openmpi LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH PATH=/usr/lib64/openmpi/bin:$PATH
@@ -128,7 +129,7 @@ ENV MPI_C=mpi-cc MPI_CXX=mpi-c++ CMAKE_PREFIX_PATH=/usr/lib64/openmpi LD_LIBRARY
 - To separate out commands, use `\` to break up lines.
 - `ENV` creates some environment variables to add `openmpi` to the path.
 
-3. Set the work directory for Utopia and clone from bitbucket, then follow installation directions from that repo:
+1. Set the work directory for Utopia and clone from bitbucket, then follow installation directions from that repo:
 ```
 WORKDIR /
 RUN git clone --recurse-submodules https://bitbucket.org/zulianp/utopia.git
@@ -136,5 +137,24 @@ ENV UTOPIA_DIR=/utopia
 WORKDIR /utopia/utopia
 RUN mkdir bin && cd bin && cmake .. -DCMAKE_INSTALL_PREFIX=$UTOPIA_DIR && make && make install
 ```
+
+4. Add a new non-root user:
+```
+RUN useradd -m appuser
+USER appuser
+```
+- The image of MOOSE declares the default user to be `root`, which causes security risks when running in parallel with MPI.
+A new user is needed that owns everything in the directory.
+
+5. Once the container is built and run, before anything else can be done the environment must be sourced:
+```
+source /environment
+```
+
+__This approach ended up being ineffective because the version of MOOSE required by pf_frac_spin is outdated.__
+
+### Building a bespoke Docker image
+
+1. Add a base image: `FROM ubuntu 22.04 AS base`
 
 ### 3K files
