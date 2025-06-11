@@ -4,7 +4,16 @@ RUN apt-get update -y && apt-get install -y \
     cmake \
     git \
     m4 \
-    python3-dev
+    clang-format \
+    petsc-dev \
+    slepc-dev \
+    openmpi-bin \
+    libopenmpi-dev \
+    libboost-all-dev \
+    python3-dev \
+    python3 \
+    python3-pip && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
 # Utopia
@@ -14,9 +23,10 @@ RUN git clone --recurse-submodules https://bitbucket.org/zulianp/utopia.git && \
 
 ENV UTOPIA_DIR=/src/utopia
 RUN cd utopia/utopia && \
-    mkdir build && \
-    cd build && \
-    cmake .. -DCMAKE_INSTALL_PREFIX=${UTOPIA_DIR} && \
+    mkdir bin && \
+    cd bin && \
+    cmake .. -DCMAKE_INSTALL_PREFIX=${UTOPIA_DIR} || true && \
+    cp CMakeFiles/CMakeError.log /src/CMakeError.log && \
     make -j$(nproc) && \
     make install
 

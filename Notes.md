@@ -156,5 +156,7 @@ __This approach ended up being ineffective because the version of MOOSE required
 ### Building a bespoke Docker image
 
 1. Add a base image: `FROM ubuntu 22.04 AS base`
-
-### 3K files
+2. Install dependencies: `RUN apt-get install -y ...`
+3. Install Utopia from the specific commit.
+4. Install MOOSE from the specific commit. This requires configuring libmesh correctly: `RUN cd moose/libmesh && ./configure --prefix=/src/moose/libmesh/installed && make -j$(nproc) install`
+5. Install pf_frac_spin.
