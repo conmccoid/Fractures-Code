@@ -1,58 +1,45 @@
-FROM idaholab/moose:latest AS moose
-# RUN dnf update -y && \
-#     dnf install -y \
-#         gcc-c++ \
-#         make \
-#         cmake \
-#         openmpi \
-#         openmpi-devel \
-#         blas-devel \
-#         lapack-devel \
-#         yaml-cpp-devel \
-#         suitesparse-devel \
-#         git && \
-#     dnf clean all
-# ENV MPI_C=mpi-cc \
-#     MPI_CXX=mpi-c++ \
-#     MPI_Fortran=mpi-f90 \
-#     CMAKE_PREFIX_PATH=/usr/lib64/openmpi \
-#     CMAKE_PREFIX_PATH=/usr/include/suitesparse \
-#     LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH \
-#     PATH=/usr/lib64/openmpi/bin:$PATH
+FROM ubuntu:22.04 AS base
+RUN apt-get update -y && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    m4 \
+    python3-dev
 
-FROM moose AS utopia
-COPY --from=utopiadev/utopia:latest /utopia /utopia
-# WORKDIR /
-# RUN git clone --recurse-submodules https://bitbucket.org/zulianp/utopia.git
-# ENV UTOPIA_DIR=/utopia
-# CMD ["/bin/bash"]
-# # WORKDIR /utopia/utopia
-# # RUN mkdir build_dep
-# # WORKDIR /utopia/utopia/build_dep
-# # RUN cmake .. && make petsc && make trilinos
-# WORKDIR /utopia/utopia
-# RUN mkdir bin && \
-#     cd bin && \
-#     cmake .. -DCMAKE_INSTALL_PREFIX=$UTOPIA_DIR && \
-#     make && \
-#     make install
+WORKDIR /src
+# Utopia
+RUN git clone --recurse-submodules https://bitbucket.org/zulianp/utopia.git && \
+    cd utopia && \
+    git checkout 1074078cf4c97346c354767793a8d9374d4aed21
 
-FROM utopia AS replication
-# RUN useradd -m appuser
-# USER appuser
-WORKDIR /files
-RUN git clone https://bitbucket.org/alena_kopanicakova/pf_frac_spin/src/master/
-RUN sed -i 's|\.\./framework|/opt/moose|g' /files/master/Makefile
-RUN source /environment
-WORKDIR /files/master
-COPY CMakeLists.txt /files/master/
-ENV MOOSE_DIR=/opt/moose
-ENV UTOPIA_DIR=/utopia/utopia
-RUN mkdir build && cd build && \
-    source /environment && \
+ENV UTOPIA_DIR=/src/utopia
+RUN cd utopia/utopia && \
+    mkdir build && \
+    cd build && \
+    cmake .. -DCMAKE_INSTALL_PREFIX=${UTOPIA_DIR} && \
+    make -j$(nproc) && \
+    make install
+
+# MOOSE
+RUN git clone https://github.com/idaholab/moose.git && \
+    cd moose && \
+    git checkout 90123e7b6bd52f1bc36e68aac5d1fa95e76aeb91 && \
+    git submodule update --init --recursive
+RUN cd moose/libmesh && \
+    ./configure --prefix=/src/moose/libmesh/installed && \
+    make -j$(nproc) install
+# RUN sed -i 's/^\([[:space:]]*\)\(LocalRankConfig buildComm(bool batch_mode);\)/\1virtual \2/' \
+    # framework/include/multiapps/MultiApp.h
+RUN cd moose/test && \
+    make -j 6
+
+# 3K files
+RUN git clone https://bitbucket.org/alena_kopanicakova/pf_frac_spin.git
+RUN cd pf_frac_spin && \
+    mkdir build && \
+    cd build && \
     cmake .. && \
-    make -j$(nproc)
+    make -j$(nproc) && \
+    make install
 
-RUN useradd -m appuser
-# RUN chown -R appuser:appuser /master
-# USER appuser
+WORKDIR /
