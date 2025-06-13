@@ -4,16 +4,15 @@ RUN apt-get update -y && apt-get install -y \
     cmake \
     git \
     m4 \
-    clang-format \
-    petsc-dev \
-    slepc-dev \
     openmpi-bin \
     libopenmpi-dev \
-    libboost-all-dev \
-    python3-dev \
-    python3 \
-    python3-pip && \
-    rm -rf /var/lib/apt/lists/*
+    bison \
+    flex \
+    python3-dev
+    # clang-format \
+    # slepc-dev \
+    # libboost-all-dev \
+    # rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
 # Utopia
@@ -25,8 +24,7 @@ ENV UTOPIA_DIR=/src/utopia
 RUN cd utopia/utopia && \
     mkdir bin && \
     cd bin && \
-    cmake .. -DCMAKE_INSTALL_PREFIX=${UTOPIA_DIR} || true && \
-    cp CMakeFiles/CMakeError.log /src/CMakeError.log && \
+    cmake .. -DCMAKE_INSTALL_PREFIX=${UTOPIA_DIR} && \
     make -j$(nproc) && \
     make install
 
@@ -35,9 +33,12 @@ RUN git clone https://github.com/idaholab/moose.git && \
     cd moose && \
     git checkout 90123e7b6bd52f1bc36e68aac5d1fa95e76aeb91 && \
     git submodule update --init --recursive
-RUN cd moose/libmesh && \
-    ./configure --prefix=/src/moose/libmesh/installed && \
-    make -j$(nproc) install
+RUN cd moose/scripts && \
+    ./update_and_rebuild_petsc.sh && \
+    ./update_and_rebuild_libmesh.sh
+# RUN cd moose/libmesh && \
+#     ./configure --prefix=/src/moose/libmesh/installed && \
+#     make -j$(nproc) install
 # RUN sed -i 's/^\([[:space:]]*\)\(LocalRankConfig buildComm(bool batch_mode);\)/\1virtual \2/' \
     # framework/include/multiapps/MultiApp.h
 RUN cd moose/test && \
