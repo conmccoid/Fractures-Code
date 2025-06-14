@@ -8,11 +8,12 @@ RUN apt-get update -y && apt-get install -y \
     libopenmpi-dev \
     bison \
     flex \
-    python3-dev
+    python3-dev && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
     # clang-format \
     # slepc-dev \
     # libboost-all-dev \
-    # rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
 # Utopia
@@ -36,21 +37,32 @@ RUN git clone https://github.com/idaholab/moose.git && \
 RUN cd moose/scripts && \
     ./update_and_rebuild_petsc.sh && \
     ./update_and_rebuild_libmesh.sh
-# RUN cd moose/libmesh && \
-#     ./configure --prefix=/src/moose/libmesh/installed && \
-#     make -j$(nproc) install
 # RUN sed -i 's/^\([[:space:]]*\)\(LocalRankConfig buildComm(bool batch_mode);\)/\1virtual \2/' \
     # framework/include/multiapps/MultiApp.h
 RUN cd moose/test && \
     make -j 6
+ENV MOOSE_DIR=/src/moose
 
-# 3K files
-RUN git clone https://bitbucket.org/alena_kopanicakova/pf_frac_spin.git
-RUN cd pf_frac_spin && \
+# Utopia_FE
+ENV UTOPIA_FE_DIR=/src/utopia/fe
+ENV LIBMESH_DIR=/src/moose/libmesh
+RUN cd /src/utopia/fe && \
     mkdir build && \
     cd build && \
-    cmake .. && \
+    cmake .. -DUTOPIA_DIR=$UTOPIA_DIR -DLIBMESH_DIR=$LIBMESH_DIR -DCMAKE_INSTALL_PREFIX=$UTOPIA_FE_DIR -DMOONOLITH_INSTALL_PREFIX=$UTOPIA_FE_DIR && \
     make -j$(nproc) && \
     make install
 
+# 3K files
+RUN git clone https://bitbucket.org/alena_kopanicakova/pf_frac_spin.git
+# RUN cd pf_frac_spin && \
+    # mkdir build && \
+    # cd build && \
+    # cmake .. && \
+    # make -j$(nproc) && \
+    # make install
+
+# override root access warnings
+ENV OMPI_ALLOW_RUN_AS_ROOT=1
+ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 WORKDIR /
