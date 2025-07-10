@@ -78,6 +78,9 @@ Once these basic approaches have been tested and compared, I should focus on the
 
 All approaches will make use of the Davidenko-Branin trick, which flips the Newton direction to maintain monotonicity.
 
+Long term, these approaches and the DB trick should be coded into a PETSc module.
+Short term, especially ahead of SIAM/CAIMS, we'll patch something together in FEniCSx.
+
 #### Trust region
 
 If the Newton step lies closer to the fixed point iterate than it does to the previous iterate, then we can accept it.
