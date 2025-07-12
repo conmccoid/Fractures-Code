@@ -1,5 +1,14 @@
 # Phase-field fracture models
 
+## Running examples
+
+```
+docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-code -p 8888:8888 dolfinx/lab:stable
+
+pip install meshio
+mpirun -n 8 python EX.py
+```
+
 ## Coding up MSPEN
 
 ### Concatenating vectors
