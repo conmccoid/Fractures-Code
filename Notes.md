@@ -74,6 +74,10 @@ For each, I will run this on three types of examples and compare effectiveness t
 
 Once these basic approaches have been tested and compared, I should focus on the broader analysis of the FP-N framework I'm developing.
 
+- [ ] Implement Davidenko-Branin trick
+- [ ] Compare augmented Newton methods
+- [ ] Check code validity
+
 ### Newton approaches
 
 All approaches will make use of the Davidenko-Branin trick, which flips the Newton direction to maintain monotonicity.
