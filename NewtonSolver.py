@@ -15,7 +15,7 @@ class Identity:
         X.copy(Y)
 
 class NewtonSolver:
-    def __init__(self, solver1, solver2, problem1, problem2, B, C, linesearch='backtrack'):
+    def __init__(self, solver1, solver2, problem1, problem2, B, C, linesearch='bt'):
         self.u=problem1.u
         self.v=problem2.u
         V_u = self.u.function_space
@@ -100,7 +100,7 @@ class NewtonSolver:
         self.solver.getKSP().getPC().setType("none") # try different preconditioners, i.e. bjacobi
         # each preconditioner requires information from the matrix, i.e. jacobi needs a getDiagonal method
         opts=PETSc.Options()
-        if self.linesearch=='mixed':
+        if self.linesearch!='bt':
             opts['snes_linesearch_type']='none'
         else:
             opts['snes_linesearch_type']='bt'
@@ -146,53 +146,75 @@ class NewtonSolver:
     def customLineSearch(self, x, y):
         """Used as a pre-check, this allows custom line search methods
         -- x: current solution
-        -- y: current search direction"""        
+        -- y: current search direction
+        -- self.res: current fixed point iteration"""
         # best strategy so far: if a/c>1 then Newton, otherwise AltMin
         # close second: if (a/c>1) OR (a/c<0) then Newton, otherwise AltMin
-        if self.linesearch=='mixed':
-            diff = y - self.res
-            c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
-            a = self.res.norm()**2
-            b = diff.norm()/self.res.norm()
-            if c==0:
-                trust=1
-            else:
-                trust=a/c
-            if self.rank==0:
-                print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
-    
-            if self.solver.getKSP().getConvergedReason()==10:
-                # y.array[:]=self.res.array
-                self.res.copy(y)
-                # y.assemblyBegin()
-                # y.assemblyEnd()
+
+        # set up DB trick
+        proj_NFP = PETSc.VecDot(self.res, y)
+        if proj_NFP < 0:
+            y.setArray(-y.array)
+            y.assemblyBegin()
+            y.assemblyEnd()
+        # use self.linesearch to choose augmented Newton type
+        if self.linesearch!='bt':
+            if self.linesearch=='tr':
+                # trust region
+                diff_N2x = x - y
+                diff_N2FP= y - self.res
+                if diff_N2x.norm() <= diff_N2FP.norm():
+                    y.setArray(self.res.array)
+                    y.assemblyBegin()
+                    y.assemblyEnd()
+            elif self.linesearch=='2step':
+                # 2-step line search
+                diff_N2FP= y - self.res
+                y.setArray(self.res.array + self.res.norm()*diff_N2FP.array/diff_N2FP.norm())
+            elif self.linesearch=='augmented':
+                diff = y - self.res
+                c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
+                a = self.res.norm()**2
+                b = diff.norm()/self.res.norm()
+                if c==0:
+                    trust=1
+                else:
+                    trust=a/c
                 if self.rank==0:
-                    print(f"LINEAR SOLVE FAILURE")
-                    print(f"    AltMin step")
-            elif b<0.5:
-                if self.rank==0:
-                    print(f"    NewtonLS step")
-            else:
-                # y.array[:]=0.1*y.array + 0.9*self.res.array # relaxed Newton step
-                # print(f"    Relaxed Newton step (10% Newton, 90% FP)")
-    
-                # Augmented AltMin
-                # dummy = y.duplicate()
-                # y.copy(dummy)
-                # y.setArray((1/(2*b))*dummy.array + (1 - 1/(2*b))*self.res.array)
-                # dummy.destroy()
-                y.setArray(self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array)
-                # y.array[:]=self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array
-    
-                # # AltMin
-                # self.res.copy(y)
-    
-                y.assemblyBegin()
-                y.assemblyEnd()
-    
-                if self.rank==0:
-                    print(f"    Augmented AltMin step")
-            # in practice we'll want a combination of self.res and y
+                    print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
+
+                if self.solver.getKSP().getConvergedReason()==10:
+                    # y.array[:]=self.res.array
+                    self.res.copy(y)
+                    # y.assemblyBegin()
+                    # y.assemblyEnd()
+                    if self.rank==0:
+                        print(f"LINEAR SOLVE FAILURE")
+                        print(f"    AltMin step")
+                elif b<0.5:
+                    if self.rank==0:
+                        print(f"    NewtonLS step")
+                else:
+                    # y.array[:]=0.1*y.array + 0.9*self.res.array # relaxed Newton step
+                    # print(f"    Relaxed Newton step (10% Newton, 90% FP)")
+        
+                    # Augmented AltMin
+                    # dummy = y.duplicate()
+                    # y.copy(dummy)
+                    # y.setArray((1/(2*b))*dummy.array + (1 - 1/(2*b))*self.res.array)
+                    # dummy.destroy()
+                    y.setArray(self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array)
+                    # y.array[:]=self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array
+        
+                    # # AltMin
+                    # self.res.copy(y)
+        
+                    y.assemblyBegin()
+                    y.assemblyEnd()
+        
+                    if self.rank==0:
+                        print(f"    Augmented AltMin step")
+                # in practice we'll want a combination of self.res and y
         
         # save iteration count
         self.res.norm()
