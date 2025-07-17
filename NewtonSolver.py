@@ -60,8 +60,8 @@ class NewtonSolver:
         self.v.x.scatter_forward()
 
         resu, resv=F.getNestSubVecs()
-        resu.setArray(self.u_old.x.petsc_vec.array - self.u.x.petsc_vec.array)
-        resv.setArray(self.v_old.x.petsc_vec.array - self.v.x.petsc_vec.array)
+        resu.setArray(self.u.x.petsc_vec.array - self.u_old.x.petsc_vec.array)
+        resv.setArray(self.v.x.petsc_vec.array - self.v_old.x.petsc_vec.array)
         # put updated ghost values back into F
         resu.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
         resv.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
@@ -146,31 +146,53 @@ class NewtonSolver:
     def customLineSearch(self, x, y):
         """Used as a pre-check, this allows custom line search methods
         -- x: current solution
-        -- y: current search direction
-        -- self.res: current fixed point iteration"""
+        -- y: current search direction (nb: the iteration performs x-y, not x+y)
+        -- self.res: current fixed point direction (FP=x + self.res)"""
         # best strategy so far: if a/c>1 then Newton, otherwise AltMin
         # close second: if (a/c>1) OR (a/c<0) then Newton, otherwise AltMin
 
-        # set up DB trick
-        proj_NFP = PETSc.VecDot(self.res, y)
-        if proj_NFP < 0:
-            y.setArray(-y.array)
-            y.assemblyBegin()
-            y.assemblyEnd()
         # use self.linesearch to choose augmented Newton type
         if self.linesearch!='bt':
-            if self.linesearch=='tr':
+            # set up DB trick
+            proj_NFP = y.dot(-self.res)
+            if proj_NFP < 0:
+                y.setArray(-y.array)
+                y.assemblyBegin()
+                y.assemblyEnd()
+
+            # initialize LinSolveStatus
+            if self.solver.getIterationNumber()==0:
+                self.LinSolveStatus=1
+
+            # if Newton fails to converge, do AltMin (nb: looks like some numerical error between this and AltMin)
+            if self.LinSolveStatus==0 or self.solver.getKSP().getConvergedReason()<0 or self.linesearch=='fp':
+                diff_FP2x= -self.res
+                diff_FP2x.copy(y)
+                # y.setArray(-self.res.array)
+                # y.assemblyBegin()
+                # y.assemblyEnd()
+                if self.rank==0:
+                    print(f"    LINEAR SOLVE FAILURE: AltMin step")
+            elif self.linesearch=='tr':
                 # trust region
-                diff_N2x = x - y
-                diff_N2FP= y - self.res
+                diff_FP2x= -self.res
+                diff_N2x = y
+                diff_N2FP= y + self.res
                 if diff_N2x.norm() <= diff_N2FP.norm():
-                    y.setArray(self.res.array)
-                    y.assemblyBegin()
-                    y.assemblyEnd()
+                    diff_FP2x.copy(y)
+            elif self.linesearch=='ls':
+                # line search
+                dist_ls = np.min([1,self.res.norm()/y.norm()])
+                # dist_ls = 1/(1+np.exp(y.norm() - self.res.norm())) # sigmoid activation function, no good for line search?
+                y.setArray(dist_ls*y.array)
+                # print(f"FP/N: {self.res.norm()/y.norm():3.4e}, LS: {dist_ls:3.4e}")
             elif self.linesearch=='2step':
                 # 2-step line search
-                diff_N2FP= y - self.res
-                y.setArray(self.res.array + self.res.norm()*diff_N2FP.array/diff_N2FP.norm())
+                diff_FP2x= -self.res
+                diff_N2FP= y + self.res
+                # dist_2step = np.min([1,diff_FP2x.norm()/diff_N2FP.norm()])
+                dist_2step = 1/(1+np.exp(diff_N2FP.norm() - diff_FP2x.norm())) # sigmoid activation function, seems pretty successful, but what should the threshold be?
+                y.setArray(diff_FP2x.array + dist_2step*diff_N2FP.array)
             elif self.linesearch=='augmented':
                 diff = y - self.res
                 c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
@@ -236,5 +258,9 @@ class NewtonSolver:
         if reason<0:
             if self.rank==0:
                 print(f"    KSP diverged with reason {reason}")
+                print(f"    LINEAR SOLVE FAILURE: AltMin step")
             ksp.setConvergedReason(10)
-            x.zeroEntries()
+            x.setArray(x.array + self.res.array)
+            x.assemblyBegin()
+            x.assemblyEnd()
+            self.LinSolveStatus=0 # while it appears better to switch permanently for each iteration, this can be changed to 1 to only switch temporarily
