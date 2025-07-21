@@ -28,7 +28,7 @@ class NewtonSolver:
         self.solver2=solver2
         self.PJ=NewtonSolverContext(B, C, solver1, solver2, self.u, self.v) # preconditioned Jacobian
         # self.PJ=Identity()
-        self.output=[]
+        self.output=0
         self.comm=MPI.COMM_WORLD
         self.rank=self.comm.rank
         self.linesearch=linesearch
@@ -108,7 +108,7 @@ class NewtonSolver:
         opts['snes_linesearch_monitor']=None
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
-        self.solver.setMonitor(self.customMonitor)
+        # self.solver.setMonitor(self.customMonitor)
         # self.solver.getKSP().setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
         # opts['ksp_monitor_singular_value']=None # Returns estimate of condition number of system solved by KSP
         # opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
@@ -242,18 +242,8 @@ class NewtonSolver:
                 # in practice we'll want a combination of self.res and y
         
         # save iteration count
-        self.res.norm()
-        y.norm()
-        if self.solver.getIterationNumber()==0:
-            self.output.append(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
         if self.rank==0:
-            self.output.append([
-                self.solver1.getKSP().getIterationNumber(),
-                self.solver2.getKSP().getIterationNumber(),
-                self.solver.getKSP().getIterationNumber(),
-                self.res.norm(),
-                y.norm()
-            ])
+            self.output+=self.solver.getKSP().getIterationNumber()
 
     def customPostSolve(self,ksp,rhs,x):
         """Post solve function for the KSP in an attempt to rout unnecessary divergence breaks"""
