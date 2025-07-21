@@ -19,7 +19,7 @@ def main(WriteSwitch=False):
         with open(f"output/TBL_GD_Newton_{linesearch}_its.csv",'w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             writer.writerows(output)
-    fig1, ax1=plt.subplots(1,2)
+    fig1, ax1=plt.subplots(1,3)
     ax1[0].plot(energies[:,0],energies[:,4],label='AltMin iterations')
         
     fig2, ax2=plt.subplots(1,3)
@@ -27,8 +27,7 @@ def main(WriteSwitch=False):
     ax2[1].plot(energies[:,0],energies[:,2],label='AltMin')
     ax2[2].plot(energies[:,0],energies[:,3],label='AltMin')
     
-    # linesearch_list=['bt','tr','ls','2step']
-    linesearch_list=['fp','2step']
+    linesearch_list=['tr','ls','2step']
     # linesearch_list=['fp']
     for i, linesearch in enumerate(linesearch_list):
         
@@ -51,6 +50,7 @@ def main(WriteSwitch=False):
 
         ax1[0].plot(output[:,0],output[:,2],label=f"{linesearch} outer iterations")
         ax1[1].plot(output[:,0],output[:,1],label=f"{linesearch} inner iterations")
+        ax1[2].plot(output[:,0],output[:,1]/output[:,2],label=linesearch)
         
         ax2[0].plot(energies[:,0],energies[:,1],label=f"{linesearch}")
         ax2[1].plot(energies[:,0],energies[:,2],label=linesearch)
@@ -62,6 +62,9 @@ def main(WriteSwitch=False):
     ax1[1].set_xlabel('t')
     ax1[1].set_ylabel('Iterations')
     ax1[1].legend()
+    ax1[2].set_xlabel('t')
+    ax1[2].set_ylabel('Ave. inner / outer')
+    ax1[2].legend()
 
     ax2[0].set_xlabel('t')
     ax2[0].set_ylabel('Elastic energy')
