@@ -14,7 +14,7 @@ from Solvers import Elastic, Damage, alternate_minimization
 from PLOT_DamageState import plot_damage_state
 from NewtonSolver import NewtonSolver
 
-def main(method='AltMin',linesearch='bt'):
+def output=main(method='AltMin',linesearch='bt',filename_energy=f"output/TBL_GD_{method}_energy.csv",filename_its=f"output/TBL_GD_{method}_its.csv"):
     comm=MPI.COMM_WORLD
     rank=comm.rank
     
@@ -53,12 +53,16 @@ def main(method='AltMin',linesearch='bt'):
     # Array to store results
     energies = np.zeros((loads.shape[0], 5))
     iter_count=[]
-    with open(f"output/TBL_GD_{method}_energy.csv",'w') as csv.file:
+    output=np.zeros((loads.shape[0],3))
+    with open(filename_energy,'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
     with io.XDMFFile(dom.comm, f"output/EX_GD_{method}.xdmf","w") as xdmf:
         xdmf.write_mesh(dom)
-    
+    with open(filename_its,'w') as csv.file:
+        writer=csv.writer(csv.file,delimiter=',')
+        writer.writerow(['Quasi-static step','Inner iteration','Outer iteration','FP step size','(aug.) Newton step size'])
+
     for i_t, t in enumerate(loads):
         u_D.value = t
         energies[i_t, 0] = t
@@ -74,7 +78,7 @@ def main(method='AltMin',linesearch='bt'):
         else:
             iter_count, iteration = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-8, 1000, True, iter_count)
             energies[i_t,4] = iteration
-        plot_damage_state(u, v, None, [800,300])
+        # plot_damage_state(u, v, None, [800,300])
     
         # Calculate the energies
         energies[i_t, 1] = MPI.COMM_WORLD.allreduce(
@@ -90,30 +94,31 @@ def main(method='AltMin',linesearch='bt'):
             op=MPI.SUM,
         )
         if rank==0:
-            with open(f"output/TBL_GD_{method}_energy.csv",'a') as csv.file:
+            with open(filename_energy,'a') as csv.file:
                 writer=csv.writer(csv.file,delimiter=',')
                 writer.writerow(energies[i_t,:])
         with io.XDMFFile(dom.comm, f"output/EX_GD_{method}.xdmf","a") as xdmf:
             xdmf.write_function(u, t)
             xdmf.write_function(v, t)
-    with open(f"output/TBL_GD_{method}_its.csv",'w') as csv.file:
+    if method=='NewtonLS':
+        output[i_t,:]=[t,EN.output,EN.solver.getIterationNumber()]
+    elif method=='AltMin':
+        output=iter_count
+    with open(filename_its,'w') as csv.file:
         writer=csv.writer(csv.file,delimiter=',')
-        if method=='NewtonLS':
-            writer.writerows(EN.output) # find some way to combine these files into one
-        elif method=='AltMin':
-            writer.writerows(iter_count)
+        writer.writerows(output)
 
-    fig, ax=plt.subplots()
-    ax.plot(energies[:,0],energies[:,1],label='elastic energy')
-    ax.plot(energies[:,0],energies[:,2],label='dissipated energy')
-    ax.plot(energies[:,0],energies[:,3],label='total energy')
-    ax.set_xlabel('t')
-    ax.set_ylabel('Energy')
-    ax.legend()
-    plt.savefig(f"output/FIG_GD_{method}_energy.png")
-    # plt.show()
+    # fig, ax=plt.subplots()
+    # ax.plot(energies[:,0],energies[:,1],label='elastic energy')
+    # ax.plot(energies[:,0],energies[:,2],label='dissipated energy')
+    # ax.plot(energies[:,0],energies[:,3],label='total energy')
+    # ax.set_xlabel('t')
+    # ax.set_ylabel('Energy')
+    # ax.legend()
+    # plt.savefig(f"output/FIG_GD_{method}_energy.png")
+    # # plt.show()
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
-    main('NewtonLS')
+    main('NewtonLS','2step')
     sys.exit()
