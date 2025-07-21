@@ -38,7 +38,7 @@ def main(method='AltMin',linesearch='bt',PlotSwitch=False,WriteSwitch=False):
     v_ub.x.array[:] = 1.0
     # damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
 
-    if method=='NewtonLS':
+    if method=='Newton':
         EN=NewtonSolver(elastic_solver, damage_solver,
                         elastic_problem, damage_problem,
                         E_uv, E_vu,
@@ -70,7 +70,7 @@ def main(method='AltMin',linesearch='bt',PlotSwitch=False,WriteSwitch=False):
 
         if rank==0:
             print(f"-- Solving for t = {t:3.2f} --")
-        if method=='NewtonLS':
+        if method=='Newton':
             EN.solver.solve(None,uv)
             energies[i_t,4] = EN.solver.getIterationNumber()
             output[i_t,:]=[t,EN.output,EN.solver.getIterationNumber()]
@@ -104,5 +104,5 @@ def main(method='AltMin',linesearch='bt',PlotSwitch=False,WriteSwitch=False):
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
-    main('NewtonLS','2step')
+    main('Newton','2step')
     sys.exit()

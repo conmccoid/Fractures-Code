@@ -5,20 +5,11 @@ import sys
 
 def main(WriteSwitch=False):
     output, energies=EX('AltMin')
-    if WriteSwitch:
+    if WriteSwitch and rank==0:
         with open(f"output/TBL_GD_AltMin_energy.csv",'w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
-        with open(f"output/TBL_GD_AltMin_its.csv",'w') as csv.file:
-            writer=csv.writer(csv.file,delimiter=',')
-            writer.writerow(['Quasi-static step','Outer iteration'])
-        if rank==0:
-            with open(f"output/TBL_GD_Newton_{linesearch}_energy.csv",'a') as csv.file:
-                writer=csv.writer(csv.file,delimiter=',')
-                writer.writerow(energies[i_t,:])
-        with open(f"output/TBL_GD_Newton_{linesearch}_its.csv",'w') as csv.file:
-            writer=csv.writer(csv.file,delimiter=',')
-            writer.writerows(output)
+            writer.writerows(energies)
     fig1, ax1=plt.subplots(1,3)
     ax1[0].plot(energies[:,0],energies[:,4],label='AltMin iterations')
         
@@ -31,21 +22,16 @@ def main(WriteSwitch=False):
     # linesearch_list=['fp']
     for i, linesearch in enumerate(linesearch_list):
         
-        output, energies=EX('NewtonLS',linesearch)
+        output, energies=EX('Newton',linesearch)
 
-        if WriteSwitch:
+        if WriteSwitch and rank==0:
             with open(f"output/TBL_GD_Newton_{linesearch}_energy.csv",'w') as csv.file:
                 writer=csv.writer(csv.file,delimiter=',')
                 writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
+                writer.writerows(energies)
             with open(f"output/TBL_GD_Newton_{linesearch}_its.csv",'w') as csv.file:
                 writer=csv.writer(csv.file,delimiter=',')
                 writer.writerow(['Quasi-static step','Inner iteration','Outer iteration'])
-            if rank==0:
-                with open(f"output/TBL_GD_Newton_{linesearch}_energy.csv",'a') as csv.file:
-                    writer=csv.writer(csv.file,delimiter=',')
-                    writer.writerow(energies[i_t,:])
-            with open(f"output/TBL_GD_Newton_{linesearch}_its.csv",'w') as csv.file:
-                writer=csv.writer(csv.file,delimiter=',')
                 writer.writerows(output)
 
         ax1[0].plot(output[:,0],output[:,2],label=f"{linesearch} outer iterations")
