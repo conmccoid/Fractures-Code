@@ -44,7 +44,7 @@ def Damage(E, v, bcs, J):
     return damage_problem, damage_solver
 
 # AltMin definition
-def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_iterations=1000, monitor=True, output=[]):
+def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_iterations=1000, monitor=True):
     v_old = fem.Function(v.function_space)
     v_old.x.array[:] = v.x.array
 
@@ -63,23 +63,12 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_i
 
         v_old.x.array[:] = v.x.array
 
-        if iteration==0:
-            output.append(['Elastic its','Damage its','Newton inner its','FP step','Newton step'])
-        if MPI.COMM_WORLD.rank==0:
-            output.append([
-                elastic_solver.getKSP().getIterationNumber(),
-                damage_solver.getKSP().getIterationNumber(),
-                1.0,
-                error_L2,
-                0.0
-            ])
-
         if monitor:
             if MPI.COMM_WORLD.rank==0:
                 print(f"Iteration: {iteration}, Error: {error_L2:3.4e}")
 
         if error_L2 <= atol:
-          return output, iteration #(error_L2,iteration)
+          return iteration #(error_L2,iteration)
 
     raise RuntimeError(
         f"Could not converge after {max_iterations} iterations, error {error_L2:3.4e}"
