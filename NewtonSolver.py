@@ -190,8 +190,11 @@ class NewtonSolver:
                 # 2-step line search
                 diff_FP2x= -self.res
                 diff_N2FP= y + self.res
-                # dist_2step = np.min([1,diff_FP2x.norm()/diff_N2FP.norm()])
-                dist_2step = 1/(1+np.exp(diff_N2FP.norm() - diff_FP2x.norm())) # sigmoid activation function, seems pretty successful, but what should the threshold be?
+                # if diff_N2FP.norm()==0:
+                #     dist_2step = 1
+                # else:
+                #     dist_2step = np.min([1,diff_FP2x.norm()/diff_N2FP.norm()])
+                dist_2step = 1/(1+np.exp(2*diff_N2FP.norm() - diff_FP2x.norm())) # sigmoid activation function, seems pretty successful, but what should the threshold be?
                 y.setArray(diff_FP2x.array + dist_2step*diff_N2FP.array)
             elif self.linesearch=='augmented':
                 diff = y - self.res
@@ -263,4 +266,4 @@ class NewtonSolver:
             x.setArray(x.array + self.res.array)
             x.assemblyBegin()
             x.assemblyEnd()
-            self.LinSolveStatus=0 # while it appears better to switch permanently for each iteration, this can be changed to 1 to only switch temporarily
+            self.LinSolveStatus=1 # while it appears better to switch permanently for each iteration, this can be changed to 1 to only switch temporarily
