@@ -28,7 +28,6 @@ class NewtonSolver:
         self.solver2=solver2
         self.PJ=NewtonSolverContext(B, C, solver1, solver2, self.u, self.v) # preconditioned Jacobian
         # self.PJ=Identity()
-        self.output=0
         self.comm=MPI.COMM_WORLD
         self.rank=self.comm.rank
         self.linesearch=linesearch
@@ -151,17 +150,16 @@ class NewtonSolver:
         -- x: current solution
         -- y: current search direction (nb: the iteration performs x-y, not x+y)
         -- self.res: current fixed point direction (FP=x + self.res)"""
-        # best strategy so far: if a/c>1 then Newton, otherwise AltMin
-        # close second: if (a/c>1) OR (a/c<0) then Newton, otherwise AltMin
+
+        # set up DB trick
+        proj_NFP = y.dot(-self.res)
+        if proj_NFP < 0:
+            y.setArray(-y.array)
+            y.assemblyBegin()
+            y.assemblyEnd()
 
         # use self.linesearch to choose augmented Newton type
         if self.linesearch!='bt':
-            # set up DB trick
-            proj_NFP = y.dot(-self.res)
-            if proj_NFP < 0:
-                y.setArray(-y.array)
-                y.assemblyBegin()
-                y.assemblyEnd()
 
             # initialize LinSolveStatus
             if self.solver.getIterationNumber()==0:
@@ -172,9 +170,6 @@ class NewtonSolver:
             if self.LinSolveStatus==0 or self.solver.getKSP().getConvergedReason()<0 or self.linesearch=='fp':
                 diff_FP2x= -self.res
                 diff_FP2x.copy(y)
-                # y.setArray(-self.res.array)
-                # y.assemblyBegin()
-                # y.assemblyEnd()
                 if self.rank==0:
                     print(f"    LINEAR SOLVE FAILURE: AltMin step")
             elif self.linesearch=='tr':
@@ -189,7 +184,6 @@ class NewtonSolver:
                 dist_ls = np.min([1,self.res.norm()/y.norm()])
                 # dist_ls = 1/(1+np.exp(y.norm() - self.res.norm())) # sigmoid activation function, no good for line search?
                 y.setArray(dist_ls*y.array)
-                # print(f"FP/N: {self.res.norm()/y.norm():3.4e}, LS: {dist_ls:3.4e}")
             elif self.linesearch=='2step':
                 # 2-step line search
                 diff_FP2x= -self.res
@@ -198,52 +192,8 @@ class NewtonSolver:
                 #     dist_2step = 1
                 # else:
                 #     dist_2step = np.min([1,diff_FP2x.norm()/diff_N2FP.norm()])
-                dist_2step = 1/(1+np.exp(2*diff_N2FP.norm() - diff_FP2x.norm())) # sigmoid activation function, seems pretty successful, but what should the threshold be?
+                dist_2step = 1/(1+np.exp(diff_N2FP.norm() - diff_FP2x.norm())) # sigmoid activation function, seems pretty successful, but what should the threshold be?
                 y.setArray(diff_FP2x.array + dist_2step*diff_N2FP.array)
-            elif self.linesearch=='augmented':
-                diff = y - self.res
-                c = self.res.norm()**2 + diff.norm()**2 - y.norm()**2
-                a = self.res.norm()**2
-                b = diff.norm()/self.res.norm()
-                if c==0:
-                    trust=1
-                else:
-                    trust=a/c
-                if self.rank==0:
-                    print(f"    Fixed point iteration: {self.res.norm():3.4e}, Newton step: {y.norm():3.4e}, Relative difference: {b:3.4e}, Trust: {trust:%}")
-
-                if self.solver.getKSP().getConvergedReason()==10:
-                    # y.array[:]=self.res.array
-                    self.res.copy(y)
-                    # y.assemblyBegin()
-                    # y.assemblyEnd()
-                    if self.rank==0:
-                        print(f"LINEAR SOLVE FAILURE")
-                        print(f"    AltMin step")
-                elif b<0.5:
-                    if self.rank==0:
-                        print(f"    NewtonLS step")
-                else:
-                    # y.array[:]=0.1*y.array + 0.9*self.res.array # relaxed Newton step
-                    # print(f"    Relaxed Newton step (10% Newton, 90% FP)")
-        
-                    # Augmented AltMin
-                    # dummy = y.duplicate()
-                    # y.copy(dummy)
-                    # y.setArray((1/(2*b))*dummy.array + (1 - 1/(2*b))*self.res.array)
-                    # dummy.destroy()
-                    y.setArray(self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array)
-                    # y.array[:]=self.res.array + (self.res.norm()/(2*diff.norm()))*diff.array
-        
-                    # # AltMin
-                    # self.res.copy(y)
-        
-                    y.assemblyBegin()
-                    y.assemblyEnd()
-        
-                    if self.rank==0:
-                        print(f"    Augmented AltMin step")
-                # in practice we'll want a combination of self.res and y
         
         # save iteration count
         if self.rank==0:
@@ -260,4 +210,7 @@ class NewtonSolver:
             x.setArray(x.array + self.res.array)
             x.assemblyBegin()
             x.assemblyEnd()
-            self.LinSolveStatus=1 # while it appears better to switch permanently for each iteration, this can be changed to 1 to only switch temporarily
+            if self.linesearch=='tr' or self.linesearch=='ls':
+                self.LinSolveStatus=0
+            else:
+                self.LinSolveStatus=1 # while it appears better to switch permanently for each iteration, this can be changed to 1 to only switch temporarily
