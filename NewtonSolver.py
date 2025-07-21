@@ -80,7 +80,7 @@ class NewtonSolver:
         J.setPythonContext(self.PJ)
         J.setUp()
 
-    def setUp(self,rtol=1.0e-8, max_it_SNES=1000, max_it_KSP=100, ksp_restarts=30):
+    def setUp(self,rtol=1.0e-8, max_it_SNES=1000, max_it_KSP=100, ksp_restarts=30, monitor='off'):
         self.solver = PETSc.SNES().create(self.comm)
         
         b_u = self.u.x.petsc_vec.duplicate()
@@ -108,10 +108,13 @@ class NewtonSolver:
         opts['snes_linesearch_monitor']=None
         self.solver.setFromOptions()
         self.solver.setConvergenceTest(self.customConvergenceTest)
-        # self.solver.setMonitor(self.customMonitor)
-        # self.solver.getKSP().setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
-        # opts['ksp_monitor_singular_value']=None # Returns estimate of condition number of system solved by KSP
-        # opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
+        if monitor!='off':
+            self.solver.setMonitor(self.customMonitor)
+            if monitor=='ksp':
+                self.solver.getKSP().setMonitor(lambda snes, its, norm: print(f"Iteration:{its}, Norm:{norm:3.4e}"))
+                opts['ksp_converged_reason']=None # Returns reason for convergence of the KSP
+            elif monitor=='cond':
+                opts['ksp_monitor_singular_value']=None # Returns estimate of condition number of system solved by KSP
         opts['ksp_gmres_restart']=ksp_restarts # Number of GMRES iterations before restart (default 30)
         self.solver.getKSP().setFromOptions()
         self.solver.getKSP().setPostSolve(self.customPostSolve) # in the event of a failed solve of the Newton direction, falls back to a fixed point iteration
@@ -163,6 +166,7 @@ class NewtonSolver:
             # initialize LinSolveStatus
             if self.solver.getIterationNumber()==0:
                 self.LinSolveStatus=1
+                self.output=0
 
             # if Newton fails to converge, do AltMin (nb: looks like some numerical error between this and AltMin)
             if self.LinSolveStatus==0 or self.solver.getKSP().getConvergedReason()<0 or self.linesearch=='fp':
