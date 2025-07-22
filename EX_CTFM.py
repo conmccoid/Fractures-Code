@@ -40,7 +40,7 @@ def main(method='AltMin',linesearch='bt',PlotSwitch=False,WriteSwitch=False):
                     elastic_problem, damage_problem,
                     E_uv, E_vu,
                     linesearch=linesearch)
-        EN.setUp(rtol=1.0e-4,max_it_SNES=100,max_it_KSP=1000,ksp_restarts=100,monitor='off')
+        EN.setUp(rtol=1.0e-4,max_it_SNES=1000,max_it_KSP=1000,ksp_restarts=100,monitor='off')
         uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
     
     # Solving the problem and visualizing
