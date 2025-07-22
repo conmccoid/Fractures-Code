@@ -51,6 +51,7 @@ def main(WriteSwitch=False):
     ax1[2].set_xlabel('t')
     ax1[2].set_ylabel('Ave. inner / outer')
     ax1[2].legend()
+    plt.savefig(f"output/FIG_GD_its.png")
 
     ax2[0].set_xlabel('t')
     ax2[0].set_ylabel('Elastic energy')
@@ -61,6 +62,7 @@ def main(WriteSwitch=False):
     ax2[2].set_xlabel('t')
     ax2[2].set_ylabel('Total energy')
     ax2[2].legend()
+    plt.savefig(f"output/FIG_GD_energy.png")
 
 if __name__== "__main__":
     main()

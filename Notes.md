@@ -5,6 +5,8 @@
 ```
 docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-code -p 8888:8888 dolfinx/lab:stable
 
+docker exec -it phase-field bash
+
 pip install meshio
 mpirun -n 8 python EX.py
 ```
