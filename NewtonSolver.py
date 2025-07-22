@@ -28,6 +28,7 @@ class NewtonSolver:
         self.solver2=solver2
         self.PJ=NewtonSolverContext(B, C, solver1, solver2, self.u, self.v) # preconditioned Jacobian
         # self.PJ=Identity()
+        self.output=0
         self.comm=MPI.COMM_WORLD
         self.rank=self.comm.rank
         self.linesearch=linesearch
