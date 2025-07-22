@@ -1,7 +1,7 @@
 import numpy as np
 from mpi4py import MPI
 from petsc4py import PETSc
-from dolfinx import fem
+from dolfinx import fem, io
 
 import pyvista
 from pyvista.utilities.xvfb import start_xvfb
@@ -10,11 +10,14 @@ import csv
 import sys
 
 from EX_CTFM_Domain import domain, BCs, VariationalFormulation
-from Solvers import Elastic, Damage, Newton, alternate_minimization, AMEN
+from Solvers import Elastic, Damage, alternate_minimization
 from PLOT_DamageState import plot_damage_state
 from NewtonSolver import NewtonSolver
 
-def main(method='AltMin'):
+def main(method='AltMin',linesearch='bt',PlotSwitch=False,WriteSwitch=False):
+    comm=MPI.COMM_WORLD
+    rank=comm.rank
+    
     u, v, dom, cell_tags, facet_tags=domain()
     V_u=u.function_space
     V_v=v.function_space
@@ -31,26 +34,30 @@ def main(method='AltMin'):
     v_lb.x.array[:] = 0.0
     v_ub.x.array[:] = 1.0
     # damage_solver.setVariableBounds(v_lb.x.petsc_vec,v_ub.x.petsc_vec)
-    EN_solver = Newton(E_uv, E_vu, elastic_solver, damage_solver)
-    EN=NewtonSolver(elastic_solver, damage_solver,
+
+    if method=='Newton':
+        EN=NewtonSolver(elastic_solver, damage_solver,
                     elastic_problem, damage_problem,
-                    E_uv, E_vu)
-    EN.setUp()
-    uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
+                    E_uv, E_vu,
+                    linesearch=linesearch)
+        EN.setUp(rtol=1.0e-4,max_it_SNES=100,max_it_KSP=1000,ksp_restarts=100,monitor='off')
+        uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])#,None,MPI.COMM_WORLD)
     
     # Solving the problem and visualizing
-    start_xvfb(wait=0.5)
+    if PlotSwitch:
+        start_xvfb(wait=0.5)
     
     # load_c = 0.19 * L  # reference value for the loading (imposed displacement)
     loads = np.linspace(0, 1.5 * load_c * 12 / 10, 20) # (load_c/E)*L
     
     # Array to store results
-    energies = np.zeros((loads.shape[0], 4 ))
-    iter_count=[]
-    with open(f"output/TBL_CTFM_{method}_energy.csv",'w') as csv.file:
-        writer=csv.writer(csv.file,delimiter=',')
-        writer.writerow(['t','Elastic energy','Dissipated energy','Total energy'])
-    
+    energies = np.zeros((loads.shape[0], 5 ))
+    output=np.zeros((loads.shape[0],3))
+
+    if WriteSwitch:
+        with io.XDMFFile(dom.comm, f"output/EX_CTFM_{method}_{linesearch}.xdmf",'w') as xdmf:
+            xdmf.write_mesh(dom)
+
     for i_t, t in enumerate(loads):
         t1.value = t
         t2.value =-t
@@ -58,18 +65,23 @@ def main(method='AltMin'):
     
         # Update the lower bound to ensure irreversibility of damage field.
         v_lb.x.array[:] = v.x.array
-    
-        print(f"-- Solving for t = {t:3.2f} --")
-        if method=='AMEN':
-            AMEN(u,v, elastic_solver, damage_solver, EN_solver)
-        elif method=='NewtonLS':
+
+        if rank==0:
+            print(f"-- Solving for t = {t:3.2f} --")
+        if method=='Newton':
             EN.solver.solve(None,uv)
+            energies[i_t,4] = EN.solver.getIterationNumber()
+            output[i_t,:] = [t,EN.output,EN.solver.getIterationNumber()]
         else:
-            iter_count = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, True, iter_count)
-        if i_t!=len(loads)-1:
-            plot_damage_state(u, v, None, [1400, 850])
-        else:
-            plot_damage_state(u, v, None, [1400, 850],f"output/FIG_CTFM_{method}_final.png")
+            iteration = alternate_minimization(u, v, elastic_solver, damage_solver, 1e-4, 1000, monitor=True)
+            output[i_t,:]=[t,0,iteration]
+            energies[i_t,4]=iteration
+
+        if PlotSwitch:
+            if i_t!=len(loads)-1:
+                plot_damage_state(u, v, None, [1400, 850])
+            else:
+                plot_damage_state(u, v, None, [1400, 850],f"output/FIG_CTFM_{method}_final.png")
     
         # Calculate the energies
         energies[i_t, 1] = MPI.COMM_WORLD.allreduce(
@@ -84,27 +96,14 @@ def main(method='AltMin'):
             fem.assemble_scalar(fem.form(total_energy)),
             op=MPI.SUM,
         )
-        with open(f"output/TBL_CTFM_{method}_energy.csv",'a') as csv.file:
-            writer=csv.writer(csv.file,delimiter=',')
-            writer.writerow(energies[i_t,:])
-    with open(f"output/TBL_CTFM_{method}_its.csv",'w') as csv.file:
-        writer=csv.writer(csv.file,delimiter=',')
-        if method=='NewtonLS':
-            writer.writerows(EN.output) # find some way to combine these files into one
-        elif method=='AltMin':
-            writer.writerows(iter_count)
+        if WriteSwitch:
+            with io.XDMFFile(dom.comm, f"output/EX_CTFM_{method}_{linesearch}.xdmf",'a') as xdmf:
+                xdmf.write_function(u,t)
+                xdmf.write_function(v,t)
 
-    fig, ax=plt.subplots()
-    ax.plot(energies[:,0],energies[:,1],label='elastic energy')
-    ax.plot(energies[:,0],energies[:,2],label='dissipated energy')
-    ax.plot(energies[:,0],energies[:,3],label='total energy')
-    ax.set_xlabel('t')
-    ax.set_ylabel('Energy')
-    ax.legend()
-    plt.savefig(f"output/FIG_CTFM_{method}_energy.png")
-    # plt.show()
+    return output, energies
 
 if __name__ == "__main__":
     pyvista.OFF_SCREEN=True
-    main('NewtonLS')
+    main('Newton','2step')
     sys.exit()
