@@ -86,7 +86,7 @@ Once these basic approaches have been tested and compared, I should focus on the
 - [ ] Implement Davidenko-Branin trick
 - [ ] Compare augmented Newton methods
 - [ ] Check code validity
-- [ ] Compare wit Alena's results
+- [ ] Compare with Alena's results
 
 ### Newton approaches
 
