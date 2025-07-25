@@ -40,8 +40,8 @@ def main(method='AltMin',linesearch='bt',PlotSwitch=False,WriteSwitch=False):
         EN=NewtonSolver(elastic_solver, damage_solver,
                         elastic_problem, damage_problem,
                         E_uv, E_vu,
-                       linesearch=linesearch)
-        EN.setUp(rtol=1.0e-8,max_it_SNES=100,max_it_KSP=100,ksp_restarts=100, monitor='on')
+                        linesearch=linesearch)
+        EN.setUp(rtol=1.0e-8,max_it_SNES=100,max_it_KSP=100,ksp_restarts=100, monitor='off')
         uv = PETSc.Vec().createNest([u.x.petsc_vec,v.x.petsc_vec])
     
     # Solving the problem and visualizing
@@ -49,7 +49,7 @@ def main(method='AltMin',linesearch='bt',PlotSwitch=False,WriteSwitch=False):
         start_xvfb(wait=0.5)
     
     # load_c = 0.19 * L  # reference value for the loading (imposed displacement)
-    loads = np.linspace(0, 1.5 * 10 * L / 10, 20) # (load_c/E)*L
+    loads = np.linspace(0, 1, 10) # (load_c/E)*L
     
     # Array to store results
     energies = np.zeros((loads.shape[0], 5))
@@ -81,11 +81,11 @@ def main(method='AltMin',linesearch='bt',PlotSwitch=False,WriteSwitch=False):
             plot_damage_state(u, v, None, [800,300])
         
         # Calculate the energies
-        energies[i_t, 1] = MPI.COMM_WORLD.allreduce(
+        energies[i_t, 1] = comm.allreduce(
             fem.assemble_scalar(fem.form(elastic_energy)),
             op=MPI.SUM,
         )
-        energies[i_t, 2] = MPI.COMM_WORLD.allreduce(
+        energies[i_t, 2] = comm.allreduce(
             fem.assemble_scalar(fem.form(dissipated_energy)),
             op=MPI.SUM,
         )

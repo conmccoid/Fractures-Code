@@ -5,6 +5,9 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from dolfinx import mesh, fem
 
+def eps(u): # strain tensor (of displacement)
+  return ufl.sym(ufl.grad(u))
+
 def domain(L=1.,H=0.3,cell_size=0.1/6):
     # Domain set-up
     nx=int(L/cell_size)
@@ -63,7 +66,7 @@ def BCs(u,v,domain,L=1.,H=0.3):
 
     r_boundary_dofs_v= fem.locate_dofs_topological(V_v, fdim, r_facets)
     l_boundary_dofs_v= fem.locate_dofs_topological(V_v, fdim, l_facets)
-    bc_v_l= fem.dirichletbc(1.0, l_boundary_dofs_v, V_v)
+    bc_v_l= fem.dirichletbc(u_D, l_boundary_dofs_v, V_v)
     bc_v_r= fem.dirichletbc(0.0, r_boundary_dofs_v, V_v)
     bcs_v = [bc_v_l,bc_v_r]
     return bcs_u, bcs_v, u_D
@@ -75,8 +78,10 @@ def VariationalFormulation(u,v,domain):
 
     dx=ufl.Measure("dx", domain=domain)
 
-    elastic_energy = ufl.inner(ufl.grad(u), ufl.grad(u)) * dx
-    dissipated_energy = ufl.inner(ufl.grad(v), ufl.grad(v)) * dx
+    # elastic_energy = ( ufl.inner(eps(u),eps(u)) - v*ufl.div(u) ) * dx
+    # dissipated_energy = v**2 * dx
+    elastic_energy = ufl.inner(ufl.grad(u),ufl.grad(u)) * dx
+    dissipated_energy = ufl.inner(ufl.grad(v),ufl.grad(v)) * dx
     total_energy = elastic_energy + dissipated_energy
 
     E_u = ufl.derivative(total_energy, u, ufl.TestFunction(V_u))

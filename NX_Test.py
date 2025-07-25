@@ -23,8 +23,8 @@ def main(WriteSwitch=False):
     ax2[2].plot(energies[:,0],energies[:,3],label='AltMin')
     
     linesearch_list=['fp','bt','tr','ls','2step']
-    # linesearch_list=['fp']
-    for i, linesearch in enumerate(linesearch_list):
+    # linesearch_list=['none']
+    for linesearch in linesearch_list:
         
         output, energies=EX('Newton',linesearch,WriteSwitch=True)
 
