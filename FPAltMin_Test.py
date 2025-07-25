@@ -21,11 +21,11 @@ class FPAltMin:
         L=1.
         H=0.3
         cell_size=0.1/6
-        self.u, self.v, dom=domain(L,H,cell_size)
+        self.u, self.v, self.dom=domain(L,H,cell_size)
         V_u=self.u.function_space
         V_v=self.v.function_space
-        bcs_u, bcs_v, self.u_D = BCs(self.u,self.v,dom,L,H)
-        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, self.total_energy = VariationalFormulation(self.u,self.v,dom)
+        bcs_u, bcs_v, self.u_D = BCs(self.u,self.v,self.dom,L,H)
+        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, self.total_energy = VariationalFormulation(self.u,self.v,self.dom)
 
         elastic_problem, self.elastic_solver = Elastic(E_u, self.u, bcs_u, E_uu)
         damage_problem, self.damage_solver = Damage(E_v, self.v, bcs_v, E_vv)
