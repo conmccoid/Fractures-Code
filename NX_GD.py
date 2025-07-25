@@ -1,9 +1,13 @@
 from EX_GradientDamage import main as EX
+from mpi4py import MPI
 import matplotlib.pyplot as plt
 import csv
 import sys
 
 def main(WriteSwitch=False):
+    comm = MPI.COMM_WORLD
+    rank = comm.rank
+
     output, energies=EX('AltMin')
     if WriteSwitch and rank==0:
         with open(f"output/TBL_GD_AltMin_energy.csv",'w') as csv.file:
@@ -18,7 +22,7 @@ def main(WriteSwitch=False):
     ax2[1].plot(energies[:,0],energies[:,2],label='AltMin')
     ax2[2].plot(energies[:,0],energies[:,3],label='AltMin')
     
-    linesearch_list=['tr','ls','2step']
+    linesearch_list=['fp','bt','tr','ls','2step']
     # linesearch_list=['fp']
     for i, linesearch in enumerate(linesearch_list):
         
