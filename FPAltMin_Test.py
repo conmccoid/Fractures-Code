@@ -11,7 +11,7 @@ from pyvista.utilities.xvfb import start_xvfb
 from DOM_Test import domain, BCs, VariationalFormulation
 from Solvers import Elastic, Damage
 from PLOT_DamageState import plot_damage_state
-from PythonShells import JAltMin
+from JAltMin import JAltMin
 
 class FPAltMin:
     def __init__(self):
