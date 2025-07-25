@@ -87,7 +87,7 @@ Once these basic approaches have been tested and compared, I should focus on the
 
 - [ ] Implement Davidenko-Branin trick
 - [ ] Compare augmented Newton methods
-- [ ] Check code validity
+- [x] Check code validity
 - [ ] Compare with Alena's results
 
 ### Newton approaches
@@ -96,6 +96,9 @@ All approaches will make use of the Davidenko-Branin trick, which flips the Newt
 
 Long term, these approaches and the DB trick should be coded into a PETSc module.
 Short term, especially ahead of SIAM/CAIMS, we'll patch something together in FEniCSx.
+
+Due to the weird interplay between the nonlinearities, or just because Python shell matrices are challenging, I've had to drop the built-in PETSc Newton solver for a custom one (which I probably should have done first).
+I will still use the built-in PETSc KSP solvers.
 
 #### Trust region
 

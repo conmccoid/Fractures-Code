@@ -39,10 +39,11 @@ def Newton():
 
     x, J = fp.createVecMat()  # Create empty vector and matrix
     res = x.duplicate()  # Create a duplicate for the residual vector
+    p = x.duplicate()  # Create a duplicate for the search direction
 
     SNESNewton = PETSc.SNES().create(fp.comm)
     SNESNewton.setFunction(fp.Fn, res)
-    # SNESNewton.setJacobian(fp.Jn, J) # THIS IS THE FUCKING PROBLEM
+    SNESNewton.setJacobian(fp.Jn, J) # THIS IS THE FUCKING PROBLEM
     SNESNewton.setType("newtonls")
     SNESNewton.getKSP().setType("gmres")
     SNESNewton.getKSP().setTolerances(rtol=1.0e-7, max_it=50)
@@ -54,6 +55,12 @@ def Newton():
     opts.destroy()
     SNESNewton.setSolution(x)
 
+    SNESKSP = PETSc.KSP().create(fp.comm)
+    fp.Jn(None, None, J, None)  # Set up the Jacobian matrix
+    SNESKSP.setOperators(J)
+    SNESKSP.setType("gmres")
+    SNESKSP.setTolerances(rtol=1.0e-7, max_it=50)
+
     for i_t, t in enumerate(loads):
         fp.updateBCs(t)
         energies[i_t, 0] = t
@@ -61,14 +68,18 @@ def Newton():
             print(f"-- Solving for t = {t:3.2f} --")
         
         iteration=0
-        SNESNewton.solve(None, x)  # Solve the nonlinear system
+        fp.Fn(None, x, res)  # Evaluate the function
+        SNESKSP.solve(res, p)  # Solve the linear system
+        x += p  # Update the solution vector
         fp.updateUV(x)  # Update the solution vectors
         error = fp.updateError()
         fp.monitor(iteration)
 
         while error > 1e-8:
             iteration += 1
-            SNESNewton.solve(None, x)
+            fp.Fn(None, x, res)
+            SNESKSP.solve(res, p)  # Solve the linear system
+            x += p  # Update the solution vector
             fp.updateUV(x)
             error = fp.updateError()
             fp.monitor(iteration)

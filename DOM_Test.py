@@ -80,7 +80,7 @@ def VariationalFormulation(u,v,domain):
 
     # elastic_energy = ( ufl.inner(eps(u),eps(u)) - v*ufl.div(u) ) * dx
     # dissipated_energy = v**2 * dx
-    elastic_energy = ufl.inner(ufl.grad(u),ufl.grad(u)) * dx
+    elastic_energy = ufl.inner(ufl.grad(u),ufl.grad(u)) * dx # - 0.1*v * ufl.div(u) * dx
     dissipated_energy = ufl.inner(ufl.grad(v),ufl.grad(v)) * dx
     total_energy = elastic_energy + dissipated_energy
 

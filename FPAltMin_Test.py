@@ -11,7 +11,7 @@ from pyvista.utilities.xvfb import start_xvfb
 from DOM_Test import domain, BCs, VariationalFormulation
 from Solvers import Elastic, Damage
 from PLOT_DamageState import plot_damage_state
-from NewtonSolverContext import NewtonSolverContext
+from PythonShells import JAltMin
 
 class FPAltMin:
     def __init__(self):
@@ -33,11 +33,7 @@ class FPAltMin:
         self.u_old = fem.Function(V_u)
         self.v_old = fem.Function(V_v)
 
-        self.PJ = NewtonSolverContext(
-            E_uv, E_vu,
-            self.elastic_solver, self.damage_solver,
-            self.u, self.v
-        )
+        self.PJ = JAltMin(self.elastic_solver, self.damage_solver, E_uv, E_vu)
 
         start_xvfb(wait=0.5)
     
@@ -51,7 +47,7 @@ class FPAltMin:
         global_size = b.getSize()
         J = PETSc.Mat().createPython(
             ((local_size, local_size), (global_size, global_size)),
-            NewtonSolverContext,
+            JAltMin,
             comm=self.comm
         )
         return b, J
