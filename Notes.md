@@ -100,6 +100,8 @@ Short term, especially ahead of SIAM/CAIMS, we'll patch something together in FE
 Due to the weird interplay between the nonlinearities, or just because Python shell matrices are challenging, I've had to drop the built-in PETSc Newton solver for a custom one (which I probably should have done first).
 I will still use the built-in PETSc KSP solvers.
 
+New workflow implemented but need to redo load balances on examples, esp. CTFM and L.
+
 #### Trust region
 
 If the Newton step lies closer to the fixed point iterate than it does to the previous iterate, then we can accept it.
