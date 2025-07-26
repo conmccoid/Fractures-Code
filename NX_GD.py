@@ -1,4 +1,4 @@
-from EX_GradientDamage import main as EX
+from EX2_GD import main as EX
 from mpi4py import MPI
 import matplotlib.pyplot as plt
 import csv
@@ -8,7 +8,7 @@ def main(WriteSwitch=False):
     comm = MPI.COMM_WORLD
     rank = comm.rank
 
-    output, energies=EX('AltMin')
+    energies=EX('AltMin')
     if WriteSwitch and rank==0:
         with open(f"output/TBL_GD_AltMin_energy.csv",'w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
@@ -22,25 +22,20 @@ def main(WriteSwitch=False):
     ax2[1].plot(energies[:,0],energies[:,2],label='AltMin')
     ax2[2].plot(energies[:,0],energies[:,3],label='AltMin')
     
-    linesearch_list=['fp','bt','tr','ls','2step']
+    linesearch_list=['fp','none','tr','ls','2step']
     # linesearch_list=['fp']
     for i, linesearch in enumerate(linesearch_list):
         
-        output, energies=EX('Newton',linesearch)
+        energies=EX('Newton',linesearch)
 
         if WriteSwitch and rank==0:
             with open(f"output/TBL_GD_Newton_{linesearch}_energy.csv",'w') as csv.file:
                 writer=csv.writer(csv.file,delimiter=',')
                 writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
                 writer.writerows(energies)
-            with open(f"output/TBL_GD_Newton_{linesearch}_its.csv",'w') as csv.file:
-                writer=csv.writer(csv.file,delimiter=',')
-                writer.writerow(['Quasi-static step','Inner iteration','Outer iteration'])
-                writer.writerows(output)
 
-        ax1[0].plot(output[:,0],output[:,2],label=f"{linesearch} outer iterations")
-        ax1[1].plot(output[:,0],output[:,1],label=f"{linesearch} inner iterations")
-        ax1[2].plot(output[:,0],output[:,1]/output[:,2],label=linesearch)
+        ax1[0].plot(energies[:,0],energies[:,4],label=f"{linesearch} outer iterations")
+        ax1[1].plot(energies[:,0],energies[:,5],label=f"{linesearch} inner iterations")
         
         ax2[0].plot(energies[:,0],energies[:,1],label=f"{linesearch}")
         ax2[1].plot(energies[:,0],energies[:,2],label=linesearch)

@@ -22,7 +22,7 @@ def main(WriteSwitch=False):
     ax2[1].plot(energies[:,0],energies[:,2],label='AltMin')
     ax2[2].plot(energies[:,0],energies[:,3],label='AltMin')
     
-    linesearch_list=['fp','bt','tr','ls','2step']
+    linesearch_list=['fp','none','tr','ls','2step']
     # linesearch_list=['none']
     for linesearch in linesearch_list:
         
