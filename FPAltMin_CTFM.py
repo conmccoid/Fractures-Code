@@ -22,7 +22,7 @@ class FPAltMin:
         V_u=self.u.function_space
         V_v=self.v.function_space
         bcs_u, bcs_v, self.t1, self.t2 = BCs(self.u,self.v,self.dom,cell_tags, facet_tags)
-        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, load_c, self.total_energy = VariationalFormulation(self.u,self.v,self.dom,cell_tags, facet_tags)
+        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, self.load_c, self.total_energy = VariationalFormulation(self.u,self.v,self.dom,cell_tags, facet_tags)
 
         elastic_problem, self.elastic_solver = Elastic(E_u, self.u, bcs_u, E_uu)
         damage_problem, self.damage_solver = Damage(E_v, self.v, bcs_v, E_vv)

@@ -6,7 +6,8 @@ from dolfinx import io
 
 def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
     fp = FPAltMin()
-    loads = np.linspace(0, 1, 10)  # Load values
+    loads = np.linspace(0, 1.5 * fp.load_c * 12 / 10, 20) # (load_c/E)*L
+    # first critical load is between 0.87 and 1.31
     if method=='AltMin':
         energies = np.zeros((loads.shape[0], 5))  # Initialize energies array
     else:

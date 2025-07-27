@@ -6,7 +6,7 @@ from dolfinx import io
 
 def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
     fp = FPAltMin()
-    loads = np.linspace(0, 1, 10)  # Load values
+    loads = np.linspace(0,0.6,81)
     if method=='AltMin':
         energies = np.zeros((loads.shape[0], 5))  # Initialize energies array
     else:
@@ -17,7 +17,7 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
     p = x.duplicate()  # Create a duplicate for the search direction
 
     if method!='AltMin':
-        SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50)  # Set up the KSP solver
+        SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=100)  # Set up the KSP solver
 
     if WriteSwitch:
         with io.XDMFFile(fp.comm, f"output/EX_Test_{method}_{linesearch}.xdmf","w") as xdmf:
@@ -42,7 +42,7 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
         error = fp.updateError()
         fp.monitor(iteration)
 
-        while error > 1e-4:
+        while error > 1e-6:
             iteration += 1
             fp.Fn(None, x, res)
             if method=='AltMin':
