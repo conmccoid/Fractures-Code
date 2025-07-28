@@ -31,6 +31,11 @@ def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, monitor='off'):
     opts.destroy()
     return ksp
 
+def DBTrick(res,p):
+    proj_NFP=p.dot(res)
+    DBSwitch=proj_NFP<0
+    return DBSwitch
+
 def customLineSearch(res, p, type, DBSwitch):
     if DBSwitch:
         p.setArray(-p.array)

@@ -1,7 +1,7 @@
 from FPAltMin_CTFM import FPAltMin
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, customLineSearch
+from Utilities import KSPsetUp, customLineSearch, DBTrick
 from dolfinx import io
 import csv
 
@@ -44,7 +44,7 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
             x += res  # Update the vector with the residual
         else:
             SNESKSP.solve(res, p)  # Solve the linear system
-            customLineSearch(res, p, type=linesearch, DBSwitch=False)
+            customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res,p))
             x += p  # Update the solution vector
             energies[i_t,5]=SNESKSP.getIterationNumber()
         fp.updateUV(x)  # Update the solution vectors
@@ -58,7 +58,7 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
                 x+=res
             else:
                 SNESKSP.solve(res, p)  # Solve the linear system
-                customLineSearch(res, p, type=linesearch, DBSwitch=False)
+                customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res,p))
                 x += p  # Update the solution vector
                 energies[i_t,5]+=SNESKSP.getIterationNumber()
             fp.updateUV(x)
