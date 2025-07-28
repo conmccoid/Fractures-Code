@@ -86,7 +86,7 @@ def plotNX(example,linesearch_list):
                               delimiter=',',skiprows=1)
         ax1[0].plot(energies[:,0],energies[:,4],label=f"{linesearch} outer iterations")
         ax1[1].plot(energies[:,0],energies[:,5],label=f"{linesearch} inner iterations")
-        ax1[2].plot(energies[:,0],energies[:,5]/energies[:,4],label=f"{linesearch} ave. inner per outer")
+        ax1[2].plot(energies[:,0],energies[:,5]/np.max(1,energies[:,4]),label=f"{linesearch} ave. inner per outer")
 
         ax2[0].plot(energies[:,0],energies[:,1],label=linesearch)
         ax2[1].plot(energies[:,0],energies[:,2],label=linesearch)
