@@ -1,5 +1,6 @@
 from petsc4py import PETSc
 import numpy as np
+import matplotlib.pyplot as plt
 
 def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, monitor='off'):
     """
@@ -31,7 +32,7 @@ def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, monitor='off'):
     return ksp
 
 def customLineSearch(res, p, type, DBSwitch):
-    if DBSwitch==True:
+    if DBSwitch:
         p.setArray(-p.array)
         p.assemblyBegin()
         p.assemblyEnd()
@@ -63,3 +64,47 @@ def customLineSearch(res, p, type, DBSwitch):
         p.setArray(res.array + dist_2step * (p - res).array)
         p.assemblyBegin()
         p.assemblyEnd()
+
+def plotNX(example,linesearch_list):
+    energies=np.loadtxt(f"output/TBL_{example}_AltMin_fp.csv",
+                        delimiter=',',skiprows=1)
+    
+    fig1, ax1=plt.subplots(1,3)
+    ax1[0].plot(energies[:,0],energies[:,4],label='AltMin iterations')
+    fig2, ax2=plt.subplots(1,3)
+    ax2[0].plot(energies[:,0],energies[:,1],label='AltMin')
+    ax2[1].plot(energies[:,0],energies[:,2],label='AltMin')
+    ax2[2].plot(energies[:,0],energies[:,3],label='AltMin')
+
+    for linesearch in linesearch_list:
+        energies = np.loadtxt(f"output/TBL_{example}_Newton_{linesearch}.csv",
+                              delimiter=',',skiprows=1)
+        ax1[0].plot(energies[:,0],energies[:,4],label=f"{linesearch} outer iterations")
+        ax1[1].plot(energies[:,0],energies[:,5],label=f"{linesearch} inner iterations")
+        ax1[2].plot(energies[:,0],energies[:,5]/energies[:,4],label=f"{linesearch} ave. inner per outer")
+
+        ax2[0].plot(energies[:,0],energies[:,1],label=linesearch)
+        ax2[1].plot(energies[:,0],energies[:,2],label=linesearch)
+        ax2[2].plot(energies[:,0],energies[:,3],label=linesearch)
+    
+    ax1[0].set_xlabel('t')
+    ax1[0].set_ylabel('Iterations')
+    ax1[0].legend()
+    ax1[1].set_xlabel('t')
+    ax1[1].set_ylabel('Iterations')
+    ax1[1].legend()
+    ax1[2].set_xlabel('t')
+    ax1[2].set_ylabel('Ave. inner / outer')
+    ax1[2].legend()
+    fig1.savefig(f"output/FIG_{example}_its.png")
+
+    ax2[0].set_xlabel('t')
+    ax2[0].set_ylabel('Elastic energy')
+    ax2[0].legend()
+    ax2[1].set_xlabel('t')
+    ax2[1].set_ylabel('Dissipated energy')
+    ax2[1].legend()
+    ax2[2].set_xlabel('t')
+    ax2[2].set_ylabel('Total energy')
+    ax2[2].legend()
+    fig2.savefig(f"output/FIG_{example}_energy.png")
