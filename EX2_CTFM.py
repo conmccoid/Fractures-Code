@@ -27,7 +27,10 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
             xdmf.write_mesh(fp.dom)
         with open(f"output/TBL_CTFM_{method}_{linesearch}.csv",'w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
-            writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
+            if method=='AltMin':
+                writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
+            else:
+                writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Outer iterations', 'Inner iterations'])
 
     for i_t, t in enumerate(loads):
         fp.updateBCs(t)

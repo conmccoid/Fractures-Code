@@ -1,67 +1,15 @@
 from EX2_Test import main as EX
-from mpi4py import MPI
-import matplotlib.pyplot as plt
-import csv
 import sys
+from Utilities import plotNX
 
-def main(WriteSwitch=False):
-    comm = MPI.COMM_WORLD
-    rank = comm.rank
+def main(linesearch_list=['fp','ls','2step'],WriteSwitch=False):
 
-    energies=EX('AltMin',WriteSwitch=True)
-    if WriteSwitch and rank==0:
-        with open(f"output/TBL_Test_AltMin_energy.csv",'w') as csv.file:
-            writer=csv.writer(csv.file,delimiter=',')
-            writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
-            writer.writerows(energies)
-    fig1, ax1=plt.subplots(1,2)
-    ax1[0].plot(energies[:,0],energies[:,4],label='AltMin iterations')
-        
-    fig2, ax2=plt.subplots(1,3)
-    ax2[0].plot(energies[:,0],energies[:,1],label='AltMin')
-    ax2[1].plot(energies[:,0],energies[:,2],label='AltMin')
-    ax2[2].plot(energies[:,0],energies[:,3],label='AltMin')
+    if WriteSwitch:
+        EX('AltMin',WriteSwitch=True)
+        for linesearch in linesearch_list:
+            EX('Newton',linesearch=linesearch,WriteSwitch=True)
     
-    linesearch_list=['fp','none','tr','ls','2step']
-    # linesearch_list=['none']
-    for linesearch in linesearch_list:
-        
-        energies=EX('Newton',linesearch,WriteSwitch=True)
-
-        if WriteSwitch and rank==0:
-            with open(f"output/TBL_Test_Newton_{linesearch}_energy.csv",'w') as csv.file:
-                writer=csv.writer(csv.file,delimiter=',')
-                writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
-                writer.writerows(energies)
-
-        ax1[0].plot(energies[:,0],energies[:,4],label=f"{linesearch} outer iterations")
-        ax1[1].plot(energies[:,0],energies[:,5],label=f"{linesearch} inner iterations")
-        
-        ax2[0].plot(energies[:,0],energies[:,1],label=f"{linesearch}")
-        ax2[1].plot(energies[:,0],energies[:,2],label=linesearch)
-        ax2[2].plot(energies[:,0],energies[:,3],label=linesearch)
-    
-    ax1[0].set_xlabel('t')
-    ax1[0].set_ylabel('Iterations')
-    ax1[0].legend()
-    ax1[1].set_xlabel('t')
-    ax1[1].set_ylabel('Iterations')
-    ax1[1].legend()
-    ax1[2].set_xlabel('t')
-    ax1[2].set_ylabel('Ave. inner / outer')
-    ax1[2].legend()
-    fig1.savefig(f"output/FIG_Test_its.png")
-
-    ax2[0].set_xlabel('t')
-    ax2[0].set_ylabel('Elastic energy')
-    ax2[0].legend()
-    ax2[1].set_xlabel('t')
-    ax2[1].set_ylabel('Dissipated energy')
-    ax2[1].legend()
-    ax2[2].set_xlabel('t')
-    ax2[2].set_ylabel('Total energy')
-    ax2[2].legend()
-    fig2.savefig(f"output/FIG_Test_energy.png")
+    plotNX('Test',linesearch_list)
 
 if __name__== "__main__":
     main()

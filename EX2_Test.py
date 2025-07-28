@@ -3,6 +3,7 @@ import numpy as np
 from petsc4py import PETSc
 from Utilities import KSPsetUp, customLineSearch
 from dolfinx import io
+import csv
 
 def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
     fp = FPAltMin()
@@ -22,6 +23,12 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
     if WriteSwitch:
         with io.XDMFFile(fp.comm, f"output/EX_Test_{method}_{linesearch}.xdmf","w") as xdmf:
             xdmf.write_mesh(fp.dom)
+        with open(f"output/TBL_Test_{method}_{linesearch}.csv",'w') as csv.file:
+            writer=csv.writer(csv.file,delimiter=',')
+            if method=='AltMin':
+                writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
+            else:
+                writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Outer iterations', 'Inner iterations'])
 
     for i_t, t in enumerate(loads):
         fp.updateBCs(t)
@@ -66,5 +73,10 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
             with io.XDMFFile(fp.comm, f"output/EX_Test_{method}_{linesearch}.xdmf","a") as xdmf:
                 xdmf.write_function(fp.u, t)
                 xdmf.write_function(fp.v, t)
+
+    if WriteSwitch:
+        with open(f"output/TBL_Test_{method}_{linesearch}.csv",'a') as csv.file:
+            writer=csv.writer(csv.file,delimiter=',')
+            writer.writerows(energies)
 
     return energies
