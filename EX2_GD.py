@@ -1,11 +1,11 @@
 from FPAltMin_GD import FPAltMin
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, customLineSearch
+from Utilities import KSPsetUp, customLineSearch, DBTrick
 from dolfinx import io
 import csv
 
-def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
+def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwitch=False):
     fp = FPAltMin()
     loads = np.linspace(0, 1, 10)  # Load values
     if method=='AltMin':
@@ -42,21 +42,21 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
             x += res  # Update the vector with the residual
         else:
             SNESKSP.solve(res, p)  # Solve the linear system
-            customLineSearch(res, p, type=linesearch, DBSwitch=False)
+            customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
             x += p  # Update the solution vector
             energies[i_t,5]=SNESKSP.getIterationNumber()
         fp.updateUV(x)  # Update the solution vectors
         error = fp.updateError()
         fp.monitor(iteration)
 
-        while error > 1e-4:
+        while error > 1e-4 and iteration < maxit:
             iteration += 1
             fp.Fn(None, x, res)
             if method=='AltMin':
                 x+=res
             else:
                 SNESKSP.solve(res, p)  # Solve the linear system
-                customLineSearch(res, p, type=linesearch, DBSwitch=False)
+                customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
                 x += p  # Update the solution vector
                 energies[i_t,5]+=SNESKSP.getIterationNumber()
             fp.updateUV(x)

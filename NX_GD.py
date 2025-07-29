@@ -2,7 +2,7 @@ from EX2_GD import main as EX
 from Utilities import plotNX
 import sys
 
-def main(linesearch_list=['fp','ls','2step'],WriteSwitch=False):
+def main(linesearch_list=['tr','ls','2step'],WriteSwitch=False):
 
     if WriteSwitch:
         EX('AltMin',WriteSwitch=True)
