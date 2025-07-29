@@ -20,7 +20,7 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
     p = x.duplicate()  # Create a duplicate for the search direction
 
     if method!='AltMin':
-        SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50)  # Set up the KSP solver
+        SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-5, max_it=100)  # Set up the KSP solver
 
     if WriteSwitch:
         with io.XDMFFile(fp.comm, f"output/EX_CTFM_{method}_{linesearch}.xdmf","w") as xdmf:
@@ -44,7 +44,7 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
             x += res  # Update the vector with the residual
         else:
             SNESKSP.solve(res, p)  # Solve the linear system
-            customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res,p))
+            customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
             x += p  # Update the solution vector
             energies[i_t,5]=SNESKSP.getIterationNumber()
         fp.updateUV(x)  # Update the solution vectors
@@ -58,7 +58,7 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
                 x+=res
             else:
                 SNESKSP.solve(res, p)  # Solve the linear system
-                customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res,p))
+                customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
                 x += p  # Update the solution vector
                 energies[i_t,5]+=SNESKSP.getIterationNumber()
             fp.updateUV(x)
