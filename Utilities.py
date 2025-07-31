@@ -2,7 +2,7 @@ from petsc4py import PETSc
 import numpy as np
 import matplotlib.pyplot as plt
 
-def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, monitor='off'):
+def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, restarts=50, monitor='off'):
     """
     Set up a KSP solver with specified parameters.
     
@@ -27,6 +27,7 @@ def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, monitor='off'):
         opts['ksp_converged_reason'] = None # Returns reason for convergence
         if monitor=='cond':
             opts['ksp_monitor_singular_value'] = None # Returns singular values
+    opts['ksp_gmres_restart']=restarts # number of iterations before restart
     ksp.setFromOptions()
     opts.destroy()
     return ksp

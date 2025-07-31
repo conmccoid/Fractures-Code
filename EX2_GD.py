@@ -18,7 +18,7 @@ def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwi
     p = x.duplicate()  # Create a duplicate for the search direction
 
     if method!='AltMin':
-        SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50)  # Set up the KSP solver
+        SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=1000, restarts=1000, monitor='on')  # Set up the KSP solver
 
     if WriteSwitch:
         with io.XDMFFile(fp.comm, f"output/EX_Test_{method}_{linesearch}.xdmf","w") as xdmf:
