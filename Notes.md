@@ -2,6 +2,8 @@
 
 ## Running examples
 
+### Fractures-code
+
 ```
 docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-code -p 8888:8888 dolfinx/lab:stable
 
@@ -9,6 +11,22 @@ docker exec -it phase-field bash
 
 pip install meshio
 mpirun -n 8 python EX.py
+```
+
+### firebreak
+
+```
+docker run --rm --name firebreak -it -v ${pwd}:/firebreak -w /firebreak -p 8888:8888 firedrakeproject/firedrake
+
+docker exec -it firebreak bash
+
+pip install meshio
+python3
+
+import meshio
+mesh=mesh.read("mesh.e")
+meshio.write("mesh.xdmf",mesh)
+exit()
 ```
 
 ## Coding up MSPEN
