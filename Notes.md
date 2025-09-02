@@ -24,10 +24,19 @@ pip install meshio
 python3
 
 import meshio
-mesh=mesh.read("mesh.e")
-meshio.write("mesh.xdmf",mesh)
+mesh=meshio.read("mesh.e")
+meshio.write("mesh.msh",mesh)
 exit()
 ```
+
+The firebreak repo has its own Dockerfile (slightly out of date, this has been mostly fixed).
+```
+docker build -t firebreak ./
+```
+
+#### Cubic backtracking
+Found in LineSearch.py, lines 55 onwards.
+Or is at line 97?
 
 ## Coding up MSPEN
 
