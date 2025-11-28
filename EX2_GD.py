@@ -1,7 +1,7 @@
 from FPAltMin_GD import FPAltMin
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, plotEnergyLandscape
+from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape, plotEnergyLandscape2D
 from dolfinx import io
 import csv
 
@@ -70,8 +70,15 @@ def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwi
             elif method=='CubicBacktracking': # Run cubic backtracking in situ
                 SNESKSP.solve(res, p)  # Solve the linear system
                 energies[i_t,5]=SNESKSP.getIterationNumber()
+                # plotEnergyLandscape2D(fp,x,res,p)
                 plotEnergyLandscape(fp,x,p)
                 p = CubicBacktracking(fp, x, p, res)
+                x += p # update solution
+            elif method=='Parallelogram':
+                SNESKSP.solve(res, p)  # Solve the linear system
+                energies[i_t,5]=SNESKSP.getIterationNumber()
+                plotEnergyLandscape2D(fp,x,res,p)
+                p = ParallelogramBacktracking(fp, x, res, p)
                 x += p # update solution
             else:
                 SNESKSP.solve(res, p)  # Solve the linear system

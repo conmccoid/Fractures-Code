@@ -101,9 +101,10 @@ def CubicBacktracking(fp,x,p,res):
     alpha = 1.0  # initial step length
     fp.updateGradF(x)
     gp = p.dot(fp.gradF)
-    print(f"Gradient dot search direction: {gp}")
     if gp>0: # DB trick
-        p=-p
+        p.scale(-1)
+        gp = p.dot(fp.gradF)
+        print("DB trick")
     elif gp==0: # local minimum, use AltMin step
         p=res
         print("*") # indicate AltMin step
@@ -158,17 +159,25 @@ def ParallelogramBacktracking(fp, x, q, p):
     - x: current solution
     - q: direction towards the AltMin step
     - p: direction towards the Newton step
+
+    nb: some kinks to work out, currently minimum could be found outside parallelogram
+    also not clear what to do when r==0
+    need to check if minimum lies outside, and if it does, then find the minimum on the boundary
     """
     # need to do DB trick first - does gradF need to have a commensurate sign change?
     fp.updateGradF(x)
     e=p.dot(fp.gradF)
     d=q.dot(fp.gradF)
-    # if e>0: # DB trick
-    #     p=-p
+    if e>0: # DB trick
+        pcopy=-p.copy()
+        e=pcopy.dot(fp.gradF)
+        print("DB trick")
+    else:
+        pcopy=p.copy()
     E0=fp.updateEnergies(x)[2]
     Eq=fp.updateEnergies(x+q)[2]
-    Ep=fp.updateEnergies(x+p)[2]
-    Epq=fp.updateEnergies(x+p+q)[2]
+    Ep=fp.updateEnergies(x+pcopy)[2]
+    Epq=fp.updateEnergies(x+pcopy+q)[2]
     f=E0
     c=Ep-e-f
     a=Eq-d-f
@@ -176,7 +185,10 @@ def ParallelogramBacktracking(fp, x, q, p):
     r=4*a*c-b**2
     alpha = (-2*c*d + b*e)/r
     beta = (-2*a*e + b*d)/r
-    v = alpha*q + beta*p
+    v=q.copy()
+    v.scale(alpha)
+    v.axpy(beta,pcopy)
+    print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
     return v
 
 def plotEnergyLandscape(fp, x, p):
@@ -192,17 +204,10 @@ def plotEnergyLandscape(fp, x, p):
     E0=fp.updateEnergies(x) # initial energies
     alpha_list=np.linspace(-1,1,101)
     energies_list=alpha_list.copy()
-    # elastic_energies=alpha_list.copy()
-    # dissipated_energies=alpha_list.copy()
     for j in range(0,101):
         xcopy=x.copy()
         xcopy.axpy(alpha_list[j],p)
-        temp=fp.updateEnergies(xcopy)
-        # elastic_energies[j]=temp[0]
-        # dissipated_energies[j]=temp[1]
-        energies_list[j]=temp[2] # total energy
-    # plt.plot(alpha_list,elastic_energies-E0[0],'r',label='Elastic energy')
-    # plt.plot(alpha_list,dissipated_energies-E0[1],'g',label='Dissipated energy')
+        energies_list[j]=fp.updateEnergies(xcopy)[2] # total energy
     plt.plot(alpha_list,energies_list-E0[2],'b',label='Total energy')
     plt.xlabel('Step length alpha')
     plt.ylabel('Total Energy')
@@ -210,7 +215,7 @@ def plotEnergyLandscape(fp, x, p):
 
 def plotEnergyLandscape2D(fp,x,res,p):
     """
-    Plot the energy landscape in a parallelogram bounded by the AltMin and Newton steps
+    Plot the energy landscape in a parallelogram bounded by the AltMin and Newton steps (both + and -)
 
     Parameters:
     - fp: function implementing the example
@@ -218,19 +223,22 @@ def plotEnergyLandscape2D(fp,x,res,p):
     - res: AltMin step
     - p: Newton step
     """
-    fp.updateGradF(x)
-    if p.dot(fp.gradF)>0:
-        p=-p
     E0=fp.updateEnergies(x)[2]
-    alpha=np.linspace(0,1,101)
-    beta=alpha.copy()
-    energies=np.zeros([100,100])
-    for i in range(0,101):
-        for j in range(0,101):
-            energies[i][j]=fp.updateEnergies(x+alpha[i]*res+beta[j]*p)[2]
-    plt.contourf(energies,alpha,beta)
-    plt.xlabel('AltMin')
-    plt.ylabel('MSPIN')
+    nn=11
+    alpha=np.linspace(0,1,nn)
+    beta=np.linspace(-1,1,2*nn-1)
+    energies=np.zeros([nn,2*nn-1])
+    for i in range(0,nn):
+        for j in range(0,2*nn-1):
+            xcopy=x.copy()
+            xcopy.axpy(alpha[i],res)
+            xcopy.axpy(beta[j],p)
+            energies[i][j]=fp.updateEnergies(xcopy)[2]
+            xcopy.destroy()
+    plt.contourf(beta, alpha, energies - E0)
+    plt.ylabel('AltMin')
+    plt.xlabel('MSPIN')
+    plt.colorbar(label='Total Energy')
     plt.show()
 
 def plotNX(example,linesearch_list):
