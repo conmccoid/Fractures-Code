@@ -147,3 +147,22 @@ Take a step to the fixed point iterate, then another step of the same length tow
 #### Basic shear?
 
 #### L-shaped
+
+## Cubic backtracking implementation
+
+I'm now mapping out the energy landscape along the search directions, either Newton or fixed point.
+However, this is showing that the initial step at each new load for AltMin actually increases the energy before optimizing.
+Possible explanations:
+- something isn't updating before the landscape is plotted
+- there's a bug when solving the AltMin process
+- something isn't assembled at the right time
+- a previous load or solution is being plotted
+- to satisfy the boundary conditions, energy must first increase (this HAS to be it!)
+
+AltMin is giving bad steps when used as a fallback for cubic backtracking.
+I'm concerned that either the boundary conditions are suddenly not satisfied as part of cubic backtracking, or something within the cubic backtracking algorithm messes with the AltMin step.
+
+Important notes:
+- need to enforce boundary conditions before entering into Newton steps
+- often the energy for the AltMin step will be lower even after cubic backtracking, so it's probably a good idea to switch when that happens
+- each step of cubic backtracking requires a handful of FLOPs and an evaluation of the objective function (energies); this means it's fairly cheap, so the only serious additional costs of MSPIN over AltMin will be the Newton KSP solve

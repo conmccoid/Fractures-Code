@@ -35,6 +35,10 @@ class FPAltMin:
 
         self.PJ = JAltMin(self.elastic_solver, self.damage_solver, E_uv, E_vu)
 
+        self.Eu = fem.form(E_u)
+        self.Ev = fem.form(E_v)
+        self.gradF = PETSc.Vec().createNest([self.u.x.petsc_vec.duplicate(), self.v.x.petsc_vec.duplicate()], None, self.comm) # I think there's a better way to initialize this using Eu and Ev
+
         start_xvfb(wait=0.5)
     
     def createVecMat(self):
@@ -82,6 +86,16 @@ class FPAltMin:
             op=MPI.SUM
         )
         return energies
+    
+    def updateGradF(self,x):
+        self.updateUV(x)
+        Eu, Ev = self.gradF.getNestSubVecs()
+        with Eu.localForm() as f_local:
+            f_local.set(0.0)
+        with Ev.localForm() as f_local:
+            f_local.set(0.0)
+        petsc.assemble_vector(Eu, self.Eu)
+        petsc.assemble_vector(Ev, self.Ev)
 
     def Fn(self, snes, x, F):
         self.updateUV(x)

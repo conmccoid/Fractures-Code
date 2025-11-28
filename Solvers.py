@@ -47,6 +47,8 @@ def Damage(E, v, bcs, J):
 def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_iterations=1000, monitor=True):
     v_old = fem.Function(v.function_space)
     v_old.x.array[:] = v.x.array
+    u_old = fem.Function(u.function_space)
+    u_old.x.array[:] = u.x.array
 
     for iteration in range(max_iterations):
         # Solve for displacement
@@ -58,10 +60,11 @@ def alternate_minimization(u, v, elastic_solver, damage_solver, atol=1e-4, max_i
         damage_solver.solve(None, v.x.petsc_vec)
 
         # Check error and update
-        L2_error = ufl.inner(v - v_old, v - v_old) * ufl.dx
+        L2_error = ufl.inner(v - v_old, v - v_old) * ufl.dx + ufl.inner(u - u_old, u - u_old) * ufl.dx
         error_L2 = np.sqrt(MPI.COMM_WORLD.allreduce(fem.assemble_scalar(fem.form(L2_error)), op=MPI.SUM))
 
         v_old.x.array[:] = v.x.array
+        u_old.x.array[:] = u.x.array
 
         if monitor:
             if MPI.COMM_WORLD.rank==0:

@@ -1,7 +1,7 @@
 from FPAltMin_GD import FPAltMin
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, customLineSearch, DBTrick
+from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, plotEnergyLandscape
 from dolfinx import io
 import csv
 
@@ -18,7 +18,7 @@ def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwi
     p = x.duplicate()  # Create a duplicate for the search direction
 
     if method!='AltMin':
-        SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=1000, restarts=1000, monitor='on')  # Set up the KSP solver
+        SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=1000, restarts=1000, monitor='off')  # Set up the KSP solver
 
     if WriteSwitch:
         with io.XDMFFile(fp.comm, f"output/EX_Test_{method}_{linesearch}.xdmf","w") as xdmf:
@@ -38,22 +38,41 @@ def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwi
         
         iteration=0
         fp.Fn(None, x, res)  # Evaluate the function
-        if method=='AltMin':
-            x += res  # Update the vector with the residual
-        else:
-            SNESKSP.solve(res, p)  # Solve the linear system
-            customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
-            x += p  # Update the solution vector
-            energies[i_t,5]=SNESKSP.getIterationNumber()
+        # if method=='AltMin':
+        #     plotEnergyLandscape(fp,x,res) # temporary
+        #     print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
+        #     x += res  # Update the vector with the residual
+        # elif method=='CubicBacktracking': # Run cubic backtracking in situ
+        #     SNESKSP.solve(res, p)  # Solve the linear system
+        #     energies[i_t,5]=SNESKSP.getIterationNumber()
+        #     CubicBacktracking(fp, x, p, res)
+        #     x += p # update solution
+        # else:
+        #     SNESKSP.solve(res, p)  # Solve the linear system
+        #     customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
+        #     x += p  # Update the solution vector
+        #     energies[i_t,5]=SNESKSP.getIterationNumber()
+        plotEnergyLandscape(fp,x,res) # temporary
+        print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
+        x+=res
         fp.updateUV(x)  # Update the solution vectors
         error = fp.updateError()
         fp.monitor(iteration)
+        print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
 
         while error > 1e-4 and iteration < maxit:
             iteration += 1
             fp.Fn(None, x, res)
             if method=='AltMin':
+                plotEnergyLandscape(fp,x,res) # temporary
+                print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
                 x+=res
+            elif method=='CubicBacktracking': # Run cubic backtracking in situ
+                SNESKSP.solve(res, p)  # Solve the linear system
+                energies[i_t,5]=SNESKSP.getIterationNumber()
+                plotEnergyLandscape(fp,x,p)
+                p = CubicBacktracking(fp, x, p, res)
+                x += p # update solution
             else:
                 SNESKSP.solve(res, p)  # Solve the linear system
                 customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
