@@ -185,10 +185,96 @@ def ParallelogramBacktracking(fp, x, q, p):
     r=4*a*c-b**2
     alpha = (-2*c*d + b*e)/r
     beta = (-2*a*e + b*d)/r
-    v=q.copy()
-    v.scale(alpha)
-    v.axpy(beta,pcopy)
+    if (alpha>0) & (alpha<1) & (beta>0) & (beta<1):
+        v=q.copy()
+        v.scale(alpha)
+        v.axpy(beta,pcopy)
+    else:
+        print("Minimum outside parallelogram, finding minimum on boundary")
+        E_list=[]
+        v_list=[]
+        beta_list=[]
+        alpha_list=[]
+        # beta=0 minimum
+        alpha= -d/(2*a)
+        beta_list.append(0)
+        if alpha<0:
+            v_list.append(0)
+            E_list.append(E0)
+            alpha_list.append(0)
+        elif alpha>1:
+            v_list.append(q)
+            E_list.append(Eq)
+            alpha_list.append(1)
+        else:
+            v=q.copy()
+            v.scale(alpha)
+            E_list.append(fp.updateEnergies(x+v)[2])
+            v_list.append(v)
+            alpha_list.append(alpha)
+        
+        # alpha=0
+        beta= -e/(2*c)
+        alpha_list.append(0)
+        if beta<0:
+            v_list.append(0)
+            E_list.append(E0)
+            beta_list.append(0)
+        elif beta>1:
+            v_list.append(pcopy)
+            E_list.append(Ep)
+            beta_list.append(1)
+        else:
+            v=pcopy.copy()
+            v.scale(beta)
+            E_list.append(fp.updateEnergies(x+v)[2])
+            v_list.append(v)
+            beta_list.append(beta)
+        
+        # beta=1
+        alpha= (-d - b)/(2*a)
+        beta_list.append(1)
+        if alpha<0:
+            v_list.append(pcopy)
+            E_list.append(Ep)
+            alpha_list.append(0)
+        elif alpha>1:
+            v_list.append(q + pcopy)
+            E_list.append(Epq)
+            alpha_list.append(1)
+        else:
+            v=q.copy()
+            v.scale(alpha)
+            v.axpy(1,pcopy)
+            E_list.append(fp.updateEnergies(x+v)[2])
+            v_list.append(v)
+            alpha_list.append(alpha)
+        
+        # alpha=1
+        beta= (-e - b)/(2*c)
+        alpha_list.append(1)
+        if beta<0:
+            v_list.append(q)
+            E_list.append(Eq)
+            beta_list.append(0)
+        elif beta>1:
+            v_list.append(q + pcopy)
+            E_list.append(Epq)
+            beta_list.append(1)
+        else:
+            v=q.copy()
+            v.scale(1)
+            v.axpy(beta,pcopy)
+            E_list.append(fp.updateEnergies(x+v)[2])
+            v_list.append(v)
+            beta_list.append(beta)
+
+        min_index=np.argmin(E_list)
+        v=v_list[min_index]
+        alpha=alpha_list[min_index]
+        beta=beta_list[min_index]
     print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
+    plotEnergyLandscape2D(fp,x,q,pcopy,[beta, alpha])
     return v
 
 def plotEnergyLandscape(fp, x, p):
@@ -213,7 +299,7 @@ def plotEnergyLandscape(fp, x, p):
     plt.ylabel('Total Energy')
     plt.show()
 
-def plotEnergyLandscape2D(fp,x,res,p):
+def plotEnergyLandscape2D(fp,x,res,p,target=None):
     """
     Plot the energy landscape in a parallelogram bounded by the AltMin and Newton steps (both + and -)
 
@@ -236,6 +322,8 @@ def plotEnergyLandscape2D(fp,x,res,p):
             energies[i][j]=fp.updateEnergies(xcopy)[2]
             xcopy.destroy()
     plt.contourf(beta, alpha, energies - E0)
+    if target is not None:
+        plt.plot(target[0], target[1], 'rx', markersize=10, label='Chosen step')
     plt.ylabel('AltMin')
     plt.xlabel('MSPIN')
     plt.colorbar(label='Total Energy')
