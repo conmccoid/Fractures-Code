@@ -34,9 +34,14 @@ The firebreak repo has its own Dockerfile (slightly out of date, this has been m
 docker build -t firebreak ./
 ```
 
-#### Cubic backtracking
-Found in LineSearch.py, lines 55 onwards.
-Or is at line 97?
+### ParaView: warp and colour
+
+XDMF outputs from the examples store data in blocks.
+To warp by displacement but colour by damage:
+1. Extract Block filter on main data; do this twice, once for each block of data.
+2. Append Attributes filter on both extracted blocks.
+3. Warp by Vector filter on appended blocks.
+4. Change the Coloring variable from the dropdown to the scalar block.
 
 ## Coding up MSPEN
 

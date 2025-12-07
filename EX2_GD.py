@@ -77,8 +77,7 @@ def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwi
             elif method=='Parallelogram':
                 SNESKSP.solve(res, p)  # Solve the linear system
                 energies[i_t,5]=SNESKSP.getIterationNumber()
-                v = ParallelogramBacktracking(fp, x, res, p)
-                # plotEnergyLandscape2D(fp,x,res,p,v)
+                v = ParallelogramBacktracking(fp, x, res, p, PlotSwitch=PlotSwitch)
                 x += v # update solution
             else:
                 SNESKSP.solve(res, p)  # Solve the linear system

@@ -150,7 +150,7 @@ def CubicBacktracking(fp,x,p,res):
     xcopy.destroy()
     return p
 
-def ParallelogramBacktracking(fp, x, q, p):
+def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     """
     Find the minimum of a quadratic 2D polynomial that interpolates the residual in a parallelogram
 
@@ -273,8 +273,9 @@ def ParallelogramBacktracking(fp, x, q, p):
         v=v_list[min_index]
         alpha=alpha_list[min_index]
         beta=beta_list[min_index]
-    print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
-    plotEnergyLandscape2D(fp,x,q,pcopy,[beta, alpha])
+    if PlotSwitch:
+        print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
+        plotEnergyLandscape2D(fp,x,q,pcopy,[beta, alpha])
     return v
 
 def plotEnergyLandscape(fp, x, p):
