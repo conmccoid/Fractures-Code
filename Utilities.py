@@ -191,10 +191,10 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         v.axpy(beta,pcopy)
     else:
         print("Minimum outside parallelogram, finding minimum on boundary")
-        E_list=[]
-        v_list=[]
-        beta_list=[]
-        alpha_list=[]
+        E_list=[Eq, Ep, Epq]
+        v_list=[q, pcopy, q + pcopy]
+        beta_list=[0, 1, 1]
+        alpha_list=[1, 0, 1]
         # beta=0 minimum
         alpha= -d/(2*a)
         beta_list.append(0)
