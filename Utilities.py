@@ -185,94 +185,113 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     r=4*a*c-b**2
     alpha = (-2*c*d + b*e)/r
     beta = (-2*a*e + b*d)/r
+    E_list=[Eq, Ep, Epq]
+    v_list=[q, pcopy, q + pcopy]
+    beta_list=[0, 1, 1]
+    alpha_list=[1, 0, 1]
+    step_list=["AltMin", "Newton", "Both"]
     if (alpha>0) & (alpha<1) & (beta>0) & (beta<1):
         v=q.copy()
         v.scale(alpha)
         v.axpy(beta,pcopy)
+        v_list.append(v)
+        alpha_list.append(alpha)
+        beta_list.append(beta)
+        E_list.append(fp.updateEnergies(x+v)[2])
+        step_list.append("Parallelogram interior")
     else:
         print("Minimum outside parallelogram, finding minimum on boundary")
-        E_list=[Eq, Ep, Epq]
-        v_list=[q, pcopy, q + pcopy]
-        beta_list=[0, 1, 1]
-        alpha_list=[1, 0, 1]
-        # beta=0 minimum
-        alpha= -d/(2*a)
-        beta_list.append(0)
-        if alpha<0:
-            v_list.append(0)
-            E_list.append(E0)
-            alpha_list.append(0)
-        elif alpha>1:
-            v_list.append(q)
-            E_list.append(Eq)
-            alpha_list.append(1)
-        else:
-            v=q.copy()
-            v.scale(alpha)
-            E_list.append(fp.updateEnergies(x+v)[2])
-            v_list.append(v)
-            alpha_list.append(alpha)
-        
-        # alpha=0
-        beta= -e/(2*c)
+    # beta=0 minimum
+    alpha= -d/(2*a)
+    beta_list.append(0)
+    if alpha<0:
+        v_list.append(0)
+        E_list.append(E0)
         alpha_list.append(0)
-        if beta<0:
-            v_list.append(0)
-            E_list.append(E0)
-            beta_list.append(0)
-        elif beta>1:
-            v_list.append(pcopy)
-            E_list.append(Ep)
-            beta_list.append(1)
-        else:
-            v=pcopy.copy()
-            v.scale(beta)
-            E_list.append(fp.updateEnergies(x+v)[2])
-            v_list.append(v)
-            beta_list.append(beta)
-        
-        # beta=1
-        alpha= (-d - b)/(2*a)
-        beta_list.append(1)
-        if alpha<0:
-            v_list.append(pcopy)
-            E_list.append(Ep)
-            alpha_list.append(0)
-        elif alpha>1:
-            v_list.append(q + pcopy)
-            E_list.append(Epq)
-            alpha_list.append(1)
-        else:
-            v=q.copy()
-            v.scale(alpha)
-            v.axpy(1,pcopy)
-            E_list.append(fp.updateEnergies(x+v)[2])
-            v_list.append(v)
-            alpha_list.append(alpha)
-        
-        # alpha=1
-        beta= (-e - b)/(2*c)
+        step_list.append("Origin")
+    elif alpha>1:
+        v_list.append(q)
+        E_list.append(Eq)
         alpha_list.append(1)
-        if beta<0:
-            v_list.append(q)
-            E_list.append(Eq)
-            beta_list.append(0)
-        elif beta>1:
-            v_list.append(q + pcopy)
-            E_list.append(Epq)
-            beta_list.append(1)
-        else:
-            v=q.copy()
-            v.scale(1)
-            v.axpy(beta,pcopy)
-            E_list.append(fp.updateEnergies(x+v)[2])
-            v_list.append(v)
-            beta_list.append(beta)
+        step_list.append("AltMin")
+    else:
+        v=q.copy()
+        v.scale(alpha)
+        E_list.append(fp.updateEnergies(x+v)[2])
+        v_list.append(v)
+        alpha_list.append(alpha)
+        step_list.append("AltMin linesearch")
+    
+    # alpha=0
+    beta= -e/(2*c)
+    alpha_list.append(0)
+    if beta<0:
+        v_list.append(0)
+        E_list.append(E0)
+        beta_list.append(0)
+        step_list.append("Origin")
+    elif beta>1:
+        v_list.append(pcopy)
+        E_list.append(Ep)
+        beta_list.append(1)
+        step_list.append("Newton")
+    else:
+        v=pcopy.copy()
+        v.scale(beta)
+        E_list.append(fp.updateEnergies(x+v)[2])
+        v_list.append(v)
+        beta_list.append(beta)
+        step_list.append("Newton linesearch")
+    
+    # beta=1
+    alpha= (-d - b)/(2*a)
+    beta_list.append(1)
+    if alpha<0:
+        v_list.append(pcopy)
+        E_list.append(Ep)
+        alpha_list.append(0)
+        step_list.append("Newton")
+    elif alpha>1:
+        v_list.append(q + pcopy)
+        E_list.append(Epq)
+        alpha_list.append(1)
+        step_list.append("Both")
+    else:
+        v=q.copy()
+        v.scale(alpha)
+        v.axpy(1,pcopy)
+        E_list.append(fp.updateEnergies(x+v)[2])
+        v_list.append(v)
+        alpha_list.append(alpha)
+        step_list.append("Newton + AltMin linesearch")
+    
+    # alpha=1
+    beta= (-e - b)/(2*c)
+    alpha_list.append(1)
+    if beta<0:
+        v_list.append(q)
+        E_list.append(Eq)
+        beta_list.append(0)
+        step_list.append("AltMin")
+    elif beta>1:
+        v_list.append(q + pcopy)
+        E_list.append(Epq)
+        beta_list.append(1)
+        step_list.append("Both")
+    else:
+        v=q.copy()
+        v.scale(1)
+        v.axpy(beta,pcopy)
+        E_list.append(fp.updateEnergies(x+v)[2])
+        v_list.append(v)
+        beta_list.append(beta)
+        step_list.append("AltMin + Newton linesearch")
 
-        min_index=np.argmin(E_list)
-        v=v_list[min_index]
-        alpha=alpha_list[min_index]
-        beta=beta_list[min_index]
+    min_index=np.argmin(E_list)
+    v=v_list[min_index]
+    alpha=alpha_list[min_index]
+    beta=beta_list[min_index]
+    print(f"Chosen step: {step_list[min_index]}, Energy: {E_list[min_index]}")
     if PlotSwitch:
         print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
         plotEnergyLandscape2D(fp,x,q,pcopy,[beta, alpha])
@@ -330,30 +349,26 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None):
     plt.colorbar(label='Total Energy')
     plt.show()
 
-def plotNX(example,linesearch_list):
+def plotNX(example,id_list,en_list):
     marker= ['o', 's', 'D', '^', 'v']
     color= ['g', 'r', 'c', 'm', 'y']
     ms=5
-    energies=np.loadtxt(f"output/TBL_{example}_AltMin_fp.csv",
-                        delimiter=',',skiprows=1)
-    
     fig1, ax1=plt.subplots(1,3)
-    ax1[0].plot(energies[:,0],energies[:,4],label='AltMin',ls='--',marker='.',color='b',ms=ms)
     fig2, ax2=plt.subplots(1,3)
-    ax2[0].plot(energies[:,0],energies[:,1],label='AltMin',ls='--',marker='.',color='b',ms=ms)
-    ax2[1].plot(energies[:,0],energies[:,2],label='AltMin',ls='--',marker='.',color='b',ms=ms)
-    ax2[2].plot(energies[:,0],energies[:,3],label='AltMin',ls='--',marker='.',color='b',ms=ms)
 
-    for i, linesearch in enumerate(linesearch_list):
-        energies = np.loadtxt(f"output/TBL_{example}_Newton_{linesearch}.csv",
+    for i, identifier in enumerate(id_list):
+        if en_list==None:
+            energies = np.loadtxt(f"output/TBL_{example}_{identifier}.csv",
                               delimiter=',',skiprows=1)
-        ax1[0].plot(energies[:,0],energies[:,4],label=linesearch,ls='--',marker=marker[i],color=color[i],ms=ms)
-        ax1[1].plot(energies[:,0],energies[:,5],label=linesearch,ls='--',marker=marker[i],color=color[i],ms=ms)
-        ax1[2].plot(energies[:,0],energies[:,5]/np.maximum(1,energies[:,4]),label=linesearch,ls='--',marker=marker[i],color=color[i],ms=ms)
+        else:
+            energies = en_list[i]
+        ax1[0].plot(energies[:,0],energies[:,4],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+        ax1[1].plot(energies[:,0],energies[:,5],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+        ax1[2].plot(energies[:,0],energies[:,5]/np.maximum(1,energies[:,4]),label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
 
-        ax2[0].plot(energies[:,0],energies[:,1],label=linesearch,ls='--',marker=marker[i],color=color[i],ms=ms)
-        ax2[1].plot(energies[:,0],energies[:,2],label=linesearch,ls='--',marker=marker[i],color=color[i],ms=ms)
-        ax2[2].plot(energies[:,0],energies[:,3],label=linesearch,ls='--',marker=marker[i],color=color[i],ms=ms)
+        ax2[0].plot(energies[:,0],energies[:,1],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+        ax2[1].plot(energies[:,0],energies[:,2],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+        ax2[2].plot(energies[:,0],energies[:,3],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
     
     ax1[0].set_xlabel('t')
     ax1[0].set_ylabel('Iterations')
