@@ -5,13 +5,14 @@ from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, Pa
 from dolfinx import io
 import csv
 
-def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwitch=False):
+def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwitch=False):
+    if linesearch is None:
+        identifier=f"{method}"
+    else:
+        identifier=f"{method}_{linesearch}"
     fp = FPAltMin()
     loads = np.linspace(0, 1, 10)  # Load values
-    if method=='AltMin':
-        energies = np.zeros((loads.shape[0], 5))  # Initialize energies array
-    else:
-        energies = np.zeros((loads.shape[0], 6))
+    energies = np.zeros((loads.shape[0], 6)) # intialize energy storage
 
     x, J = fp.createVecMat()  # Create empty vector and matrix
     res = x.duplicate()  # Create a duplicate for the residual vector
@@ -21,9 +22,9 @@ def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwi
         SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=1000, restarts=1000, monitor='off')  # Set up the KSP solver
 
     if WriteSwitch:
-        with io.XDMFFile(fp.comm, f"output/EX_Test_{method}_{linesearch}.xdmf","w") as xdmf:
+        with io.XDMFFile(fp.comm, f"output/EX_Test_{identifier}.xdmf","w") as xdmf:
             xdmf.write_mesh(fp.dom)
-        with open(f"output/TBL_GD_{method}_{linesearch}.csv",'w') as csv.file:
+        with open(f"output/TBL_GD_{identifier}.csv",'w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             if method=='AltMin':
                 writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
@@ -52,26 +53,27 @@ def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwi
         #     customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
         #     x += p  # Update the solution vector
         #     energies[i_t,5]=SNESKSP.getIterationNumber()
-        plotEnergyLandscape(fp,x,res) # temporary
-        print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
+        if PlotSwitch:
+            plotEnergyLandscape(fp,x,res) # temporary
+            print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
         x+=res
         fp.updateUV(x)  # Update the solution vectors
         error = fp.updateError()
         fp.monitor(iteration)
-        print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
 
         while error > 1e-4 and iteration < maxit:
             iteration += 1
             fp.Fn(None, x, res)
             if method=='AltMin':
-                plotEnergyLandscape(fp,x,res) # temporary
-                print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
+                if PlotSwitch:
+                    plotEnergyLandscape(fp,x,res) # temporary
+                    print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
                 x+=res
             elif method=='CubicBacktracking': # Run cubic backtracking in situ
                 SNESKSP.solve(res, p)  # Solve the linear system
                 energies[i_t,5]=SNESKSP.getIterationNumber()
-                # plotEnergyLandscape2D(fp,x,res,p)
-                plotEnergyLandscape(fp,x,p)
+                if PlotSwitch:
+                    plotEnergyLandscape(fp,x,p)
                 p = CubicBacktracking(fp, x, p, res)
                 x += p # update solution
             elif method=='Parallelogram':
@@ -95,13 +97,13 @@ def main(method='AltMin', linesearch='fp', maxit=100, WriteSwitch=False, PlotSwi
             fp.plot(x=x)
 
         if WriteSwitch:
-            with io.XDMFFile(fp.comm, f"output/EX_Test_{method}_{linesearch}.xdmf","a") as xdmf:
+            with io.XDMFFile(fp.comm, f"output/EX_Test_{identifier}.xdmf","a") as xdmf:
                 xdmf.write_function(fp.u, t)
                 xdmf.write_function(fp.v, t)
     
     if WriteSwitch:
-        with open(f"output/TBL_GD_{method}_{linesearch}.csv",'a') as csv.file:
+        with open(f"output/TBL_GD_{identifier}.csv",'a') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             writer.writerows(energies)
 
-    return energies
+    return energies, identifier
