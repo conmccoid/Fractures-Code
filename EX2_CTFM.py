@@ -1,11 +1,15 @@
 from FPAltMin_CTFM import FPAltMin
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, customLineSearch, DBTrick
+from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape
 from dolfinx import io
 import csv
 
 def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
+    if linesearch is None:
+        identifier=f"{method}"
+    else:
+        identifier=f"{method}_{linesearch}"
     fp = FPAltMin()
     loads = np.linspace(0, 1.5 * fp.load_c * 12 / 10, 20) # (load_c/E)*L
     # first critical load is between 0.87 and 1.31 (but sometimes up to 1.7?)
@@ -23,9 +27,9 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
         SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-5, max_it=100)  # Set up the KSP solver
 
     if WriteSwitch:
-        with io.XDMFFile(fp.comm, f"output/EX_CTFM_{method}_{linesearch}.xdmf","w") as xdmf:
+        with io.XDMFFile(fp.comm, f"output/EX_CTFM_{identifier}.xdmf","w") as xdmf:
             xdmf.write_mesh(fp.dom)
-        with open(f"output/TBL_CTFM_{method}_{linesearch}.csv",'w') as csv.file:
+        with open(f"output/TBL_CTFM_{identifier}.csv",'w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
             if method=='AltMin':
                 writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
@@ -40,13 +44,17 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
         
         iteration=0
         fp.Fn(None, x, res)  # Evaluate the function
-        if method=='AltMin':
-            x += res  # Update the vector with the residual
-        else:
-            SNESKSP.solve(res, p)  # Solve the linear system
-            customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
-            x += p  # Update the solution vector
-            energies[i_t,5]=SNESKSP.getIterationNumber()
+        # if method=='AltMin':
+        #     x += res  # Update the vector with the residual
+        # else:
+        #     SNESKSP.solve(res, p)  # Solve the linear system
+        #     customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
+        #     x += p  # Update the solution vector
+        #     energies[i_t,5]=SNESKSP.getIterationNumber()
+        if PlotSwitch:
+            plotEnergyLandscape(fp,x,res) # temporary
+            print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
+        x+=res
         fp.updateUV(x)  # Update the solution vectors
         error = fp.updateError()
         fp.monitor(iteration)
@@ -56,6 +64,18 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
             fp.Fn(None, x, res)
             if method=='AltMin':
                 x+=res
+            elif method=='CubicBacktracking': # Run cubic backtracking in situ
+                SNESKSP.solve(res, p)  # Solve the linear system
+                energies[i_t,5]=SNESKSP.getIterationNumber()
+                if PlotSwitch:
+                    plotEnergyLandscape(fp,x,p)
+                p = CubicBacktracking(fp, x, p, res)
+                x += p # update solution
+            elif method=='Parallelogram':
+                SNESKSP.solve(res, p)  # Solve the linear system
+                energies[i_t,5]=SNESKSP.getIterationNumber()
+                v = ParallelogramBacktracking(fp, x, res, p, PlotSwitch=PlotSwitch)
+                x += v # update solution
             else:
                 SNESKSP.solve(res, p)  # Solve the linear system
                 customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
@@ -81,4 +101,4 @@ def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
             writer=csv.writer(csv.file,delimiter=',')
             writer.writerows(energies)
 
-    return energies
+    return energies, identifier

@@ -1,7 +1,7 @@
 from FPAltMin_GD import FPAltMin
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape, plotEnergyLandscape2D
+from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape
 from dolfinx import io
 import csv
 
