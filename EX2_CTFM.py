@@ -5,7 +5,7 @@ from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, Pa
 from dolfinx import io
 import csv
 
-def main(method='AltMin', linesearch='fp', WriteSwitch=False, PlotSwitch=False):
+def main(method='AltMin', linesearch=None, WriteSwitch=False, PlotSwitch=False):
     if linesearch is None:
         identifier=f"{method}"
     else:
