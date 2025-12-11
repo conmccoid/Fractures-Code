@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+<Xdmf Version="3.0" xmlns:xi="https://www.w3.org/2001/XInclude">
+  <Domain>
+    <Grid Name="mesh" GridType="Uniform">
+      <Topology TopologyType="Triangle" NumberOfElements="49507" NodesPerElement="3">
+        <DataItem Dimensions="49507 3" NumberType="Int" Format="HDF">EX_CTFM_Parallelogram.h5:/Mesh/mesh/topology</DataItem>
+      </Topology>
+      <Geometry GeometryType="XY">
+        <DataItem Dimensions="25186 2" Format="HDF">EX_CTFM_Parallelogram.h5:/Mesh/mesh/geometry</DataItem>
+      </Geometry>
+    </Grid>
+    <Grid Name="Displacement" GridType="Collection" CollectionType="Temporal">
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/0</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.43510673062595934" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/0_43510673062595934</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.87021346125191867" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/0_87021346125191867</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="1.3053201918778781" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/1_3053201918778781</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="1.7404269225038373" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/1_7404269225038373</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="2.1755336531297966" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/2_1755336531297966</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="2.6106403837557561" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/2_6106403837557561</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="3.0457471143817152" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/3_0457471143817152</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="3.4808538450076747" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/3_4808538450076747</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="3.9159605756336342" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/3_9159605756336342</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="4.3510673062595933" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/4_3510673062595933</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="4.7861740368855523" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/4_7861740368855523</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="5.2212807675115123" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/5_2212807675115123</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="5.6563874981374713" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/5_6563874981374713</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="6.0914942287634304" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/6_0914942287634304</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="6.5266009593893903" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/6_5266009593893903</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="6.9617076900153494" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/6_9617076900153494</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="7.3968144206413085" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/7_3968144206413085</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="7.8319211512672684" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/7_8319211512672684</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Displacement" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="8.2670278818932275" />
+        <Attribute Name="Displacement" AttributeType="Vector" Center="Node">
+          <DataItem Dimensions="25186 3" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Displacement/8_2670278818932275</DataItem>
+        </Attribute>
+      </Grid>
+    </Grid>
+    <Grid Name="Damage" GridType="Collection" CollectionType="Temporal">
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/0</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.43510673062595934" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/0_43510673062595934</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.87021346125191867" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/0_87021346125191867</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="1.3053201918778781" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/1_3053201918778781</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="1.7404269225038373" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/1_7404269225038373</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="2.1755336531297966" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/2_1755336531297966</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="2.6106403837557561" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/2_6106403837557561</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="3.0457471143817152" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/3_0457471143817152</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="3.4808538450076747" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/3_4808538450076747</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="3.9159605756336342" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/3_9159605756336342</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="4.3510673062595933" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/4_3510673062595933</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="4.7861740368855523" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/4_7861740368855523</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="5.2212807675115123" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/5_2212807675115123</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="5.6563874981374713" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/5_6563874981374713</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="6.0914942287634304" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/6_0914942287634304</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="6.5266009593893903" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/6_5266009593893903</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="6.9617076900153494" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/6_9617076900153494</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="7.3968144206413085" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/7_3968144206413085</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="7.8319211512672684" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/7_8319211512672684</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="Damage" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="8.2670278818932275" />
+        <Attribute Name="Damage" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="25186 1" Format="HDF">EX_CTFM_Parallelogram.h5:/Function/Damage/8_2670278818932275</DataItem>
+        </Attribute>
+      </Grid>
+    </Grid>
+  </Domain>
+</Xdmf>
