@@ -203,18 +203,8 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         print("Minimum outside parallelogram, finding minimum on boundary")
     # beta=0 minimum
     alpha= -d/(2*a)
-    beta_list.append(0)
-    if alpha<0:
-        v_list.append(0)
-        E_list.append(E0)
-        alpha_list.append(0)
-        step_list.append("Origin")
-    elif alpha>1:
-        v_list.append(q)
-        E_list.append(Eq)
-        alpha_list.append(1)
-        step_list.append("AltMin")
-    else:
+    if (alpha>0) & (alpha<1):
+        beta_list.append(0)
         v=q.copy()
         v.scale(alpha)
         E_list.append(fp.updateEnergies(x+v)[2])
@@ -224,18 +214,8 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     
     # alpha=0
     beta= -e/(2*c)
-    alpha_list.append(0)
-    if beta<0:
-        v_list.append(0)
-        E_list.append(E0)
-        beta_list.append(0)
-        step_list.append("Origin")
-    elif beta>1:
-        v_list.append(pcopy)
-        E_list.append(Ep)
-        beta_list.append(1)
-        step_list.append("Newton")
-    else:
+    if (beta>0) & (beta<1):
+        alpha_list.append(0)
         v=pcopy.copy()
         v.scale(beta)
         E_list.append(fp.updateEnergies(x+v)[2])
@@ -245,18 +225,8 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     
     # beta=1
     alpha= (-d - b)/(2*a)
-    beta_list.append(1)
-    if alpha<0:
-        v_list.append(pcopy)
-        E_list.append(Ep)
-        alpha_list.append(0)
-        step_list.append("Newton")
-    elif alpha>1:
-        v_list.append(q + pcopy)
-        E_list.append(Epq)
-        alpha_list.append(1)
-        step_list.append("Both")
-    else:
+    if (alpha>0) & (alpha<1):
+        beta_list.append(1)
         v=q.copy()
         v.scale(alpha)
         v.axpy(1,pcopy)
@@ -267,18 +237,8 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     
     # alpha=1
     beta= (-e - b)/(2*c)
-    alpha_list.append(1)
-    if beta<0:
-        v_list.append(q)
-        E_list.append(Eq)
-        beta_list.append(0)
-        step_list.append("AltMin")
-    elif beta>1:
-        v_list.append(q + pcopy)
-        E_list.append(Epq)
-        beta_list.append(1)
-        step_list.append("Both")
-    else:
+    if (beta>0) & (beta<1):
+        alpha_list.append(1)
         v=q.copy()
         v.scale(1)
         v.axpy(beta,pcopy)
