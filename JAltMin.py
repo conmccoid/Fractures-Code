@@ -23,12 +23,13 @@ class JAltMin:
     def getKSPs(self):
         ksp_uu=self.elastic_solver.getKSP()
         ksp_vv=self.damage_solver.getKSP()
+        v_inactive=self.damage_solver.getVIInactiveSet() # need the inactive set when using VI Newton
         opts=PETSc.Options()
         opts['ksp_reuse_preconditioner'] = True
         ksp_uu.setFromOptions()
         ksp_vv.setFromOptions()
         opts.destroy()
-        return ksp_uu, ksp_vv
+        return ksp_uu, ksp_vv, v_inactive
     
     def resetKSPs(self, ksp):
         opts= PETSc.Options()
@@ -49,9 +50,15 @@ class JAltMin:
         self.Evu.multAdd(x1, y2, y2)
 
         # multiply by P
-        ksp_uu, ksp_vv = self.getKSPs()
+        ksp_uu, ksp_vv, v_inactive = self.getKSPs()
         ksp_uu.solve(y1, y1)
         self.Evu.multAdd(-y1,y2,y2)
-        ksp_vv.solve(y2, y2)
+        # trying to restrict to inactive set in the ksp_vv.solve()
+        y2_inactive=y2.duplicate()
+        y2.getSubVector(v_inactive, y2_inactive)
+        ksp_vv.solve(y2_inactive, y2_inactive)
+        y2.restoreSubVector(v_inactive, y2_inactive)
+        y2_inactive.destroy()
+        v_inactive.destroy()
         self.resetKSPs(ksp_uu)
         self.resetKSPs(ksp_vv)
