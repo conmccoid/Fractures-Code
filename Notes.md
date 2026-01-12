@@ -1,5 +1,23 @@
 # Phase-field fracture models
 
+## Research program
+
+We now have for comparison three methods:
+- AltMin, using SNESVINewton for irreversibility
+- MSPIN with cubic backtracking, using ??? for irreversibility
+- Parallelogram interpolation (and various generalizations), using active set for irreversibility
+
+- [ ] Implement irreversibility
+- [ ] Parallelize code
+- [ ] Run examples
+  - [ ] Check efficiency, both in FLOPs and wall clock time
+  - [ ] Check scaling
+- [ ] Write paper
+  - [ ] Section: background on MSPIN for phase-field
+  - [ ] Section: parallelogram interpolation
+    - [ ] Subsection: active set method in parallelogram setting
+  - [ ] Section: numerical comparisons
+
 ## Running examples
 
 ### Fractures-code
@@ -62,17 +80,6 @@ If I want to extract vectors from the nest, I do:
 u_out, v_out = vecs.getNestSubVecs()
 ```
 
-### Custom line search
-
-I need to be able to switch between MSPIN and AltMin based on the residual.
-This will require a custom line search, since this will take advantage of the implicit fixed point iteration,
-which is not common for SNES problems.
-
-Might be an idea to adapt Powell's dogleg method, which chooses a step optimized along a line between two vectors.
-Those two vectors would be the step from the fixed point iteration and the Newton step.
-
-New idea (03.13.2025): Davidenko-Branin trick, using analysis on 2D hyperplane containing fixed point iteration and the line connecting the Newton and anti-Newton directions.
-
 ### Creating a .msh from a .geo (copied from MEF++ cheatsheet)
 
 Convert a .geo into a .msh with the line
@@ -108,44 +115,6 @@ This is not done in the course of the iteration, and so must be done when 'Euv' 
 ## SSH into Graham cluster
 
 `ssh mccoidc@graham.alliancecan.ca`, using SSH key and DUO multi-factor app.
-
-## Research program
-
-Now that the version of MSPIN from the paper is shown and admitted to be only a marginal improvement, I can focus on newer developments and more bespoke approaches.
-Moving forward, I will suggest three new approaches to augmenting alternate minimization with a Newton iteration.
-For each, I will run this on three types of examples and compare effectiveness through number and size of linear solves, number and size/complexity of nonlinear solves, and wall clock time to achieve a given error tolerance.
-
-Once these basic approaches have been tested and compared, I should focus on the broader analysis of the FP-N framework I'm developing.
-
-- [ ] Implement Davidenko-Branin trick
-- [ ] Compare augmented Newton methods
-- [x] Check code validity
-- [ ] Compare with Alena's results
-
-### Newton approaches
-
-All approaches will make use of the Davidenko-Branin trick, which flips the Newton direction to maintain monotonicity.
-
-Long term, these approaches and the DB trick should be coded into a PETSc module.
-Short term, especially ahead of SIAM/CAIMS, we'll patch something together in FEniCSx.
-
-Due to the weird interplay between the nonlinearities, or just because Python shell matrices are challenging, I've had to drop the built-in PETSc Newton solver for a custom one (which I probably should have done first).
-I will still use the built-in PETSc KSP solvers.
-
-New workflow implemented but need to redo load balances on examples, esp. CTFM and L.
-
-#### Trust region
-
-If the Newton step lies closer to the fixed point iterate than it does to the previous iterate, then we can accept it.
-If not, we should take the fixed point iterate.
-
-#### Line search
-
-The Newton direction is taken, but with a step size equal to the step between the previous iterate and the fixed point iterate.
-
-#### Two-step
-
-Take a step to the fixed point iterate, then another step of the same length towards the Newton iterate.
 
 ### Examples
 
