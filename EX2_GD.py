@@ -18,6 +18,13 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
     res = x.duplicate()  # Create a duplicate for the residual vector
     p = x.duplicate()  # Create a duplicate for the search direction
 
+    # initialize damage bounds
+    v_lb = fp.v.x.array.copy()
+    v_ub = fp.v.x.array.copy()
+    v_lb.x.array[:] = 0.0
+    v_ub.x.array[:] = 1.0
+    fp.damage_solver.setVariableBounds(v_lb.x.petsc_vec, v_ub.x.petsc_vec)
+
     if method!='AltMin':
         SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=1000, restarts=1000, monitor='off')  # Set up the KSP solver
 
@@ -38,21 +45,7 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
             print(f"-- Solving for t = {t:3.2f} --")
         
         iteration=0
-        fp.Fn(None, x, res)  # Evaluate the function
-        # if method=='AltMin':
-        #     plotEnergyLandscape(fp,x,res) # temporary
-        #     print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
-        #     x += res  # Update the vector with the residual
-        # elif method=='CubicBacktracking': # Run cubic backtracking in situ
-        #     SNESKSP.solve(res, p)  # Solve the linear system
-        #     energies[i_t,5]=SNESKSP.getIterationNumber()
-        #     CubicBacktracking(fp, x, p, res)
-        #     x += p # update solution
-        # else:
-        #     SNESKSP.solve(res, p)  # Solve the linear system
-        #     customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
-        #     x += p  # Update the solution vector
-        #     energies[i_t,5]=SNESKSP.getIterationNumber()
+        fp.Fn(None, x, res)  # Evaluate the function: run one iteration of AltMin to satisfy BCs
         if PlotSwitch:
             plotEnergyLandscape(fp,x,res) # temporary
             print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
@@ -92,6 +85,9 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
 
         energies[i_t, 1:4] = fp.updateEnergies(x)
         energies[i_t, 4] = iteration
+
+        v_lb.x.array[:] = fp.v.x.array # update lower bound for damage to ensure irreversibility
+        # fp.damage_solver.setVariableBounds(v_lb.x.petsc_vec, v_ub.x.petsc_vec) # unnecessary?
 
         if PlotSwitch:
             fp.plot(x=x)

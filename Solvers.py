@@ -35,7 +35,7 @@ def Damage(E, v, bcs, J):
     damage_solver=PETSc.SNES().create()
     damage_solver.setFunction(damage_problem.Fn, b_v)
     damage_solver.setJacobian(damage_problem.Jn, J_v)
-    damage_solver.setType("ksponly")
+    damage_solver.setType("vinewtonrsls")
     damage_solver.setTolerances(rtol=1.0e-7, max_it=50)
     damage_solver.getKSP().setType("preonly")
     damage_solver.getKSP().setTolerances(rtol=1.0e-9)
