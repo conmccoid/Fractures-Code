@@ -6,7 +6,7 @@ from petsc4py import PETSc
 import ufl
 
 import pyvista
-from pyvista.utilities.xvfb import start_xvfb
+from pyvista.plotting.utilities import start_xvfb
 
 from EX_GD_Domain import domain, BCs, VariationalFormulation
 from Solvers import Elastic, Damage
