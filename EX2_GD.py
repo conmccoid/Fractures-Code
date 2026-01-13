@@ -19,8 +19,8 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
     p = x.duplicate()  # Create a duplicate for the search direction
 
     # initialize damage bounds
-    v_lb = fp.v.copy()
-    v_ub = fp.v.copy()
+    v_lb = fp.v.x.array.copy()
+    v_ub = fp.v.x.array.copy()
     v_lb.x.array[:] = 0.0
     v_ub.x.array[:] = 1.0
     fp.damage_solver.setVariableBounds(v_lb.x.petsc_vec, v_ub.x.petsc_vec)
