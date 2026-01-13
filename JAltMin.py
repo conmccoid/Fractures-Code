@@ -56,11 +56,9 @@ class JAltMin:
         ksp_uu.solve(y1, y1)
         self.Evu.multAdd(-y1,y2,y2)
         # debug
-        # v_temp=ksp_vv.getSolution()
-        # v_lb, v_ub = self.damage_solver.getVariableBounds()
-        # inactive_count = ((v_temp > v_lb) & (v_temp < v_ub)).sum()
-        # if inactive_count < len(y2):
-        #     print(f"Warning: inactive count {inactive_count} less than vector length {len(y2)}")
+        v_temp=ksp_vv.getSolution()
+        is_temp=self.damage_solver.getVIInactiveSet()
+        print(f"size of y2: {len(y2.array)}, size of v_temp: {len(v_temp.array)}, size of inactive set: {is_temp.getSize()}")
 
         ksp_vv.solve(y2, y2)
         # # trying to restrict to inactive set in the ksp_vv.solve()
