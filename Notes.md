@@ -52,6 +52,27 @@ The firebreak repo has its own Dockerfile (slightly out of date, this has been m
 docker build -t firebreak ./
 ```
 
+## Running in Blaise's cluster over SSH
+
+Use math dept credentials to access server.
+The dolfinx docker container needs to be converted to an Apptainer image (just once per pull) before it can be used by apptainer.
+```
+ssh bbserv.math.mcmaster.ca
+
+srun -N 2 -n 2 -p bb apptainer exec dolfinx.sif python3 <script>
+```
+- `-N` is the number of physical nodes, of which 12 are available
+- `-n` is the number of cores, of which 64 are on each node
+- `-p bb` indicates to run only on the 12 nodes available to Blaise
+
+Additional useful commands:
+- `squeue`: state of the queue
+- `scancel <jobid>`: cancel a running job
+
+## SSH into Graham cluster
+
+`ssh mccoidc@graham.alliancecan.ca`, using SSH key and DUO multi-factor app.
+
 ### ParaView: warp and colour
 
 XDMF outputs from the examples store data in blocks.
@@ -111,10 +132,6 @@ It's important that objects used in multiple places are properly gathered and sc
 
 For example, a recent hurdle, the vectors 'u' and 'v' must be updated when assembling 'Euv' and 'Evu'.
 This is not done in the course of the iteration, and so must be done when 'Euv' and 'Evu' are needed when multiplying by the Jacobian.
-
-## SSH into Graham cluster
-
-`ssh mccoidc@graham.alliancecan.ca`, using SSH key and DUO multi-factor app.
 
 ### Examples
 
