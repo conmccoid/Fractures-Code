@@ -18,13 +18,6 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
     res = x.duplicate()  # Create a duplicate for the residual vector
     p = x.duplicate()  # Create a duplicate for the search direction
 
-    # initialize damage bounds
-    v_lb = fp.v.copy()
-    v_ub = fp.v.copy()
-    v_lb.x.array[:] = 0.0
-    v_ub.x.array[:] = 1.0
-    fp.damage_solver.setVariableBounds(v_lb.x.petsc_vec, v_ub.x.petsc_vec)
-
     if method!='AltMin':
         SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=1000, restarts=1000, monitor='off')  # Set up the KSP solver
 
@@ -86,7 +79,7 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
         energies[i_t, 1:4] = fp.updateEnergies(x)
         energies[i_t, 4] = iteration
 
-        v_lb.x.array[:] = fp.v.x.array # update lower bound for damage to ensure irreversibility
+        fp.v_lb.x.array[:] = fp.v.x.array # update lower bound for damage to ensure irreversibility
         # fp.damage_solver.setVariableBounds(v_lb.x.petsc_vec, v_ub.x.petsc_vec) # unnecessary?
 
         if PlotSwitch:

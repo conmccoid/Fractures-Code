@@ -4,11 +4,13 @@ from mpi4py import MPI
 from petsc4py import PETSc
 
 class JAltMin:
-    def __init__(self, elastic_solver, damage_solver, E_uv, E_vu):
+    def __init__(self, elastic_solver, damage_solver, E_uv, E_vu, v_lb, v_ub):
         self.EuvForm = fem.form(E_uv)
         self.EvuForm = fem.form(E_vu)
         self.elastic_solver = elastic_solver
         self.damage_solver = damage_solver
+        self.v_lb = v_lb
+        self.v_ub = v_ub
 
     def updateMat(self):
         self.Euu, _, _ = self.elastic_solver.getJacobian()
