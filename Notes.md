@@ -27,6 +27,8 @@ docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-c
 
 docker exec -it phase-field bash
 
+apt-get update
+apt-get install -y xvfb
 pip install meshio
 mpirun -n 8 python EX.py
 ```

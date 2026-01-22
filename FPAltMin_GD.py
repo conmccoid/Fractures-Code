@@ -6,7 +6,7 @@ from petsc4py import PETSc
 import ufl
 
 import pyvista
-from pyvista.plotting.utilities import start_xvfb
+# from pyvista.plotting.utilities import start_xvfb
 
 from EX_GD_Domain import domain, BCs, VariationalFormulation
 from Solvers import Elastic, Damage
@@ -46,7 +46,9 @@ class FPAltMin:
         self.Ev = fem.form(E_v)
         self.gradF = PETSc.Vec().createNest([self.u.x.petsc_vec.duplicate(), self.v.x.petsc_vec.duplicate()], None, self.comm) # I think there's a better way to initialize this using Eu and Ev
 
-        start_xvfb(wait=0.5)
+        pyvista.OFF_SCREEN = True
+        pyvista.set_jupyter_backend(None)
+        pyvista.start_xvfb(wait=0.5)
     
     def createVecMat(self):
         b_u = self.u.x.petsc_vec.duplicate()
