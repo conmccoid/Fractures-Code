@@ -18,6 +18,8 @@ We now have for comparison three methods:
     - [ ] Subsection: active set method in parallelogram setting
   - [ ] Section: numerical comparisons
 
+Check https://github.com/nha-tran-lsu/Optimal_Design_Active_Set_Approach/blob/main/AS_phase_field_opt.py for how to get inactive set manually.
+
 ## Running examples
 
 ### Fractures-code
