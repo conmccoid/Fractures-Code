@@ -3,15 +3,14 @@ from dolfinx.fem import petsc
 from mpi4py import MPI
 from petsc4py import PETSc
 
+import numpy as np
+
 class JAltMin:
-    def __init__(self, elastic_solver, damage_solver, E_uv, E_vu, v_lb, v_ub, IS):
+    def __init__(self, elastic_solver, damage_solver, E_uv, E_vu):
         self.EuvForm = fem.form(E_uv)
         self.EvuForm = fem.form(E_vu)
         self.elastic_solver = elastic_solver
         self.damage_solver = damage_solver
-        self.v_lb = v_lb
-        self.v_ub = v_ub
-        self.IS = IS
 
     def updateMat(self):
         self.Euu, _, _ = self.elastic_solver.getJacobian()
@@ -57,17 +56,31 @@ class JAltMin:
         ksp_uu.solve(y1, y1)
         self.Evu.multAdd(-y1,y2,y2)
         # debug
+        IS=self.getInactiveSet()
         v_temp=ksp_vv.getSolution()
-        f_temp=self.damage_solver.getFunction()[0]
-        print(f"size of y2: {len(y2.array)}, size of v_temp: {len(v_temp.array)}, size of inactive set: {self.IS.size}, nnz of f_temp: {f_temp.array.nonzero()[0].size}")
+        print(f"size of IS: {IS.size}, size of v_temp: {len(v_temp.array)}")
 
-        ksp_vv.solve(y2, y2)
+        # ksp_vv.solve(y2, y2)
         # # trying to restrict to inactive set in the ksp_vv.solve()
-        # y2_inactive=PETSc.Vec().create() # make sure this gets the same comm as y2
-        # y2.getSubVector(v_inactive, y2_inactive)
-        # ksp_vv.solve(y2_inactive, y2_inactive)
-        # y2.restoreSubVector(v_inactive, y2_inactive)
-        # y2_inactive.destroy()
-        # v_inactive.destroy()
+        if len(y2.array) != len(v_temp.array):
+            y2_inactive=PETSc.Vec().create() # make sure this gets the same comm as y2
+            y2.getSubVector(IS, y2_inactive)
+            ksp_vv.solve(y2_inactive, y2_inactive)
+            y2.restoreSubVector(IS, y2_inactive)
+            y2_inactive.destroy()
+            IS.destroy()
+        else:
+            ksp_vv.solve(y2, y2)
         self.resetKSPs(ksp_uu)
         self.resetKSPs(ksp_vv)
+    
+    def getInactiveSet(self):
+        f=self.damage_solver.getSolutionUpdate()
+        is_temp=f.array.nonzero()[0].astype(PETSc.IntType)
+        print(f"nnz of solution update: {len(is_temp)}")
+        v_ext=self.damage_solver.getSolution()
+        v_lb, v_ub = self.damage_solver.getVariableBounds()
+        # is_temp = np.where(v_ext.array !=0)[0]
+        is_temp = np.where((v_ext.array > v_lb.array+1e-10) & (v_ext.array < v_ub.array-1e-10))[0].astype(PETSc.IntType)
+        IS = PETSc.IS().createGeneral(is_temp, comm=v_ext.comm)
+        return IS

@@ -42,7 +42,7 @@ class FPAltMin:
 
         self.IS=np.array([],dtype=np.int32)
         self.updateInactiveSet()
-        self.PJ = JAltMin(self.elastic_solver, self.damage_solver, E_uv, E_vu, self.v_lb, self.v_ub, self.IS)
+        self.PJ = JAltMin(self.elastic_solver, self.damage_solver, E_uv, E_vu)
 
         self.Eu = fem.form(E_u)
         self.Ev = fem.form(E_v)
@@ -109,7 +109,7 @@ class FPAltMin:
         petsc.assemble_vector(Ev, self.Ev)
 
     def updateInactiveSet(self):
-        self.IS = np.where((self.v.x.array >= self.v_lb.x.array - 1e-10) & (self.v.x.array <= self.v_ub.x.array + 1e-10))[0]
+        self.IS = np.where((self.v.x.array > self.v_lb.x.array) & (self.v.x.array < self.v_ub.x.array))[0]
 
     def Fn(self, snes, x, F):
         self.updateUV(x)
