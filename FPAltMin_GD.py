@@ -40,7 +40,9 @@ class FPAltMin:
         self.v_ub.x.array[:] = 1.0
         self.damage_solver.setVariableBounds(self.v_lb.x.petsc_vec,self.v_ub.x.petsc_vec)
 
-        self.PJ = JAltMin(self.elastic_solver, self.damage_solver, E_uv, E_vu, self.v_lb, self.v_ub)
+        self.IS=np.array([],dtype=np.int32)
+        self.updateInactiveSet()
+        self.PJ = JAltMin(self.elastic_solver, self.damage_solver, E_uv, E_vu, self.v_lb, self.v_ub, self.IS)
 
         self.Eu = fem.form(E_u)
         self.Ev = fem.form(E_v)
@@ -105,6 +107,9 @@ class FPAltMin:
             f_local.set(0.0)
         petsc.assemble_vector(Eu, self.Eu)
         petsc.assemble_vector(Ev, self.Ev)
+
+    def updateInactiveSet(self):
+        self.IS = np.where((self.v.x.array >= self.v_lb.x.array - 1e-10) & (self.v.x.array <= self.v_ub.x.array + 1e-10))[0]
 
     def Fn(self, snes, x, F):
         self.updateUV(x)

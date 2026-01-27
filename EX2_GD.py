@@ -75,6 +75,8 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
             fp.updateUV(x)
             error = fp.updateError()
             fp.monitor(iteration)
+            fp.updateInactiveSet() # update inactive set
+            print(f"Size of inactive set: {fp.IS.size}")
 
         energies[i_t, 1:4] = fp.updateEnergies(x)
         energies[i_t, 4] = iteration

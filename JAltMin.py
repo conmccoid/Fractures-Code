@@ -4,13 +4,14 @@ from mpi4py import MPI
 from petsc4py import PETSc
 
 class JAltMin:
-    def __init__(self, elastic_solver, damage_solver, E_uv, E_vu, v_lb, v_ub):
+    def __init__(self, elastic_solver, damage_solver, E_uv, E_vu, v_lb, v_ub, IS):
         self.EuvForm = fem.form(E_uv)
         self.EvuForm = fem.form(E_vu)
         self.elastic_solver = elastic_solver
         self.damage_solver = damage_solver
         self.v_lb = v_lb
         self.v_ub = v_ub
+        self.IS = IS
 
     def updateMat(self):
         self.Euu, _, _ = self.elastic_solver.getJacobian()
@@ -57,8 +58,8 @@ class JAltMin:
         self.Evu.multAdd(-y1,y2,y2)
         # debug
         v_temp=ksp_vv.getSolution()
-        is_temp=self.damage_solver.getVIInactiveSet()
-        print(f"size of y2: {len(y2.array)}, size of v_temp: {len(v_temp.array)}, size of inactive set: {is_temp.getSize()}")
+        f_temp=self.damage_solver.getFunction()[0]
+        print(f"size of y2: {len(y2.array)}, size of v_temp: {len(v_temp.array)}, size of inactive set: {self.IS.size}, nnz of f_temp: {f_temp.array.nonzero()[0].size}")
 
         ksp_vv.solve(y2, y2)
         # # trying to restrict to inactive set in the ksp_vv.solve()
