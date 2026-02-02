@@ -8,6 +8,9 @@ We now have for comparison three methods:
 - Parallelogram interpolation (and various generalizations), using active set for irreversibility
 
 - [ ] Implement irreversibility
+  - [x] AltMin
+  - [x] Cubic backtracking
+  - [ ] Parallelogram
 - [ ] Parallelize code
 - [ ] Run examples
   - [ ] Check efficiency, both in FLOPs and wall clock time
