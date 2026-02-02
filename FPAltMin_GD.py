@@ -108,9 +108,6 @@ class FPAltMin:
         petsc.assemble_vector(Eu, self.Eu)
         petsc.assemble_vector(Ev, self.Ev)
 
-    def updateInactiveSet(self):
-        self.IS = np.where((self.v.x.array > self.v_lb.x.array) & (self.v.x.array < self.v_ub.x.array))[0]
-
     def Fn(self, snes, x, F):
         self.updateUV(x)
         self.updateUV_old()
