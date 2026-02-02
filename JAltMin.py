@@ -55,17 +55,21 @@ class JAltMin:
         ksp_uu, ksp_vv = self.getKSPs()
         ksp_uu.solve(y1, y1)
         self.Evu.multAdd(-y1,y2,y2)
-        # debug
-        IS=self.getInactiveSet()
         v_temp=ksp_vv.getSolution()
-        print(f"size of IS: {IS.size}, size of v_temp: {len(v_temp.array)}")
+        n_temp=len(v_temp.array)
 
         # ksp_vv.solve(y2, y2)
         # # trying to restrict to inactive set in the ksp_vv.solve()
-        if len(y2.array) != len(v_temp.array):
+        if len(y2.array) != n_temp:
+            IS=self.getInactiveSet(n_temp)
             y2_inactive=PETSc.Vec().create() # make sure this gets the same comm as y2
             y2.getSubVector(IS, y2_inactive)
-            ksp_vv.solve(y2_inactive, y2_inactive)
+            try:
+                ksp_vv.solve(y2_inactive, y2_inactive)
+            except:
+                print("Failed to solve inactive system")
+                print(f"size of IS: {IS.size}, size of v_temp: {len(v_temp.array)}")
+
             y2.restoreSubVector(IS, y2_inactive)
             y2_inactive.destroy()
             IS.destroy()
@@ -74,13 +78,32 @@ class JAltMin:
         self.resetKSPs(ksp_uu)
         self.resetKSPs(ksp_vv)
     
-    def getInactiveSet(self):
-        f=self.damage_solver.getSolutionUpdate()
-        is_temp=f.array.nonzero()[0].astype(PETSc.IntType)
-        print(f"nnz of solution update: {len(is_temp)}")
+    def getInactiveSet(self,n):
         v_ext=self.damage_solver.getSolution()
         v_lb, v_ub = self.damage_solver.getVariableBounds()
-        # is_temp = np.where(v_ext.array !=0)[0]
-        is_temp = np.where((v_ext.array > v_lb.array+1e-10) & (v_ext.array < v_ub.array-1e-10))[0].astype(PETSc.IntType)
+
+        dist_low=v_ext.array - v_lb.array
+        dist_upp=v_ub.array - v_ext.array
+        dist=np.minimum(dist_low, dist_upp)
+        is_temp = np.sort(np.argsort(dist)[-n:]).astype(PETSc.IntType)
+
+        # tol_bds=1e-8
+        # cond_int = (v_ext.array > v_lb.array+tol_bds) & (v_ext.array < v_ub.array-tol_bds)
+        # is_temp = np.where(cond_int)[0].astype(PETSc.IntType)
+
+        # f=self.damage_solver.getFunction()[0]
+        # tol_fun=1e-10
+        # cond_low = (np.abs(v_ext.array-v_lb.array)<tol_bds) & (f.array < -tol_fun)
+        # cond_upp = (np.abs(v_ext.array - v_ub.array) < tol_bds) & (f.array > tol_fun)
+        # is_temp = np.where(cond_int | cond_low | cond_upp)[0].astype(PETSc.IntType)
+        # print(f"Interior inactive:{sum(cond_int)}, lower inactive:{sum(cond_low)}, upper inactive:{sum(cond_upp)}")
+
+
+        # IS_f=f.array.nonzero()[0].astype(PETSc.IntType)
+        # IS_f=np.where(np.abs(f.array) > 1e-10)[0].astype(PETSc.IntType)
+        # print(f"nnz of solution update: {len(IS_f)}")
+        # ps=np.setdiff1d(is_temp, IS_f, assume_unique=True)
+        # if len(ps)>0:
+        #     print(f.array[ps])
         IS = PETSc.IS().createGeneral(is_temp, comm=v_ext.comm)
         return IS
