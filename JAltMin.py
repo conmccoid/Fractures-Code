@@ -79,13 +79,14 @@ class JAltMin:
         self.resetKSPs(ksp_vv)
     
     def getInactiveSet(self,n):
-        v_ext=self.damage_solver.getSolution()
-        v_lb, v_ub = self.damage_solver.getVariableBounds()
+        v_ext=self.damage_solver.getSolution() # get current damage solution (external)
+        v_lb, v_ub = self.damage_solver.getVariableBounds() # get current bounds
 
+        # determine distance from bounds
         dist_low=v_ext.array - v_lb.array
         dist_upp=v_ub.array - v_ext.array
         dist=np.minimum(dist_low, dist_upp)
-        is_temp = np.sort(np.argsort(dist)[-n:]).astype(PETSc.IntType)
+        is_temp = np.sort(np.argsort(dist)[-n:]).astype(PETSc.IntType) # sort and take largest n indices
 
         # tol_bds=1e-8
         # cond_int = (v_ext.array > v_lb.array+tol_bds) & (v_ext.array < v_ub.array-tol_bds)
@@ -105,5 +106,6 @@ class JAltMin:
         # ps=np.setdiff1d(is_temp, IS_f, assume_unique=True)
         # if len(ps)>0:
         #     print(f.array[ps])
-        IS = PETSc.IS().createGeneral(is_temp, comm=v_ext.comm)
+        
+        IS = PETSc.IS().createGeneral(is_temp, comm=v_ext.comm) # construct PETSc index set
         return IS
