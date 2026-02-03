@@ -88,24 +88,15 @@ class JAltMin:
         dist=np.minimum(dist_low, dist_upp)
         is_temp = np.sort(np.argsort(dist)[-n:]).astype(PETSc.IntType) # sort and take largest n indices
 
+        # # conditions used in PETSc VI, but non-functional here
+        # f,F=self.damage_solver.getFunction() # get damage function and storage vector
+        # F[0](F[1],v_ext,f)  # evaluate Jacobian at current damage solution
         # tol_bds=1e-8
-        # cond_int = (v_ext.array > v_lb.array+tol_bds) & (v_ext.array < v_ub.array-tol_bds)
-        # is_temp = np.where(cond_int)[0].astype(PETSc.IntType)
+        # cond_low = v_ext.array > v_lb.array + tol_bds
+        # cond_upp = v_ext.array < v_ub.array - tol_bds
+        # grad_low = f.array <= 0.0
+        # grad_upp = f.array >= 0.0
+        # is_temp = np.where((cond_low | grad_low) & (cond_upp | grad_upp))[0].astype(PETSc.IntType)
 
-        # f=self.damage_solver.getFunction()[0]
-        # tol_fun=1e-10
-        # cond_low = (np.abs(v_ext.array-v_lb.array)<tol_bds) & (f.array < -tol_fun)
-        # cond_upp = (np.abs(v_ext.array - v_ub.array) < tol_bds) & (f.array > tol_fun)
-        # is_temp = np.where(cond_int | cond_low | cond_upp)[0].astype(PETSc.IntType)
-        # print(f"Interior inactive:{sum(cond_int)}, lower inactive:{sum(cond_low)}, upper inactive:{sum(cond_upp)}")
-
-
-        # IS_f=f.array.nonzero()[0].astype(PETSc.IntType)
-        # IS_f=np.where(np.abs(f.array) > 1e-10)[0].astype(PETSc.IntType)
-        # print(f"nnz of solution update: {len(IS_f)}")
-        # ps=np.setdiff1d(is_temp, IS_f, assume_unique=True)
-        # if len(ps)>0:
-        #     print(f.array[ps])
-        
         IS = PETSc.IS().createGeneral(is_temp, comm=v_ext.comm) # construct PETSc index set
         return IS
