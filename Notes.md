@@ -84,8 +84,8 @@ Additional useful commands:
 
 XDMF outputs from the examples store data in blocks.
 To warp by displacement but colour by damage:
-1. Extract Block filter on main data; do this twice, once for each block of data.
-2. Append Attributes filter on both extracted blocks.
+1. Extract Block filter on main data, selecting one of the blocks and clicking Apply; do this twice, once for each block of data.
+2. Select both extracted blocks and use Append Attributes filter, click Apply.
 3. Warp by Vector filter on appended blocks.
 4. Change the Coloring variable from the dropdown to the scalar block.
 
