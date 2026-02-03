@@ -11,7 +11,7 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
     else:
         identifier=f"{method}_{linesearch}"
     fp = FPAltMin()
-    loads = np.linspace(0, 1, 10)  # Load values
+    loads = np.linspace(0, 1, 11)  # Load values
     energies = np.zeros((loads.shape[0], 6)) # intialize energy storage
 
     x, J = fp.createVecMat()  # Create empty vector and matrix
@@ -22,7 +22,7 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
         SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=1000, restarts=1000, monitor='off')  # Set up the KSP solver
 
     if WriteSwitch:
-        with io.XDMFFile(fp.comm, f"output/EX_Test_{identifier}.xdmf","w") as xdmf:
+        with io.XDMFFile(fp.comm, f"output/EX_GD_{identifier}.xdmf","w") as xdmf:
             xdmf.write_mesh(fp.dom)
         with open(f"output/TBL_GD_{identifier}.csv",'w') as csv.file:
             writer=csv.writer(csv.file,delimiter=',')
@@ -76,7 +76,7 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
             error = fp.updateError()
             fp.monitor(iteration)
 
-        energies[i_t, 1:4] = fp.updateEnergies(x)
+        energies[i_t, 1:4] = fp.updateEnergies(x)[0:3]
         energies[i_t, 4] = iteration
 
         fp.v_lb.x.array[:] = fp.v.x.array # update lower bound for damage to ensure irreversibility
@@ -86,7 +86,7 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
             fp.plot(x=x)
 
         if WriteSwitch:
-            with io.XDMFFile(fp.comm, f"output/EX_Test_{identifier}.xdmf","a") as xdmf:
+            with io.XDMFFile(fp.comm, f"output/EX_GD_{identifier}.xdmf","a") as xdmf:
                 xdmf.write_function(fp.u, t)
                 xdmf.write_function(fp.v, t)
     
