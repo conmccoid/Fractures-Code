@@ -95,21 +95,16 @@ class FPAltMin:
             fem.assemble_scalar(fem.form(self.total_energy)),
             op=MPI.SUM
         )
-
+        return energies
+    
+    def testConstraints(self,x):
+        self.updateUV(x)
         v = self.v.x.petsc_vec
         v_lb = self.v_lb.x.petsc_vec # retrieve upper and lower bounds as PETSc vectors
         v_ub = self.v_ub.x.petsc_vec
         dist_low=v.array - v_lb.array # determine distance from bounds
         dist_upp=v_ub.array - v.array
-        dist=np.minimum(dist_low, dist_upp)
-        dist_min = np.min(dist) # uses Linf norm to find maximum violation
-
-        if dist_min < -1e-4:
-            # print(f"Warning: Damage variable violates bounds by max of {dist_min}")
-            energies[3] = energies[2] - dist_min  # penalize total energy if constraints are violated
-        else:
-            energies[3] = energies[2]
-        return energies
+        return dist_low, dist_upp
     
     def updateGradF(self,x):
         self.updateUV(x)

@@ -98,21 +98,32 @@ def CubicBacktracking(fp,x,p,res):
 
     E0 = fp.updateEnergies(x)[2]  # initial energy
     print(f"Initial Energy: {E0}")
-    alpha = 1.0  # initial step length
+    # alpha = 1.0  # initial step length
     fp.updateGradF(x)
     gp = p.dot(fp.gradF)
-    if gp>0: # DB trick
+
+    # DB trick
+    if gp>0:
         p.scale(-1)
         gp = p.dot(fp.gradF)
         print("DB trick")
     elif gp==0: # local minimum, use AltMin step
         p=res
         print("*") # indicate AltMin step
+
+    # box constraints
+    dist_low0, dist_upp0 = fp.testConstraints(x)
+    dist_low1, dist_upp1 = fp.testConstraints(x + p)
+    alpha = np.min([dist_low0/(-dist_low1 + dist_low0 + 1e-8), dist_upp0/(dist_upp1 - dist_upp0 + 1e-8), 1.0]) # needs conditional to check if bounds are violated
+
+    # initial energies for AltMin and MSPIN
     xcopy=x.copy()
     xcopy.axpy(alpha,p)
     E1 = fp.updateEnergies(xcopy)[2]  # new energy
     Efp= fp.updateEnergies(x + res)[2] # energy after AltMin step
     print(f"Energy at Newton step: {E1}, Energy at AltMin step: {Efp}")
+
+    # cubic backtracking
     first_time=True
     while E1 > E0:
         # if alpha < 1e-16:
