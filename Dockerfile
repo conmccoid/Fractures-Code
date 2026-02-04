@@ -16,16 +16,11 @@ RUN sed -i '506d' src/snes/impls/vi/rs/virs.c
 # configure and build PETSc (not sure about these config options)
 ENV PETSC_DIR=/tmp/petsc
 ENV PETSC_ARCH=linux-gnu-real64-32
-RUN ./configure \
-    --with-scalar-type=real \
-    --with-64-bit-indices=yes \
-    --with-debugging=0 \
-    --with-shared-libraries=yes \
-    PETSC_ARCH=${PETSC_ARCH}
+RUN ./configure
 RUN make all check
 
 # install petsc4py
 RUN python3 -m pip install petsc4py
 
-# clean up
-RUN rm -rf /tmp/petsc
+# # clean up
+# RUN rm -rf /tmp/petsc
