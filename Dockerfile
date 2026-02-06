@@ -20,7 +20,8 @@ RUN ./configure
 RUN make all check
 
 # install petsc4py
-RUN python3 -m pip install petsc4py
+RUN python3 -m pip install src/binding/petsc4py
+RUN cd src/binding/petsc4py && python3 test/runtests.py
 
-# # clean up
-# RUN rm -rf /tmp/petsc
+# clean up
+RUN rm -rf /tmp/petsc

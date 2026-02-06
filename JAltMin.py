@@ -61,7 +61,8 @@ class JAltMin:
         # ksp_vv.solve(y2, y2)
         # # trying to restrict to inactive set in the ksp_vv.solve()
         if len(y2.array) != n_temp:
-            IS=self.getInactiveSet(n_temp)
+            # IS=self.getInactiveSet(n_temp)
+            IS=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
             y2_inactive=PETSc.Vec().create() # make sure this gets the same comm as y2
             y2.getSubVector(IS, y2_inactive)
             try:
