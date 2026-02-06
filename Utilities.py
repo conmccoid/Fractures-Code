@@ -107,7 +107,7 @@ def boxConstraints(fp,x,p):
             scale_list.append(dist_upp0[i]/(-dist_upp1[i] + dist_upp0[i] + 1e-8))
     p.scale(np.min(scale_list))
 
-def CubicBacktracking(fp,x,p,res, tol1=1e-1, tol2=1e-4):
+def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     """
     Perform cubic backtracking line search.
 
@@ -133,9 +133,11 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-1, tol2=1e-4):
         p=res
         print("*") # indicate AltMin step
 
-    # box constraints
-    boxConstraints(fp,x,p)
-    # does gp need to be updated here?
+    # these lines prevented proper searching of the energy landscape in all cases
+    # # box constraints
+    # boxConstraints(fp,x,p)
+    # # does gp need to be updated here?
+    # gp=p.dot(fp.gradF)
 
     # initial energies for AltMin and MSPIN
     xcopy=x.copy()
@@ -147,11 +149,6 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-1, tol2=1e-4):
     # cubic backtracking
     first_time=True
     while (E1 > E0 + alpha*tol2*gp) and (alpha > tol1):
-        # if alpha < 1e-16:
-        #     p=res
-        #     alpha=1.0
-        #     print("*") # indicate AltMin step
-        #     break
         if first_time==True:
             alpha_0 = 1.0
             E_prev = E1
