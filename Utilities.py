@@ -85,7 +85,29 @@ def customLineSearch(fp, p, type, DBSwitch):
         p.assemblyBegin()
         p.assemblyEnd()
 
-def CubicBacktracking(fp,x,p,res):
+def boxConstraints(fp,x,p):
+    """
+    Apply box constraints to the search direction.
+
+    Parameters:
+    - fp: fixed point function for AltMin
+    - x: current solution vector
+    - p: Newton search direction vector
+
+    Returns:
+    - The input p is modified.
+    """
+    dist_low0, dist_upp0 = fp.testConstraints(x)
+    dist_low1, dist_upp1 = fp.testConstraints(x + p)
+    scale_list=[1.0]
+    for i in range(0,len(dist_low0)):
+        if dist_low1[i]<0:
+            scale_list.append(dist_low0[i]/(-dist_low1[i] + dist_low0[i] + 1e-8))
+        elif dist_upp1[i]<0:
+            scale_list.append(dist_upp0[i]/(-dist_upp1[i] + dist_upp0[i] + 1e-8))
+    p.scale(np.min(scale_list))
+
+def CubicBacktracking(fp,x,p,res, tol1=1e-1, tol2=1e-4):
     """
     Perform cubic backtracking line search.
 
@@ -98,7 +120,7 @@ def CubicBacktracking(fp,x,p,res):
 
     E0 = fp.updateEnergies(x)[2]  # initial energy
     print(f"Initial Energy: {E0}")
-    # alpha = 1.0  # initial step length
+    alpha = 1.0  # initial step length
     fp.updateGradF(x)
     gp = p.dot(fp.gradF)
 
@@ -112,9 +134,8 @@ def CubicBacktracking(fp,x,p,res):
         print("*") # indicate AltMin step
 
     # box constraints
-    dist_low0, dist_upp0 = fp.testConstraints(x)
-    dist_low1, dist_upp1 = fp.testConstraints(x + p)
-    alpha = np.min([dist_low0/(-dist_low1 + dist_low0 + 1e-8), dist_upp0/(dist_upp1 - dist_upp0 + 1e-8), 1.0]) # needs conditional to check if bounds are violated
+    boxConstraints(fp,x,p)
+    # does gp need to be updated here?
 
     # initial energies for AltMin and MSPIN
     xcopy=x.copy()
@@ -125,7 +146,7 @@ def CubicBacktracking(fp,x,p,res):
 
     # cubic backtracking
     first_time=True
-    while E1 > E0:
+    while (E1 > E0 + alpha*tol2*gp) and (alpha > tol1):
         # if alpha < 1e-16:
         #     p=res
         #     alpha=1.0
@@ -149,8 +170,8 @@ def CubicBacktracking(fp,x,p,res):
             alpha_0 = alpha
             E_prev = E1
             alpha = alpha_new
-            # if alpha > 0.5 * alpha_0: # not sure if this is necessary
-            #     alpha = 0.5 * alpha_0
+            if alpha > 0.5 * alpha_0: # not sure if this is necessary
+                alpha = 0.5 * alpha_0
             # print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0}")
         xcopy.waxpy(alpha,p,x) # replacing xcopy=x and then xcopy.axpy(alpha,p) to avoid creating multiple copies, may not work
         E1 = fp.updateEnergies(xcopy)[2]
@@ -185,6 +206,12 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         print("DB trick")
     else:
         pcopy=p.copy()
+
+    # box constraints
+    boxConstraints(fp,x,pcopy) # make sure Newton step satisfies box constraints
+    boxConstraints(fp,x+q,pcopy) # make sure parallelogram point satisfies box constraints
+    # do e and f need to be updated?
+
     E0=fp.updateEnergies(x)[2]
     Eq=fp.updateEnergies(x+q)[2]
     Ep=fp.updateEnergies(x+pcopy)[2]
