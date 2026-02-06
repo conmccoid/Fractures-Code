@@ -23,5 +23,6 @@ RUN make all check
 RUN python3 -m pip install src/binding/petsc4py
 RUN cd src/binding/petsc4py && python3 test/runtests.py
 
-# clean up
-RUN rm -rf /tmp/petsc
+# looks like this tmp folder is now necessary
+# # clean up
+# RUN rm -rf /tmp/petsc
