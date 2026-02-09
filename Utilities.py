@@ -97,14 +97,24 @@ def boxConstraints(fp,x,p):
     Returns:
     - The input p is modified.
     """
+    _, pv = p.getNestSubVecs()
+    pv.assemblyBegin()
+    pv.assemblyEnd()
     dist_low0, dist_upp0 = fp.testConstraints(x)
     dist_low1, dist_upp1 = fp.testConstraints(x + p)
+    AS=np.where(((dist_low0==0) & (dist_low1<0)) | ((dist_upp0==0) & (dist_upp1<0)))[0] # active set where p violates constraints
+    IS=np.where(((dist_low0>0) & (dist_low1<0)) | ((dist_upp0>0) & (dist_upp1<0)))[0] # inactive set where p violates constraints
+    pv.array[AS]=0 # set p to 0 on active set to prevent crossing boundary
     scale_list=[1.0]
-    for i in range(0,len(dist_low0)):
+    for n in range(0,len(IS)):
+        i=IS[n]
         if dist_low1[i]<0:
             scale_list.append(dist_low0[i]/(-dist_low1[i] + dist_low0[i] + 1e-8))
         elif dist_upp1[i]<0:
             scale_list.append(dist_upp0[i]/(-dist_upp1[i] + dist_upp0[i] + 1e-8))
+    print(f"Box constraints: scale list {scale_list}")
+    p.assemblyBegin()
+    p.assemblyEnd()
     p.scale(np.min(scale_list))
 
 def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
@@ -134,10 +144,12 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
         print("*") # indicate AltMin step
 
     # these lines prevented proper searching of the energy landscape in all cases
-    # # box constraints
-    # boxConstraints(fp,x,p)
-    # # does gp need to be updated here?
-    # gp=p.dot(fp.gradF)
+    # box constraints
+    print(f"Size of p before constraints: {p.norm()}, Size of gp before constraints: {gp}")
+    boxConstraints(fp,x,p)
+    print(f"Size of p after constraints: {p.norm()}, Size of gp after constraints: {gp}")
+    # does gp need to be updated here?
+    gp=p.dot(fp.gradF)
 
     # initial energies for AltMin and MSPIN
     xcopy=x.copy()
