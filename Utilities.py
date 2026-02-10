@@ -87,7 +87,7 @@ def customLineSearch(fp, p, type, DBSwitch):
         p.assemblyBegin()
         p.assemblyEnd()
 
-def boxConstraints(fp,x,p):
+def boxConstraints(fp,x):
     """
     Apply box constraints to the search direction.
 
@@ -97,27 +97,26 @@ def boxConstraints(fp,x,p):
     - p: Newton search direction vector
 
     Returns:
-    - The input p is modified.
+    - The input x is modified.
     """
-    _, pv = p.getNestSubVecs()
-    pv.assemblyBegin()
-    pv.assemblyEnd()
-    dist_low0, dist_upp0 = fp.testConstraints(x)
-    dist_low1, dist_upp1 = fp.testConstraints(x + p)
-    AS=np.where(((dist_low0==0) & (dist_low1<0)) | ((dist_upp0==0) & (dist_upp1<0)))[0] # active set where p violates constraints
-    IS=np.where(((dist_low0>0) & (dist_low1<0)) | ((dist_upp0>0) & (dist_upp1<0)))[0] # inactive set where p violates constraints
-    pv.array[AS]=0 # set p to 0 on active set to prevent crossing boundary
-    scale_list=[1.0]
-    for n in range(0,len(IS)):
-        i=IS[n]
-        if dist_low1[i]<0:
-            scale_list.append(dist_low0[i]/(-dist_low1[i] + dist_low0[i] + 1e-8))
-        elif dist_upp1[i]<0:
-            scale_list.append(dist_upp0[i]/(-dist_upp1[i] + dist_upp0[i] + 1e-8))
-    print(f"Box constraints: scale list {scale_list}")
-    p.assemblyBegin()
-    p.assemblyEnd()
-    p.scale(np.min(scale_list))
+
+    fp.updateUV(x)
+    E0 = fp.updateEnergies(x)[2]
+    v = fp.v.x.petsc_vec
+    v_lb = fp.v_lb.x.petsc_vec # retrieve upper and lower bounds as PETSc vectors
+    v_ub = fp.v_ub.x.petsc_vec
+    dist_low = v.array - v_lb.array # determine distance from bounds
+    dist_upp = v_ub.array - v.array
+    IS_low = np.where(dist_low < 0)[0] # find indices where v is below lower bound
+    IS_upp = np.where(dist_upp < 0)[0] # find indices where v is above upper bound
+    dist_total = np.sum(dist_low[IS_low]) + np.sum(dist_upp[IS_upp])
+    v.array[IS_low] = v_lb.array[IS_low] # set v to boundary value if it crosses boundary
+    v.array[IS_upp] = v_ub.array[IS_upp] # set v to boundary value if it crosses boundary
+    v.assemblyBegin()
+    v.assemblyEnd()
+    E1 = fp.updateEnergies(x)[2]
+    print(f"Applied box constraints to {len(IS_low) + len(IS_upp)} entries, total distance from bounds was {dist_total}")
+    print(f"Energy before applying constraints: {E0}, Energy after applying constraints: {E1}")
 
 def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     """
@@ -135,14 +134,6 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     alpha = 1.0  # initial step length
     fp.updateGradF(x)
     gp = p.dot(fp.gradF)
-
-    # these lines prevented proper searching of the energy landscape in all cases
-    # box constraints
-    print(f"Size of p before constraints: {p.norm()}, Size of gp before constraints: {gp}")
-    boxConstraints(fp,x,p)
-    print(f"Size of p after constraints: {p.norm()}, Size of gp after constraints: {gp}")
-    # does gp need to be updated here?
-    gp=p.dot(fp.gradF)
 
     # initial energies for AltMin and MSPIN
     xcopy=x.copy()

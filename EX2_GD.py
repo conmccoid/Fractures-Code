@@ -1,7 +1,7 @@
 from FPAltMin_GD import FPAltMin
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape
+from Utilities import KSPsetUp, customLineSearch, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape
 from dolfinx import io
 import csv
 
@@ -76,6 +76,12 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
                 energies[i_t,5]+=SNESKSP.getIterationNumber()
             fp.updateUV(x)
             error = fp.updateError()
+            fp.monitor(iteration)
+
+        if method=='CubicBacktracking' or method=='Parallelogram': # apply box constraints to final solution for backtracking methods
+            boxConstraints(fp,x) # apply box constraints to final solution
+            fp.updateUV(x) # update solution vectors after applying constraints
+            error = fp.updateError() # update error after applying constraints
             fp.monitor(iteration)
 
         energies[i_t, 1:4] = fp.updateEnergies(x)[0:3]

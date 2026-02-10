@@ -97,15 +97,6 @@ class FPAltMin:
         )
         return energies
     
-    def testConstraints(self,x):
-        self.updateUV(x)
-        v = self.v.x.petsc_vec
-        v_lb = self.v_lb.x.petsc_vec # retrieve upper and lower bounds as PETSc vectors
-        v_ub = self.v_ub.x.petsc_vec
-        dist_low=v.array - v_lb.array # determine distance from bounds
-        dist_upp=v_ub.array - v.array
-        return dist_low, dist_upp
-    
     def updateGradF(self,x):
         self.updateUV(x)
         Eu, Ev = self.gradF.getNestSubVecs()
