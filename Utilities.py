@@ -94,7 +94,6 @@ def boxConstraints(fp,x):
     Parameters:
     - fp: fixed point function for AltMin
     - x: current solution vector
-    - p: Newton search direction vector
 
     Returns:
     - The input x is modified.
