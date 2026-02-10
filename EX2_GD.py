@@ -58,6 +58,7 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
             elif method=='CubicBacktracking': # Run cubic backtracking in situ
                 SNESKSP.solve(res, p)  # Solve the linear system
                 energies[i_t,5]=SNESKSP.getIterationNumber()
+                DBTrick(fp,x,p) # apply DB trick to search direction
                 if PlotSwitch:
                     plotEnergyLandscape(fp,x,p)
                 p = CubicBacktracking(fp, x, p, res)
@@ -65,6 +66,7 @@ def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwi
             elif method=='Parallelogram':
                 SNESKSP.solve(res, p)  # Solve the linear system
                 energies[i_t,5]=SNESKSP.getIterationNumber()
+                DBTrick(fp,x,p) # apply DB trick to search direction
                 v = ParallelogramBacktracking(fp, x, res, p, PlotSwitch=PlotSwitch)
                 x += v # update solution
             else:

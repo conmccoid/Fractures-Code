@@ -32,10 +32,12 @@ def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, restarts=50, monitor='
     opts.destroy()
     return ksp
 
-def DBTrick(res,p):
-    proj_NFP=p.dot(res)
-    DBSwitch=proj_NFP<0
-    return DBSwitch
+def DBTrick(fp,x,p):
+    fp.updateGradF(x)
+    gp = p.dot(fp.gradF)
+    if gp>0:
+        p.scale(-1)
+        print("DB trick")
 
 def customLineSearch(fp, p, type, DBSwitch):
     """
@@ -134,15 +136,6 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     fp.updateGradF(x)
     gp = p.dot(fp.gradF)
 
-    # DB trick
-    if gp>0:
-        p.scale(-1)
-        gp = p.dot(fp.gradF)
-        print("DB trick")
-    elif gp==0: # local minimum, use AltMin step
-        p=res
-        print("*") # indicate AltMin step
-
     # these lines prevented proper searching of the energy landscape in all cases
     # box constraints
     print(f"Size of p before constraints: {p.norm()}, Size of gp before constraints: {gp}")
@@ -209,17 +202,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     fp.updateGradF(x)
     e=p.dot(fp.gradF)
     d=q.dot(fp.gradF)
-    if e>0: # DB trick
-        pcopy=-p.copy()
-        e=pcopy.dot(fp.gradF)
-        print("DB trick")
-    else:
-        pcopy=p.copy()
-
-    # box constraints
-    boxConstraints(fp,x,pcopy) # make sure Newton step satisfies box constraints
-    boxConstraints(fp,x+q,pcopy) # make sure parallelogram point satisfies box constraints
-    # do e and f need to be updated?
+    pcopy=p.copy()
 
     E0=fp.updateEnergies(x)[2]
     Eq=fp.updateEnergies(x+q)[2]
