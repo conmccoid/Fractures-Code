@@ -144,7 +144,7 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
 
     # cubic backtracking
     first_time=True
-    while (E1 > E0 + alpha*tol2*gp) and (alpha > tol1):
+    while (E1 > E0 - alpha*tol2*gp) and (alpha > tol1):
         if first_time==True:
             alpha_0 = 1.0
             E_prev = E1
@@ -168,7 +168,7 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
             # print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0}")
         xcopy.waxpy(alpha,p,x) # replacing xcopy=x and then xcopy.axpy(alpha,p) to avoid creating multiple copies, may not work
         E1 = fp.updateEnergies(xcopy)[2]
-        print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0}")
+        print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0 - alpha*tol2*gp}")
     print(f"Final step length: {alpha}")
     xcopy.zeroEntries()
     p.aypx(alpha,xcopy)
