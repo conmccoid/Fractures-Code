@@ -6,27 +6,18 @@ from petsc4py import PETSc
 import ufl
 
 import pyvista
-# from pyvista.plotting.utilities import start_xvfb
 
-from EX_GD_Domain import domain, BCs, VariationalFormulation
 from Solvers import Elastic, Damage
 from PLOT_DamageState import plot_damage_state
 from JAltMin import JAltMin
 
 class FPAltMin:
-    # some of this should (?) be kept as setUp, but not clear what needs to be specialized
-    def __init__(self):
+    def setUp(self,E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v):
         self.comm=MPI.COMM_WORLD
         self.rank=self.comm.rank
 
-        L=1.
-        H=0.3
-        cell_size=0.1/6
-        self.u, self.v, self.dom=domain(L,H,cell_size)
         V_u=self.u.function_space
         V_v=self.v.function_space
-        bcs_u, bcs_v, self.u_D = BCs(self.u,self.v,self.dom,L,H)
-        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, load_C, E, self.total_energy = VariationalFormulation(self.u,self.v,self.dom)
 
         elastic_problem, self.elastic_solver = Elastic(E_u, self.u, bcs_u, E_uu)
         damage_problem, self.damage_solver = Damage(E_v, self.v, bcs_v, E_vv)
@@ -50,7 +41,7 @@ class FPAltMin:
         pyvista.OFF_SCREEN = True
         pyvista.set_jupyter_backend(None)
         pyvista.start_xvfb(wait=0.5)
-    
+
     def createVecMat(self):
         b_u = self.u.x.petsc_vec.duplicate()
         b_v = self.v.x.petsc_vec.duplicate()

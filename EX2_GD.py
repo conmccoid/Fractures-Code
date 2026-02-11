@@ -1,4 +1,4 @@
-from FPAltMin_GD import FPAltMin
+from FPAltMin_GD import FPAltMin_GD as FPAltMin
 import numpy as np
 from petsc4py import PETSc
 from Utilities import KSPsetUp, customLineSearch, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape
