@@ -7,7 +7,10 @@ We now have for comparison three methods:
 - MSPIN with cubic backtracking, using ??? for irreversibility
 - Parallelogram interpolation (and various generalizations), using active set for irreversibility
 
-- [ ] Implement irreversibility
+- [x] Implement irreversibility
+  - [x] AltMin
+  - [x] Cubic backtracking
+  - [x] Parallelogram
 - [ ] Parallelize code
 - [ ] Run examples
   - [ ] Check efficiency, both in FLOPs and wall clock time
@@ -18,15 +21,21 @@ We now have for comparison three methods:
     - [ ] Subsection: active set method in parallelogram setting
   - [ ] Section: numerical comparisons
 
+Check https://github.com/nha-tran-lsu/Optimal_Design_Active_Set_Approach/blob/main/AS_phase_field_opt.py for how to get inactive set manually.
+
 ## Running examples
 
 ### Fractures-code
 
 ```
-docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-code -p 8888:8888 dolfinx/lab:stable
+docker build -t dolfinx:custom .
+
+docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-code -p 8888:8888 dolfinx:custom
 
 docker exec -it phase-field bash
 
+apt-get update
+apt-get install -y xvfb
 pip install meshio
 mpirun -n 8 python EX.py
 ```
@@ -52,12 +61,33 @@ The firebreak repo has its own Dockerfile (slightly out of date, this has been m
 docker build -t firebreak ./
 ```
 
+## Running in Blaise's cluster over SSH
+
+Use math dept credentials to access server.
+The dolfinx docker container needs to be converted to an Apptainer image (just once per pull) before it can be used by apptainer.
+```
+ssh bbserv.math.mcmaster.ca
+
+srun -N 2 -n 2 -p bb apptainer exec dolfinx.sif python3 <script>
+```
+- `-N` is the number of physical nodes, of which 12 are available
+- `-n` is the number of cores, of which 64 are on each node
+- `-p bb` indicates to run only on the 12 nodes available to Blaise
+
+Additional useful commands:
+- `squeue`: state of the queue
+- `scancel <jobid>`: cancel a running job
+
+## SSH into Graham cluster
+
+`ssh mccoidc@graham.alliancecan.ca`, using SSH key and DUO multi-factor app.
+
 ### ParaView: warp and colour
 
 XDMF outputs from the examples store data in blocks.
 To warp by displacement but colour by damage:
-1. Extract Block filter on main data; do this twice, once for each block of data.
-2. Append Attributes filter on both extracted blocks.
+1. Extract Block filter on main data, selecting one of the blocks and clicking Apply; do this twice, once for each block of data.
+2. Select both extracted blocks and use Append Attributes filter, click Apply.
 3. Warp by Vector filter on appended blocks.
 4. Change the Coloring variable from the dropdown to the scalar block.
 
@@ -111,10 +141,6 @@ It's important that objects used in multiple places are properly gathered and sc
 
 For example, a recent hurdle, the vectors 'u' and 'v' must be updated when assembling 'Euv' and 'Evu'.
 This is not done in the course of the iteration, and so must be done when 'Euv' and 'Evu' are needed when multiplying by the Jacobian.
-
-## SSH into Graham cluster
-
-`ssh mccoidc@graham.alliancecan.ca`, using SSH key and DUO multi-factor app.
 
 ### Examples
 

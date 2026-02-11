@@ -2,6 +2,8 @@ from petsc4py import PETSc
 import numpy as np
 import matplotlib.pyplot as plt
 
+# maybe these methods should be moved to the FPAltMin class
+
 def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, restarts=50, monitor='off'):
     """
     Set up a KSP solver with specified parameters.
@@ -32,10 +34,12 @@ def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, restarts=50, monitor='
     opts.destroy()
     return ksp
 
-def DBTrick(res,p):
-    proj_NFP=p.dot(res)
-    DBSwitch=proj_NFP<0
-    return DBSwitch
+def DBTrick(fp,x,p):
+    fp.updateGradF(x)
+    gp = p.dot(fp.gradF)
+    if gp>0:
+        p.scale(-1)
+        print("DB trick")
 
 def customLineSearch(fp, p, type, DBSwitch):
     """
@@ -85,7 +89,37 @@ def customLineSearch(fp, p, type, DBSwitch):
         p.assemblyBegin()
         p.assemblyEnd()
 
-def CubicBacktracking(fp,x,p,res):
+def boxConstraints(fp,x):
+    """
+    Apply box constraints to the search direction.
+
+    Parameters:
+    - fp: fixed point function for AltMin
+    - x: current solution vector
+
+    Returns:
+    - The input x is modified.
+    """
+
+    fp.updateUV(x)
+    E0 = fp.updateEnergies(x)[2]
+    v = fp.v.x.petsc_vec
+    v_lb = fp.v_lb.x.petsc_vec # retrieve upper and lower bounds as PETSc vectors
+    v_ub = fp.v_ub.x.petsc_vec
+    dist_low = v.array - v_lb.array # determine distance from bounds
+    dist_upp = v_ub.array - v.array
+    IS_low = np.where(dist_low < 0)[0] # find indices where v is below lower bound
+    IS_upp = np.where(dist_upp < 0)[0] # find indices where v is above upper bound
+    dist_total = np.sum(dist_low[IS_low]) + np.sum(dist_upp[IS_upp])
+    v.array[IS_low] = v_lb.array[IS_low] # set v to boundary value if it crosses boundary
+    v.array[IS_upp] = v_ub.array[IS_upp] # set v to boundary value if it crosses boundary
+    v.assemblyBegin()
+    v.assemblyEnd()
+    E1 = fp.updateEnergies(x)[2]
+    print(f"Applied box constraints to {len(IS_low) + len(IS_upp)} entries, total distance from bounds was {dist_total}")
+    print(f"Energy before applying constraints: {E0}, Energy after applying constraints: {E1}")
+
+def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     """
     Perform cubic backtracking line search.
 
@@ -101,25 +135,17 @@ def CubicBacktracking(fp,x,p,res):
     alpha = 1.0  # initial step length
     fp.updateGradF(x)
     gp = p.dot(fp.gradF)
-    if gp>0: # DB trick
-        p.scale(-1)
-        gp = p.dot(fp.gradF)
-        print("DB trick")
-    elif gp==0: # local minimum, use AltMin step
-        p=res
-        print("*") # indicate AltMin step
+
+    # initial energies for AltMin and MSPIN
     xcopy=x.copy()
     xcopy.axpy(alpha,p)
     E1 = fp.updateEnergies(xcopy)[2]  # new energy
     Efp= fp.updateEnergies(x + res)[2] # energy after AltMin step
     print(f"Energy at Newton step: {E1}, Energy at AltMin step: {Efp}")
+
+    # cubic backtracking
     first_time=True
-    while E1 > E0:
-        # if alpha < 1e-16:
-        #     p=res
-        #     alpha=1.0
-        #     print("*") # indicate AltMin step
-        #     break
+    while (E1 > E0 - alpha*tol2*gp) and (alpha > tol1):
         if first_time==True:
             alpha_0 = 1.0
             E_prev = E1
@@ -138,12 +164,12 @@ def CubicBacktracking(fp,x,p,res):
             alpha_0 = alpha
             E_prev = E1
             alpha = alpha_new
-            # if alpha > 0.5 * alpha_0: # not sure if this is necessary
-            #     alpha = 0.5 * alpha_0
+            if alpha > 0.5 * alpha_0: # not sure if this is necessary
+                alpha = 0.5 * alpha_0
             # print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0}")
         xcopy.waxpy(alpha,p,x) # replacing xcopy=x and then xcopy.axpy(alpha,p) to avoid creating multiple copies, may not work
         E1 = fp.updateEnergies(xcopy)[2]
-        print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0}")
+        print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0 - alpha*tol2*gp}")
     print(f"Final step length: {alpha}")
     xcopy.zeroEntries()
     p.aypx(alpha,xcopy)
@@ -168,12 +194,8 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     fp.updateGradF(x)
     e=p.dot(fp.gradF)
     d=q.dot(fp.gradF)
-    if e>0: # DB trick
-        pcopy=-p.copy()
-        e=pcopy.dot(fp.gradF)
-        print("DB trick")
-    else:
-        pcopy=p.copy()
+    pcopy=p.copy()
+
     E0=fp.updateEnergies(x)[2]
     Eq=fp.updateEnergies(x+q)[2]
     Ep=fp.updateEnergies(x+pcopy)[2]

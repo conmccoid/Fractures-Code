@@ -1,105 +1,27 @@
-from FPAltMin_GD import FPAltMin
+from OuterSolver import OuterSolver
+from FPAltMin import FPAltMin
 import numpy as np
-from petsc4py import PETSc
-from Utilities import KSPsetUp, customLineSearch, DBTrick, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape
-from dolfinx import io
-import csv
+from EX_GD_Domain import domain, BCs, VariationalFormulation
 
-def main(method='AltMin', linesearch=None, maxit=100, WriteSwitch=False, PlotSwitch=False):
-    if linesearch is None:
-        identifier=f"{method}"
-    else:
-        identifier=f"{method}_{linesearch}"
-    fp = FPAltMin()
-    loads = np.linspace(0, 1, 10)  # Load values
-    energies = np.zeros((loads.shape[0], 6)) # intialize energy storage
+class FP(FPAltMin):
+    def __init__(self):
+        L=1.
+        H=0.3
+        cell_size=0.1/6
+        self.u, self.v, self.dom=domain(L,H,cell_size)
+        bcs_u, bcs_v, self.u_D = BCs(self.u,self.v,self.dom,L,H)
+        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, load_C, E, self.total_energy = VariationalFormulation(self.u,self.v,self.dom)
+        self.setUp(E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v)
 
-    x, J = fp.createVecMat()  # Create empty vector and matrix
-    res = x.duplicate()  # Create a duplicate for the residual vector
-    p = x.duplicate()  # Create a duplicate for the search direction
+    def updateBCs(self, t):
+        self.u_D.value = t
 
-    # initialize damage bounds
-    v_lb = fp.v.copy()
-    v_ub = fp.v.copy()
-    v_lb.x.array[:] = 0.0
-    v_ub.x.array[:] = 1.0
-    fp.damage_solver.setVariableBounds(v_lb.x.petsc_vec, v_ub.x.petsc_vec)
+def main(method='AltMin', maxit=100, tol=1e-4, WriteSwitch=False, PlotSwitch=False):
 
-    if method!='AltMin':
-        SNESKSP = KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=1000, restarts=1000, monitor='off')  # Set up the KSP solver
+    fp=FP()
+    example='GD'
+    loads = np.linspace(0, 1, 11)  # Load values
 
-    if WriteSwitch:
-        with io.XDMFFile(fp.comm, f"output/EX_Test_{identifier}.xdmf","w") as xdmf:
-            xdmf.write_mesh(fp.dom)
-        with open(f"output/TBL_GD_{identifier}.csv",'w') as csv.file:
-            writer=csv.writer(csv.file,delimiter=',')
-            if method=='AltMin':
-                writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
-            else:
-                writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Outer iterations', 'Inner iterations'])
-
-    for i_t, t in enumerate(loads):
-        fp.updateBCs(t)
-        energies[i_t, 0] = t
-        if fp.rank == 0:
-            print(f"-- Solving for t = {t:3.2f} --")
-        
-        iteration=0
-        fp.Fn(None, x, res)  # Evaluate the function: run one iteration of AltMin to satisfy BCs
-        if PlotSwitch:
-            plotEnergyLandscape(fp,x,res) # temporary
-            print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
-        x+=res
-        fp.updateUV(x)  # Update the solution vectors
-        error = fp.updateError()
-        fp.monitor(iteration)
-
-        while error > 1e-4 and iteration < maxit:
-            iteration += 1
-            fp.Fn(None, x, res)
-            if method=='AltMin':
-                if PlotSwitch:
-                    plotEnergyLandscape(fp,x,res) # temporary
-                    print(f"Energy: {fp.updateEnergies(x)[2]}") # temporary
-                x+=res
-            elif method=='CubicBacktracking': # Run cubic backtracking in situ
-                SNESKSP.solve(res, p)  # Solve the linear system
-                energies[i_t,5]=SNESKSP.getIterationNumber()
-                if PlotSwitch:
-                    plotEnergyLandscape(fp,x,p)
-                p = CubicBacktracking(fp, x, p, res)
-                x += p # update solution
-            elif method=='Parallelogram':
-                SNESKSP.solve(res, p)  # Solve the linear system
-                energies[i_t,5]=SNESKSP.getIterationNumber()
-                v = ParallelogramBacktracking(fp, x, res, p, PlotSwitch=PlotSwitch)
-                x += v # update solution
-            else:
-                SNESKSP.solve(res, p)  # Solve the linear system
-                customLineSearch(res, p, type=linesearch, DBSwitch=DBTrick(res, p))
-                x += p  # Update the solution vector
-                energies[i_t,5]+=SNESKSP.getIterationNumber()
-            fp.updateUV(x)
-            error = fp.updateError()
-            fp.monitor(iteration)
-
-        energies[i_t, 1:4] = fp.updateEnergies(x)
-        energies[i_t, 4] = iteration
-
-        v_lb.x.array[:] = fp.v.x.array # update lower bound for damage to ensure irreversibility
-        # fp.damage_solver.setVariableBounds(v_lb.x.petsc_vec, v_ub.x.petsc_vec) # unnecessary?
-
-        if PlotSwitch:
-            fp.plot(x=x)
-
-        if WriteSwitch:
-            with io.XDMFFile(fp.comm, f"output/EX_Test_{identifier}.xdmf","a") as xdmf:
-                xdmf.write_function(fp.u, t)
-                xdmf.write_function(fp.v, t)
-    
-    if WriteSwitch:
-        with open(f"output/TBL_GD_{identifier}.csv",'a') as csv.file:
-            writer=csv.writer(csv.file,delimiter=',')
-            writer.writerows(energies)
-
-    return energies, identifier
+    os=OuterSolver(fp, example, method, loads)
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+    return os.energies, os.identifier

@@ -12,7 +12,7 @@ def Elastic(E, u, bcs, J):
 
     elastic_problem=SNESProblem(E, u, bcs, J)
 
-    b_u =  la.create_petsc_vector(V.dofmap.index_map, V.dofmap.index_map_bs)
+    b_u =  la.petsc.create_vector([(V.dofmap.index_map, V.dofmap.index_map_bs)])
     J_u =  petsc.create_matrix(elastic_problem.a)
 
     elastic_solver=PETSc.SNES().create()
@@ -28,8 +28,8 @@ def Elastic(E, u, bcs, J):
 def Damage(E, v, bcs, J):
     V = v.function_space
     damage_problem =SNESProblem(E, v, bcs, J)
- 
-    b_v =  la.create_petsc_vector(V.dofmap.index_map, V.dofmap.index_map_bs)
+
+    b_v =  la.petsc.create_vector([(V.dofmap.index_map, V.dofmap.index_map_bs)])
     J_v =  petsc.create_matrix(damage_problem.a)
 
     damage_solver=PETSc.SNES().create()
