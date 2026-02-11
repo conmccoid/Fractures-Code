@@ -7,10 +7,10 @@ We now have for comparison three methods:
 - MSPIN with cubic backtracking, using ??? for irreversibility
 - Parallelogram interpolation (and various generalizations), using active set for irreversibility
 
-- [ ] Implement irreversibility
+- [x] Implement irreversibility
   - [x] AltMin
   - [x] Cubic backtracking
-  - [ ] Parallelogram
+  - [x] Parallelogram
 - [ ] Parallelize code
 - [ ] Run examples
   - [ ] Check efficiency, both in FLOPs and wall clock time
@@ -28,7 +28,9 @@ Check https://github.com/nha-tran-lsu/Optimal_Design_Active_Set_Approach/blob/ma
 ### Fractures-code
 
 ```
-docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-code -p 8888:8888 dolfinx/lab:stable
+docker build -t dolfinx:custom .
+
+docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-code -p 8888:8888 dolfinx:custom
 
 docker exec -it phase-field bash
 

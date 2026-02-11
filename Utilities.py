@@ -2,6 +2,8 @@ from petsc4py import PETSc
 import numpy as np
 import matplotlib.pyplot as plt
 
+# maybe these methods should be moved to the FPAltMin class
+
 def KSPsetUp(fp, J, type="gmres", rtol=1.0e-7, max_it=50, restarts=50, monitor='off'):
     """
     Set up a KSP solver with specified parameters.
