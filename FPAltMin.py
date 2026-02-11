@@ -57,9 +57,6 @@ class FPAltMin:
         )
         return b, J
 
-    def updateBCs(self, t):
-        self.u_D.value = t
-
     def updateUV(self,x):
         xu, xv = x.getNestSubVecs()
         self.u.x.petsc_vec.setArray(xu.array)
@@ -73,7 +70,7 @@ class FPAltMin:
 
     def updateEnergies(self, x):
         self.updateUV(x)
-        energies=np.zeros((4,))
+        energies=np.zeros((3,))
         energies[0] = self.comm.allreduce(
             fem.assemble_scalar(fem.form(self.elastic_energy)),
             op=MPI.SUM
