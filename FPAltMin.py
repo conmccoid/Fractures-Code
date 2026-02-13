@@ -65,8 +65,8 @@ class FPAltMin:
         self.v.x.scatter_forward()
 
     def updateUV_old(self):
-        self.u_old.x.petsc_vec.setArray(self.u.x.array)
-        self.v_old.x.petsc_vec.setArray(self.v.x.array)
+        self.u_old.x.petsc_vec.setArray(self.u.x.petsc_vec.getArray())
+        self.v_old.x.petsc_vec.setArray(self.v.x.petsc_vec.getArray())
 
     def updateEnergies(self, x):
         self.updateUV(x)
@@ -104,8 +104,8 @@ class FPAltMin:
         self.damage_solver.solve(None, self.v.x.petsc_vec)
 
         resu, resv = F.getNestSubVecs()
-        resu.setArray(self.u.x.array - self.u_old.x.array)
-        resv.setArray(self.v.x.array - self.v_old.x.array)
+        resu.setArray(self.u.x.petsc_vec.getArray() - self.u_old.x.petsc_vec.getArray())
+        resv.setArray(self.v.x.petsc_vec.getArray() - self.v_old.x.petsc_vec.getArray())
         resu.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
         resv.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
         F.assemblyBegin()
