@@ -20,7 +20,7 @@ def main(method='AltMin', maxit=100, tol=1e-4, WriteSwitch=False, PlotSwitch=Fal
 
     fp=FP()
     example='GD'
-    loads = np.linspace(0, 1, 11)  # Load values
+    loads = np.linspace(0, 1, 10)  # Load values
 
     os=OuterSolver(fp, example, method, loads)
     os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
