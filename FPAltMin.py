@@ -102,12 +102,13 @@ class FPAltMin:
         self.elastic_solver.solve(None, self.u.x.petsc_vec)
         self.u.x.scatter_forward()
         self.damage_solver.solve(None, self.v.x.petsc_vec)
+        self.v.x.scatter_forward()
 
         resu, resv = F.getNestSubVecs()
         resu.setArray(self.u.x.petsc_vec.getArray() - self.u_old.x.petsc_vec.getArray())
         resv.setArray(self.v.x.petsc_vec.getArray() - self.v_old.x.petsc_vec.getArray())
-        resu.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
-        resv.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
+        resu.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
+        resv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         F.assemblyBegin()
         F.assemblyEnd()
 

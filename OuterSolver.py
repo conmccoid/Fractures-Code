@@ -27,7 +27,7 @@ class OuterSolver:
     def solve(self, WriteSwitch=False, PlotSwitch=False, maxit=100, tol=1e-4):
 
         # write headers to saved files
-        if WriteSwitch:
+        if WriteSwitch and self.fp.rank==0:
             with io.XDMFFile(self.fp.comm, f"output/EX_{self.identifier}.xdmf","w") as xdmf:
                 xdmf.write_mesh(self.fp.dom)
             with open(f"output/TBL_{self.identifier}.csv",'w') as csv.file:
@@ -49,7 +49,7 @@ class OuterSolver:
             if PlotSwitch:
                 plotEnergyLandscape(self.fp,self.x,self.res) # temporary
                 print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
-            self.x+=self.res
+            self.x.axpy(1.0,self.res) # Add the residual to the solution vector
             self.fp.updateUV(self.x)  # Update the solution vectors
             error = self.fp.updateError() # calculate error
             self.fp.monitor(iteration) # monitor convergence
@@ -61,7 +61,7 @@ class OuterSolver:
                     if PlotSwitch:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary
                         print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
-                    self.x+=self.res
+                    self.x.axpy(1.0,self.res) # Add the residual to the solution vector
                 else:
                     self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
                     self.energies[i_t,5]=self.SNESKSP.getIterationNumber()
@@ -93,13 +93,13 @@ class OuterSolver:
                 self.fp.plot(x=self.x)
 
             # write solution to file
-            if WriteSwitch:
+            if WriteSwitch and self.fp.rank==0:
                 with io.XDMFFile(self.fp.comm, f"output/EX_{self.identifier}.xdmf","a") as xdmf:
                     xdmf.write_function(self.fp.u, t)
                     xdmf.write_function(self.fp.v, t)
 
         # write energies to table
-        if WriteSwitch:
+        if WriteSwitch and self.fp.rank==0:
             with open(f"output/TBL_{self.identifier}.csv",'a') as csv.file:
                 writer=csv.writer(csv.file,delimiter=',')
                 writer.writerows(self.energies)
