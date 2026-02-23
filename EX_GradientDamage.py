@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import csv
 import sys
 
-from EX_GD_Domain import domain, BCs, VariationalFormulation
+from DOM_GD import domain, BCs, VariationalFormulation
 from Solvers import Elastic, Damage, alternate_minimization
 from PLOT_DamageState import plot_damage_state
 from NewtonSolver import NewtonSolver

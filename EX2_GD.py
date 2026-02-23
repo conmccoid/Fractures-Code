@@ -1,7 +1,7 @@
 from OuterSolver import OuterSolver
 from FPAltMin import FPAltMin
 import numpy as np
-from EX_GD_Domain import domain, BCs, VariationalFormulation
+from DOM_GD import domain, BCs, VariationalFormulation
 
 class FP(FPAltMin):
     def __init__(self):

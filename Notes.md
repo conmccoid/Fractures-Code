@@ -11,7 +11,7 @@ We now have for comparison three methods:
   - [x] AltMin
   - [x] Cubic backtracking
   - [x] Parallelogram
-- [ ] Parallelize code
+- [x] Parallelize code
 - [ ] Run examples
   - [ ] Check efficiency, both in FLOPs and wall clock time
   - [ ] Check scaling

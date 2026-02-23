@@ -1,5 +1,5 @@
 import numpy as np
-from EX_L_Domain import domain, BCs, VariationalFormulation
+from DOM_L import domain, BCs, VariationalFormulation
 from FPAltMin import FPAltMin
 from OuterSolver import OuterSolver
 

@@ -1,6 +1,6 @@
 import numpy as np
 from OuterSolver import OuterSolver
-from EX_CTFM_Domain import domain, BCs, VariationalFormulation
+from DOM_CTFM import domain, BCs, VariationalFormulation
 from FPAltMin import FPAltMin
 
 class FP(FPAltMin):

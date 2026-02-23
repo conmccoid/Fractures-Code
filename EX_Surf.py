@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import csv
 import sys
 
-from EX_Surf_Domain import domain, BCs, VariationalFormulation, SurfBC
+from DOM_Surf import domain, BCs, VariationalFormulation, SurfBC
 from Solvers import Elastic, Damage, alternate_minimization
 from PLOT_DamageState import plot_damage_state
 from NewtonSolver import NewtonSolver
