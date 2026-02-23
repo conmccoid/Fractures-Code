@@ -67,6 +67,8 @@ class FPAltMin:
     def updateUV_old(self):
         self.u_old.x.petsc_vec.setArray(self.u.x.petsc_vec.getArray())
         self.v_old.x.petsc_vec.setArray(self.v.x.petsc_vec.getArray())
+        self.u_old.x.scatter_forward()
+        self.v_old.x.scatter_forward()
 
     def updateEnergies(self, x):
         self.updateUV(x)
