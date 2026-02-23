@@ -1,4 +1,4 @@
-from EX2_CTFM import main as EX
+from EX_CTFM import main as EX
 from Utilities import plotNX
 import sys
 

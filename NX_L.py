@@ -1,4 +1,4 @@
-from EX2_L import main as EX
+from EX_L import main as EX
 from Utilities import plotNX
 import sys
 
