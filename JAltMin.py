@@ -54,21 +54,19 @@ class JAltMin:
         ksp_uu, ksp_vv = self.getKSPs()
         ksp_uu.solve(y1, y1)
         self.Evu.multAdd(-y1,y2,y2)
-        v_temp=ksp_vv.getSolution()
-        n_temp=len(v_temp.array)
+        n_temp=ksp_vv.getOperators()[0].getSize()[0]
+        m_temp=y2.getSize()
 
-        # ksp_vv.solve(y2, y2)
-        # # trying to restrict to inactive set in the ksp_vv.solve()
-        if len(y2.array) != n_temp:
+        if m_temp != n_temp:
             # IS=self.getInactiveSet(n_temp)
             IS=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
-            y2_inactive=PETSc.Vec().create() # make sure this gets the same comm as y2
+            y2_inactive=PETSc.Vec().create(comm=y2.comm) # make sure this gets the same comm as y2 (y2.comm?)
             y2.getSubVector(IS, y2_inactive)
             try:
                 ksp_vv.solve(y2_inactive, y2_inactive)
             except:
                 print("Failed to solve inactive system")
-                print(f"size of IS: {IS.size}, size of v_temp: {len(v_temp.array)}")
+                print(f"size of IS: {IS.getSize()}, size of v_temp: {n_temp}")
 
             y2.restoreSubVector(IS, y2_inactive)
             y2_inactive.destroy()
