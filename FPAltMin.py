@@ -13,7 +13,8 @@ from JAltMin import JAltMin
 
 class FPAltMin:
     def setUp(self,E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v):
-        self.comm=MPI.COMM_WORLD
+        # self.comm=MPI.COMM_WORLD
+        self.comm=self.u.function_space.mesh.comm
         self.rank=self.comm.rank
 
         V_u=self.u.function_space
@@ -51,7 +52,7 @@ class FPAltMin:
         local_size = b.getLocalSize()
         global_size = b.getSize()
         J = PETSc.Mat().createPython(
-            ((local_size, local_size), (global_size, global_size)),
+            ((local_size, global_size), (local_size, global_size)),
             JAltMin,
             comm=self.comm
         )
