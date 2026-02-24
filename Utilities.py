@@ -39,7 +39,8 @@ def DBTrick(fp,x,p):
     gp = p.dot(fp.gradF)
     if gp>0:
         p.scale(-1)
-        print("DB trick")
+        if fp.rank==0:
+            print("DB trick")
 
 def customLineSearch(fp, p, type, DBSwitch):
     """
@@ -116,8 +117,8 @@ def boxConstraints(fp,x):
     v.assemblyBegin()
     v.assemblyEnd()
     E1 = fp.updateEnergies(x)[2]
-    print(f"Applied box constraints to {len(IS_low) + len(IS_upp)} entries, total distance from bounds was {dist_total}")
-    print(f"Energy before applying constraints: {E0}, Energy after applying constraints: {E1}")
+    # print(f"Applied box constraints to {len(IS_low) + len(IS_upp)} entries, total distance from bounds was {dist_total}")
+    # print(f"Energy before applying constraints: {E0}, Energy after applying constraints: {E1}")
 
 def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     """
@@ -131,7 +132,8 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     """
 
     E0 = fp.updateEnergies(x)[2]  # initial energy
-    print(f"Initial Energy: {E0}")
+    if fp.rank==0:
+        print(f"Initial Energy: {E0}")
     alpha = 1.0  # initial step length
     fp.updateGradF(x)
     gp = p.dot(fp.gradF)
@@ -140,8 +142,8 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     xcopy=x.copy()
     xcopy.axpy(alpha,p)
     E1 = fp.updateEnergies(xcopy)[2]  # new energy
-    Efp= fp.updateEnergies(x + res)[2] # energy after AltMin step
-    print(f"Energy at Newton step: {E1}, Energy at AltMin step: {Efp}")
+    # Efp= fp.updateEnergies(x + res)[2] # energy after AltMin step
+    # print(f"Energy at Newton step: {E1}, Energy at AltMin step: {Efp}")
 
     # cubic backtracking
     first_time=True
@@ -169,8 +171,8 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
             # print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0}")
         xcopy.waxpy(alpha,p,x) # replacing xcopy=x and then xcopy.axpy(alpha,p) to avoid creating multiple copies, may not work
         E1 = fp.updateEnergies(xcopy)[2]
-        print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0 - alpha*tol2*gp}")
-    print(f"Final step length: {alpha}")
+    #     print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0 - alpha*tol2*gp}")
+    # print(f"Final step length: {alpha}")
     xcopy.zeroEntries()
     p.aypx(alpha,xcopy)
     xcopy.destroy()
