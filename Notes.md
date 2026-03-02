@@ -27,22 +27,24 @@ Check https://github.com/nha-tran-lsu/Optimal_Design_Active_Set_Approach/blob/ma
 
 ### Fractures-code
 
-```
+```bash
 docker build -t dolfinx:custom .
-
 docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-code -p 8888:8888 dolfinx:custom
-
 docker exec -it phase-field bash
-
-apt-get update
-apt-get install -y xvfb
-pip install meshio
 mpirun -n 8 python EX.py
+```
+
+#### Updating Docker Hub image
+
+```bash
+docker login
+docker tag dolfinx:custom mccoidc/fractures-code:dolfinx
+docker push mccoidc/fractures-code:dolfinx
 ```
 
 ### firebreak
 
-```
+```bash
 docker run --rm --name firebreak -it -v ${pwd}:/firebreak -w /firebreak -p 8888:8888 firedrakeproject/firedrake
 
 docker exec -it firebreak bash
@@ -57,18 +59,30 @@ exit()
 ```
 
 The firebreak repo has its own Dockerfile (slightly out of date, this has been mostly fixed).
-```
+```bash
 docker build -t firebreak ./
 ```
 
 ## Running in Blaise's cluster over SSH
 
-Use math dept credentials to access server.
-The dolfinx docker container needs to be converted to an Apptainer image (just once per pull) before it can be used by apptainer.
+#### First time on server
+```bash
+ssh mccoidc@bbserv.math.mcmaster.ca
+git clone https://github.com/conmccoid/Fractures-Code.git
+apptainer pull docker://mccoidc/fractures-code:dolfinx
 ```
-ssh bbserv.math.mcmaster.ca
 
-srun -N 2 -n 2 -p bb apptainer exec dolfinx.sif python3 <script>
+#### Updating on server
+```bash
+ssh mccoidc@bbserv.math.mcmaster.ca
+cd Fractures-Code
+git pull
+apptainer pull ?
+```
+
+#### Standard runs
+```bash
+srun -N 2 -n 2 -p bb apptainer exec fractures-code_dolfinx.sif python3 <script>
 ```
 - `-N` is the number of physical nodes, of which 12 are available
 - `-n` is the number of cores, of which 64 are on each node
@@ -77,6 +91,17 @@ srun -N 2 -n 2 -p bb apptainer exec dolfinx.sif python3 <script>
 Additional useful commands:
 - `squeue`: state of the queue
 - `scancel <jobid>`: cancel a running job
+
+#### Running apptainer
+Ordinary run:
+```bash
+apptainer run fractures-code_dolfinx.sif
+```
+
+In shell:
+```bash
+apptainer shell fractures-code_dolfinx.sif
+```
 
 ## SSH into Graham cluster
 
