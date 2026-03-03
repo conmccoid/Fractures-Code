@@ -13,11 +13,11 @@ class FP(FPAltMin):
     def updateBCs(self, t):
         self.u_D.value = t
 
-def main(method='AltMin', WriteSwitch=False, PlotSwitch=False):
+def main(method='AltMin', maxit=1000, tol=1e-6, WriteSwitch=False, PlotSwitch=False):
     fp = FP()
     example='L'
     loads = np.linspace(0,0.6,81)
 
     os=OuterSolver(fp, example, method, loads)
-    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=1000, tol=1e-6)
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
     return os.energies, os.identifier

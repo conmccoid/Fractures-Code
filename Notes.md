@@ -33,6 +33,7 @@ docker run --rm --name phase-field -it -v ${pwd}:/Fractures-code -w /Fractures-c
 docker exec -it phase-field bash
 mpirun -n 8 python EX.py
 ```
+Can I build the container with the tag `mccoidc/fractures-code:doflinx` from the beginning?
 
 #### Updating Docker Hub image
 
@@ -89,8 +90,11 @@ srun -N 2 -n 2 -p bb apptainer exec fractures-code_dolfinx.sif python3 <script>
 - `-p bb` indicates to run only on the 12 nodes available to Blaise
 
 Additional useful commands:
+- `sbatch -N 2 -n 2 --wrap 'apptainer exec fractures-code_dolfinx.sif python3 <script>`: send run to queue
 - `squeue`: state of the queue
 - `scancel <jobid>`: cancel a running job
+- `sattach <jobid>`: see output while `sbatch` runs
+- `cat slurm-#####.out`: check output?
 
 #### Running apptainer
 Ordinary run:

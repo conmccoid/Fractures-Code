@@ -27,6 +27,7 @@ def main(method='AltMin', maxit=100, tol=1e-4, WriteSwitch=False, PlotSwitch=Fal
     return os.energies, os.identifier
 
 import argparse
+import sys
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run the FP problem with specified parameters.')
@@ -37,3 +38,4 @@ if __name__ == "__main__":
     parser.add_argument('--plot', action='store_true', default=False, help='Plot results')
     args = parser.parse_args()
     energies, identifier = main(method=args.method, maxit=args.maxit, tol=args.tol, WriteSwitch=args.write, PlotSwitch=args.plot)
+    sys.exit() # is this necessary?
