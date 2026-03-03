@@ -342,14 +342,14 @@ def plotNX(example,id_list,en_list):
 
     for i, identifier in enumerate(id_list):
         if en_list==None:
-            energies = np.loadtxt(f"output/TBL_{example}_{identifier}.csv",
+            energies = np.loadtxt(f"output/TBL_{identifier}.csv",
                               delimiter=',',skiprows=1)
         else:
             energies = en_list[i]
-        ax1[0].plot(energies[:,0],energies[:,4],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+        ax1[0].plot(energies[:,0],energies[:,5],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
         if energies.shape[1]>5:
-            ax1[1].plot(energies[:,0],energies[:,5],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
-            ax1[2].plot(energies[:,0],energies[:,5]/np.maximum(1,energies[:,4]),label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+            ax1[1].plot(energies[:,0],energies[:,6],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+            ax1[2].plot(energies[:,0],energies[:,6]/np.maximum(1,energies[:,5]),label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
 
         ax2[0].plot(energies[:,0],energies[:,1],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
         ax2[1].plot(energies[:,0],energies[:,2],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)

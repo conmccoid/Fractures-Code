@@ -10,7 +10,7 @@ class OuterSolver:
         self.example = example
         self.method = method
         self.loads = loads
-        self.energies = np.zeros((loads.shape[0], 6)) # intialize energy storage
+        self.energies = np.zeros((loads.shape[0], 7)) # intialize energy storage
         self.setIdentifier()
         self.setUp()
         if self.method!='AltMin':
@@ -27,15 +27,16 @@ class OuterSolver:
     def solve(self, WriteSwitch=False, PlotSwitch=False, maxit=100, tol=1e-4):
 
         # write headers to saved files
-        if WriteSwitch and self.fp.rank==0:
+        if WriteSwitch:
             with io.XDMFFile(self.fp.comm, f"output/EX_{self.identifier}.xdmf","w") as xdmf:
                 xdmf.write_mesh(self.fp.dom)
-            with open(f"output/TBL_{self.identifier}.csv",'w') as csv.file:
-                writer=csv.writer(csv.file,delimiter=',')
-                if self.method=='AltMin':
-                    writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Number of iterations'])
-                else:
-                    writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Outer iterations', 'Inner iterations'])
+            if self.fp.rank==0:
+                with open(f"output/TBL_{self.identifier}.csv",'w') as csv.file:
+                    writer=csv.writer(csv.file,delimiter=',')
+                    if self.method=='AltMin':
+                        writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Number of iterations'])
+                    else:
+                        writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Outer iterations','Inner iterations'])
 
         # main iteration
         for i_t, t in enumerate(self.loads):
@@ -44,6 +45,7 @@ class OuterSolver:
             if self.fp.rank == 0:
                 print(f"-- Solving for t = {t:3.2f} --")
             
+            start_time = PETSc.Log.getTime() # or time.perf_counter()?
             iteration=0
             self.fp.Fn(None, self.x, self.res)  # Evaluate the function: run one iteration of AltMin to satisfy BCs
             if PlotSwitch:
@@ -64,7 +66,7 @@ class OuterSolver:
                     self.x.axpy(1.0,self.res) # Add the residual to the solution vector
                 else:
                     self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
-                    self.energies[i_t,5]=self.SNESKSP.getIterationNumber()
+                    self.energies[i_t,6]=self.SNESKSP.getIterationNumber()
                     DBTrick(self.fp,self.x,self.p) # apply DB trick to search direction
                     if self.method=='CubicBacktracking': # Run cubic backtracking in situ
                         if PlotSwitch:
@@ -85,7 +87,9 @@ class OuterSolver:
                 self.fp.monitor(iteration)
             
             self.energies[i_t, 1:4] = self.fp.updateEnergies(self.x)[0:3]
-            self.energies[i_t, 4] = iteration
+            end_time = PETSc.Log.getTime()
+            self.energies[i_t, 4] = end_time - start_time
+            self.energies[i_t, 5] = iteration
 
             self.fp.v_lb.x.array[:] = self.fp.v.x.array # update lower bound for damage to ensure irreversibility
 
@@ -93,7 +97,7 @@ class OuterSolver:
                 self.fp.plot(x=self.x)
 
             # write solution to file
-            if WriteSwitch and self.fp.rank==0:
+            if WriteSwitch:
                 with io.XDMFFile(self.fp.comm, f"output/EX_{self.identifier}.xdmf","a") as xdmf:
                     xdmf.write_function(self.fp.u, t)
                     xdmf.write_function(self.fp.v, t)
