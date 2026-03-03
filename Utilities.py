@@ -223,8 +223,8 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         beta_list.append(beta)
         E_list.append(fp.updateEnergies(x+v)[2])
         step_list.append("Parallelogram interior")
-    else:
-        print("Minimum outside parallelogram, finding minimum on boundary")
+    # else:
+        # print("Minimum outside parallelogram, finding minimum on boundary")
     # beta=0 minimum
     alpha= -d/(2*a)
     if (alpha>0) & (alpha<1):
@@ -275,7 +275,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     v=v_list[min_index]
     alpha=alpha_list[min_index]
     beta=beta_list[min_index]
-    print(f"Chosen step: {step_list[min_index]}, Energy: {E_list[min_index]}")
+    # print(f"Chosen step: {step_list[min_index]}, Energy: {E_list[min_index]}")
     if PlotSwitch:
         print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
         plotEnergyLandscape2D(fp,x,q,pcopy,[beta, alpha])
