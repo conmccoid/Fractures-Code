@@ -39,8 +39,8 @@ def DBTrick(fp,x,p):
     gp = p.dot(fp.gradF)
     if gp>0:
         p.scale(-1)
-        if fp.rank==0:
-            print("DB trick")
+        # if fp.rank==0:
+        #     print("DB trick")
 
 def customLineSearch(fp, p, type, DBSwitch):
     """
@@ -132,8 +132,8 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     """
 
     E0 = fp.updateEnergies(x)[2]  # initial energy
-    if fp.rank==0:
-        print(f"Initial Energy: {E0}")
+    # if fp.rank==0:
+    #     print(f"Initial Energy: {E0}")
     alpha = 1.0  # initial step length
     fp.updateGradF(x)
     gp = p.dot(fp.gradF)
