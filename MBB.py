@@ -45,7 +45,7 @@ def main(**options):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
-    (msh, cell_tags, facet_tags) = read_from_msh(options['input'],comm)
+    (msh, cell_tags, facet_tags, _, _, _) = read_from_msh(options['input'],comm)
     ndim = msh.geometry.dim
 
     myCS = set(cell_tags.values)

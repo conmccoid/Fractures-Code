@@ -36,7 +36,7 @@ def sigma(u,v, p,ndim): # stress tensor of damaged material (of disp & dmg)
 
 def domain():
     # Domain set-up
-    (domain, cell_tags, facet_tags) = read_from_msh('Surf.msh',MPI.COMM_WORLD,gdim=2)
+    (domain, cell_tags, facet_tags, _, _, _) = read_from_msh('Surf.msh',MPI.COMM_WORLD,gdim=2)
     
     # Function space and solution initialization
     element_u = basix.ufl.element("Lagrange", domain.basix_cell(), degree=1, shape=(2,)) 

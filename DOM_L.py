@@ -49,7 +49,7 @@ def domain():
     #     x=points_2d,
     #     e=ufl.Mesh(co_el)
     # )
-    (domain, _, _) = read_from_msh('L_shape.msh',MPI.COMM_WORLD,gdim=2)
+    (domain, _, _, _, _, _) = read_from_msh('L_shape.msh',MPI.COMM_WORLD,gdim=2)
     
     # Function space and solution initialization
     element_u = basix.ufl.element("Lagrange", domain.basix_cell(), degree=1, shape=(2,)) 
