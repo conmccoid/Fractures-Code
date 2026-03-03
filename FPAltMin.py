@@ -41,7 +41,6 @@ class FPAltMin:
 
         pyvista.OFF_SCREEN = True
         pyvista.set_jupyter_backend(None)
-        pyvista.start_xvfb(wait=0.5)
 
     def createVecMat(self):
         b_u = self.u.x.petsc_vec.duplicate()
