@@ -2,7 +2,7 @@ from EX_GD import main as EX
 from Utilities import plotNX
 import sys
 
-def main(id_list=['AltMin','CubicBacktracking','Parallelogram'], en_list=None, WriteSwitch=True):
+def main(id_list=['GD_AltMin','GD_CubicBacktracking','GD_Parallelogram'], en_list=None, WriteSwitch=True):
 
     if WriteSwitch:
         en1, id1=EX('AltMin',WriteSwitch=True)
