@@ -4,7 +4,7 @@ import numpy as np
 from mpi4py import MPI
 from petsc4py import PETSc
 from dolfinx import mesh, fem
-from dolfinx.io.gmshio import read_from_msh
+from dolfinx.io.gmsh import read_from_msh
 
 def w(v): # dissipated energy function (of dmg)
   return v**2

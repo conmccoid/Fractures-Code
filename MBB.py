@@ -12,7 +12,7 @@ import basix
 
 import dolfinx
 from dolfinx.io import XDMFFile
-from dolfinx.io.gmshio import read_from_msh
+from dolfinx.io.gmsh import read_from_msh
 import dolfinx.fem as fem
 from dolfinx import default_scalar_type
 
