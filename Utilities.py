@@ -173,8 +173,7 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
         E1 = fp.updateEnergies(xcopy)[2]
     #     print(f"Backtracking step length: {alpha}, Energy: {E1}, Target energy: {E0 - alpha*tol2*gp}")
     # print(f"Final step length: {alpha}")
-    xcopy.zeroEntries()
-    p.aypx(alpha,xcopy)
+    p.scale(alpha)
     xcopy.destroy()
     return p
 
