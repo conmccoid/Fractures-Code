@@ -37,7 +37,11 @@ class FPAltMin:
 
         self.Eu = fem.form(E_u)
         self.Ev = fem.form(E_v)
-        self.gradF = PETSc.Vec().createNest([self.u.x.petsc_vec.duplicate(), self.v.x.petsc_vec.duplicate()], None, self.comm) # I think there's a better way to initialize this using Eu and Ev
+        ucopy=self.u.x.petsc_vec.duplicate()
+        vcopy=self.v.x.petsc_vec.duplicate()
+        self.gradF = PETSc.Vec().createNest([ucopy, vcopy], None, self.comm) # I think there's a better way to initialize this using Eu and Ev
+        ucopy.destroy()
+        vcopy.destroy()
 
         pyvista.OFF_SCREEN = True
         pyvista.set_jupyter_backend(None)
@@ -47,6 +51,8 @@ class FPAltMin:
         b_v = self.v.x.petsc_vec.duplicate()
         b = PETSc.Vec().createNest([b_u, b_v],None,self.comm)
         b.zeroEntries()
+        b_u.destroy()
+        b_v.destroy()
 
         local_size = b.getLocalSize()
         global_size = b.getSize()

@@ -21,6 +21,10 @@ class JAltMin:
         self.Euv.assemble()
         self.Evu.assemble()
         self.Evv.assemble()
+
+    def destroyMat(self):
+        self.Euv.destroy()
+        self.Evu.destroy()
     
     def getKSPs(self):
         ksp_uu=self.elastic_solver.getKSP()
@@ -75,6 +79,7 @@ class JAltMin:
             ksp_vv.solve(y2, y2)
         self.resetKSPs(ksp_uu)
         self.resetKSPs(ksp_vv)
+        self.destroyMat()
     
     def getInactiveSet(self,n):
         v_ext=self.damage_solver.getSolution() # get current damage solution (external)

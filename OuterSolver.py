@@ -71,11 +71,12 @@ class OuterSolver:
                     if self.method=='CubicBacktracking': # Run cubic backtracking in situ
                         if PlotSwitch:
                             plotEnergyLandscape(self.fp,self.x,self.p)
-                        self.p = CubicBacktracking(self.fp, self.x, self.p, self.res)
+                        CubicBacktracking(self.fp, self.x, self.p, self.res)
                         self.x += self.p # update solution
                     elif self.method=='Parallelogram':
                         v = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
                         self.x += v # update solution
+                        v.destroy() # clean up parallelogram step vector
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()
                 self.fp.monitor(iteration)

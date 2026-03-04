@@ -175,7 +175,6 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     # print(f"Final step length: {alpha}")
     p.scale(alpha)
     xcopy.destroy()
-    return p
 
 def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     """
