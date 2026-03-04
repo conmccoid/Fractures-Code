@@ -1,9 +1,10 @@
 from EX_GD import main as EX
 from Utilities import plotNX
 from mpi4py import MPI
+import argparse
 import sys
 
-def main(id_list=['GD_AltMin','GD_CubicBacktracking','GD_Parallelogram'], en_list=None, WriteSwitch=True):
+def main(en_list=None, WriteSwitch=True):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
@@ -14,15 +15,21 @@ def main(id_list=['GD_AltMin','GD_CubicBacktracking','GD_Parallelogram'], en_lis
         comm.Barrier()
         en3, id3=EX('Parallelogram',WriteSwitch=True)
         comm.Barrier()
-        # for linesearch in linesearch_list:
-        #     EX('Newton',linesearch=linesearch,WriteSwitch=True)
         if rank == 0:
             id_list=[id1,id2,id3]
             en_list=[en1,en2,en3]
+    else:
+        id_list=['GD_AltMin','GD_CubicBacktracking','GD_Parallelogram']
+        for id in id_list:
+            # read energies from file
+            pass
     
     if rank == 0:
         plotNX('GD',id_list, en_list)
 
 if __name__== "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Run the GD problem with specified parameters.')
+    parser.add_argument('--write', action='store_true', default=False, help='Write results to file')
+    args = parser.parse_args()
+    main(WriteSwitch=args.write)
     sys.exit()
