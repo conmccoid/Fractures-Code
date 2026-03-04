@@ -107,3 +107,11 @@ class OuterSolver:
             with open(f"output/TBL_{self.identifier}.csv",'a') as csv.file:
                 writer=csv.writer(csv.file,delimiter=',')
                 writer.writerows(self.energies)
+
+    def destroy(self):
+        self.x.destroy()
+        self.res.destroy()
+        self.p.destroy()
+        self.J.destroy()
+        if self.method!= 'AltMin':
+            self.SNESKSP.destroy()

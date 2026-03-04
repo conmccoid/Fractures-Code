@@ -24,6 +24,8 @@ def main(method='AltMin', maxit=100, tol=1e-4, WriteSwitch=False, PlotSwitch=Fal
 
     os=OuterSolver(fp, example, method, loads)
     os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+    os.destroy()
+    fp.destroy()
     return os.energies, os.identifier
 
 import argparse

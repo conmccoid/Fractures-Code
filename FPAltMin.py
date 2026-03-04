@@ -130,3 +130,8 @@ class FPAltMin:
     def monitor(self, iteration):
         if self.rank == 0:
             print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
+    
+    def destroy(self):
+        self.gradF.destroy()
+        self.elastic_solver.destroy()
+        self.damage_solver.destroy()

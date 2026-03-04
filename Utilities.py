@@ -196,12 +196,21 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     fp.updateGradF(x)
     e=p.dot(fp.gradF)
     d=q.dot(fp.gradF)
-    pcopy=p.copy()
+
+    xq=x.copy()
+    xq.axpy(1,q)
+    xp=x.copy()
+    xp.axpy(1,p)
+    xpq=x.copy()
+    xpq.axpy(1,q)
+    xpq.axpy(1,p)
+    qp=q.copy()
+    qp.axpy(1,p)
 
     E0=fp.updateEnergies(x)[2]
-    Eq=fp.updateEnergies(x+q)[2]
-    Ep=fp.updateEnergies(x+pcopy)[2]
-    Epq=fp.updateEnergies(x+pcopy+q)[2]
+    Eq=fp.updateEnergies(xq)[2]
+    Ep=fp.updateEnergies(xp)[2]
+    Epq=fp.updateEnergies(xpq)[2]
     f=E0
     c=Ep-e-f
     a=Eq-d-f
@@ -210,19 +219,22 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     alpha = (-2*c*d + b*e)/r
     beta = (-2*a*e + b*d)/r
     E_list=[Eq, Ep, Epq]
-    v_list=[q, pcopy, q + pcopy]
+    v_list=[q.copy(), p.copy(), qp]
     beta_list=[0, 1, 1]
     alpha_list=[1, 0, 1]
     step_list=["AltMin", "Newton", "Both"]
     if (alpha>0) & (alpha<1) & (beta>0) & (beta<1):
         v=q.copy()
         v.scale(alpha)
-        v.axpy(beta,pcopy)
+        v.axpy(beta,p)
+        xv=x.copy()
+        xv.axpy(1,v)
         v_list.append(v)
         alpha_list.append(alpha)
         beta_list.append(beta)
-        E_list.append(fp.updateEnergies(x+v)[2])
+        E_list.append(fp.updateEnergies(xv)[2])
         step_list.append("Parallelogram interior")
+        xv.destroy()
     # else:
         # print("Minimum outside parallelogram, finding minimum on boundary")
     # beta=0 minimum
@@ -231,55 +243,75 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         beta_list.append(0)
         v=q.copy()
         v.scale(alpha)
-        E_list.append(fp.updateEnergies(x+v)[2])
+        xv=x.copy()
+        xv.axpy(1,v)
+        E_list.append(fp.updateEnergies(xv)[2])
         v_list.append(v)
         alpha_list.append(alpha)
         step_list.append("AltMin linesearch")
+        xv.destroy()
     
     # alpha=0
     beta= -e/(2*c)
     if (beta>0) & (beta<1):
         alpha_list.append(0)
-        v=pcopy.copy()
+        v=p.copy()
         v.scale(beta)
-        E_list.append(fp.updateEnergies(x+v)[2])
+        xv=x.copy()
+        xv.axpy(1,v)
+        E_list.append(fp.updateEnergies(xv)[2])
         v_list.append(v)
         beta_list.append(beta)
         step_list.append("Newton linesearch")
-    
+        xv.destroy()
+
     # beta=1
     alpha= (-d - b)/(2*a)
     if (alpha>0) & (alpha<1):
         beta_list.append(1)
         v=q.copy()
         v.scale(alpha)
-        v.axpy(1,pcopy)
-        E_list.append(fp.updateEnergies(x+v)[2])
+        v.axpy(1,p)
+        xv=x.copy()
+        xv.axpy(1,v)
+        E_list.append(fp.updateEnergies(xv)[2])
         v_list.append(v)
         alpha_list.append(alpha)
         step_list.append("Newton + AltMin linesearch")
+        xv.destroy()
     
     # alpha=1
     beta= (-e - b)/(2*c)
     if (beta>0) & (beta<1):
         alpha_list.append(1)
         v=q.copy()
-        v.scale(1)
-        v.axpy(beta,pcopy)
-        E_list.append(fp.updateEnergies(x+v)[2])
+        v.axpy(beta,p)
+        xv=x.copy()
+        xv.axpy(1,v)
+        E_list.append(fp.updateEnergies(xv)[2])
         v_list.append(v)
         beta_list.append(beta)
         step_list.append("AltMin + Newton linesearch")
+        xv.destroy()
 
     min_index=np.argmin(E_list)
-    v=v_list[min_index]
+    result=v_list[min_index].copy()
     alpha=alpha_list[min_index]
     beta=beta_list[min_index]
     # print(f"Chosen step: {step_list[min_index]}, Energy: {E_list[min_index]}")
     if PlotSwitch:
         print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
-        plotEnergyLandscape2D(fp,x,q,pcopy,[beta, alpha])
-    return v
+        plotEnergyLandscape2D(fp,x,q,p,[beta, alpha])
+
+    # clean-up
+    for v in v_list:
+        v.destroy()
+    qp.destroy()
+    xq.destroy()
+    xp.destroy()
+    xpq.destroy()
+
+    return result
 
 def plotEnergyLandscape(fp, x, p):
     """
@@ -298,6 +330,7 @@ def plotEnergyLandscape(fp, x, p):
         xcopy=x.copy()
         xcopy.axpy(alpha_list[j],p)
         energies_list[j]=fp.updateEnergies(xcopy)[2] # total energy
+        xcopy.destroy()
     plt.plot(alpha_list,energies_list-E0[2],'b',label='Total energy')
     plt.xlabel('Step length alpha')
     plt.ylabel('Total Energy')
