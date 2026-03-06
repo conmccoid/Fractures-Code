@@ -3,7 +3,6 @@ from Utilities import plotNX
 from mpi4py import MPI
 import argparse
 import sys
-import csv
 
 def main(id_list=['GD_AltMin','GD_CubicBacktracking','GD_Parallelogram'],en_list=None, WriteSwitch=True):
     comm = MPI.COMM_WORLD
