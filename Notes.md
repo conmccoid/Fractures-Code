@@ -66,14 +66,33 @@ docker build -t firebreak ./
 
 ## Running in Blaise's cluster over SSH
 
-#### First time on server
+Log on to server:
 ```bash
 ssh mccoidc@bbserv.math.mcmaster.ca
-git clone https://github.com/conmccoid/Fractures-Code.git
+```
+This will ask for a password established elsewhere.
+Copy-paste the password from my password manager.
+
+### First time on server
+
+#### Clone the Git repo via SSH
+
+```bash
+git clone git@github.com:conmccoid/Fractures-Code.git
+ssh-keygen -t ed25519 -C "conmccoid@gmail.com"
+```
+Press Enter to set the name of the key to the default.
+```bash
+cat ~/.ssh/ed25519.pub
+```
+Copy output and go to GitHub user settings, where this key can be pasted.
+
+#### Pull Docker image from DockerHub
+```bash
 apptainer pull docker://mccoidc/fractures-code:dolfinx
 ```
 
-#### Updating on server
+### Updating on server
 ```bash
 ssh mccoidc@bbserv.math.mcmaster.ca
 cd Fractures-Code
@@ -81,7 +100,7 @@ git pull
 apptainer pull ?
 ```
 
-#### Standard runs
+### Standard runs
 ```bash
 srun -N 2 -n 2 -p bb apptainer exec fractures-code_dolfinx.sif python3 <script>
 ```
@@ -96,7 +115,7 @@ Additional useful commands:
 - `sattach <jobid>`: see output while `sbatch` runs
 - `cat slurm-#####.out`: check output?
 
-#### Running apptainer
+### Running apptainer
 Ordinary run:
 ```bash
 apptainer run fractures-code_dolfinx.sif
