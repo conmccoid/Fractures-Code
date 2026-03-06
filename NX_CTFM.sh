@@ -10,4 +10,4 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=mccoidc@mcmaster.ca
 
-srun apptainer exec fractures-code_dolfinx.sif python3 NX_CTFM.py
+srun apptainer exec fractures-code_dolfinx.sif python3 NX_CTFM.py --write
