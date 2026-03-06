@@ -3,8 +3,9 @@ from Utilities import plotNX
 from mpi4py import MPI
 import argparse
 import sys
+import csv
 
-def main(en_list=None, WriteSwitch=True):
+def main(id_list=['GD_AltMin','GD_CubicBacktracking','GD_Parallelogram'],en_list=None, WriteSwitch=True):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
@@ -18,12 +19,7 @@ def main(en_list=None, WriteSwitch=True):
         if rank == 0:
             id_list=[id1,id2,id3]
             en_list=[en1,en2,en3]
-    else:
-        id_list=['GD_AltMin','GD_CubicBacktracking','GD_Parallelogram']
-        for id in id_list:
-            # read energies from file
-            pass
-    
+
     if rank == 0:
         plotNX('GD',id_list, en_list)
 

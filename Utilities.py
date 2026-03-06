@@ -370,6 +370,7 @@ def plotNX(example,id_list,en_list):
     ms=5
     fig1, ax1=plt.subplots(1,3)
     fig2, ax2=plt.subplots(1,3)
+    fig3, ax3=plt.subplots(1,1)
 
     for i, identifier in enumerate(id_list):
         if en_list==None:
@@ -385,7 +386,8 @@ def plotNX(example,id_list,en_list):
         ax2[0].plot(energies[:,0],energies[:,1],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
         ax2[1].plot(energies[:,0],energies[:,2],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
         ax2[2].plot(energies[:,0],energies[:,3],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
-    
+        ax3.plot(energies[:,0],energies[:,4],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+
     ax1[0].set_xlabel('t')
     ax1[0].set_ylabel('Iterations')
     ax1[0].legend()
@@ -410,3 +412,8 @@ def plotNX(example,id_list,en_list):
     ax2[2].set_ylabel('Total energy')
     ax2[2].legend()
     fig2.savefig(f"output/FIG_{example}_energy.png")
+
+    ax3.set_xlabel('t')
+    ax3.set_ylabel('Time elapsed (s) per load step')
+    ax3.legend()
+    fig3.savefig(f"output/FIG_{example}_time.png")
