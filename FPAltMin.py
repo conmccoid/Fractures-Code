@@ -52,7 +52,8 @@ class FPAltMin:
         pyvista.set_jupyter_backend(None)
 
         # debug
-        tracemalloc.start()
+        PETSc.Log.begin()
+        self.viewer = PETSc.Viewer.createASCII("petsc_log.txt", None, comm=self.comm)
 
     def createVecMat(self):
         b_u = self.u.x.petsc_vec.duplicate()
@@ -144,20 +145,10 @@ class FPAltMin:
     def monitor(self, iteration):
         if self.rank == 0:
             # print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
-            if tracemalloc.is_tracing():
-                current, peak = tracemalloc.get_traced_memory()
-                print(f"Current memory usage: {current / 10**6:.2f} MB, Peak memory usage: {peak / 10**6:.2f} MB")
-                snapshot = tracemalloc.take_snapshot()
-                top_stats = snapshot.statistics('lineno')
-                print("Top allocations:")
-                for stat in top_stats[:5]:
-                    print(stat)
-            
-            process=psutil.Process(os.getpid())
-            mem_info=process.memory_info()
-            print(f"Current memory usage: {mem_info.rss / 10**6:.2f} MB")
+            PETSc.Log.view(self.viewer)
     
     def destroy(self):
         self.gradF.destroy()
         self.elastic_solver.destroy()
         self.damage_solver.destroy()
+        self.viewer.destroy()
