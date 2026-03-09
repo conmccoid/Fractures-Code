@@ -11,6 +11,11 @@ from Solvers import Elastic, Damage
 from PLOT_DamageState import plot_damage_state
 from JAltMin import JAltMin
 
+# debug
+import tracemalloc
+import psutil
+import os
+
 class FPAltMin:
     def setUp(self,E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v):
         # self.comm=MPI.COMM_WORLD
@@ -45,6 +50,9 @@ class FPAltMin:
 
         pyvista.OFF_SCREEN = True
         pyvista.set_jupyter_backend(None)
+
+        # debug
+        tracemalloc.start()
 
     def createVecMat(self):
         b_u = self.u.x.petsc_vec.duplicate()
@@ -135,7 +143,19 @@ class FPAltMin:
     
     def monitor(self, iteration):
         if self.rank == 0:
-            print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
+            # print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
+            if tracemalloc.is_tracing():
+                current, peak = tracemalloc.get_traced_memory()
+                print(f"Current memory usage: {current / 10**6:.2f} MB, Peak memory usage: {peak / 10**6:.2f} MB")
+                snapshot = tracemalloc.take_snapshot()
+                top_stats = snapshot.statistics('lineno')
+                print("Top allocations:")
+                for stat in top_stats[:5]:
+                    print(stat)
+            
+            process=psutil.Process(os.getpid())
+            mem_info=process.memory_info()
+            print(f"Current memory usage: {mem_info.rss / 10**6:.2f} MB")
     
     def destroy(self):
         self.gradF.destroy()
