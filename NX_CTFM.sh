@@ -9,5 +9,6 @@
 #SBATCH --time=12:00:00
 #SBATCH --mail-type=END
 #SBATCH --mail-user=mccoidc@mcmaster.ca
+#SBATCH --no-requeue
 
 srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method CubicBacktracking
