@@ -71,10 +71,10 @@ class JAltMin:
             except:
                 print("Failed to solve inactive system")
                 print(f"size of IS: {IS.getSize()}, size of v_temp: {n_temp}")
-
-            y2.restoreSubVector(IS, y2_inactive)
-            y2_inactive.destroy()
-            IS.destroy()
+            finally:
+                y2.restoreSubVector(IS, y2_inactive)
+                y2_inactive.destroy()
+                IS.destroy()
         else:
             ksp_vv.solve(y2, y2)
         self.resetKSPs(ksp_uu)

@@ -103,7 +103,7 @@ def boxConstraints(fp,x):
     """
 
     fp.updateUV(x)
-    E0 = fp.updateEnergies(x)[2]
+    # E0 = fp.updateEnergies(x)[2]
     v = fp.v.x.petsc_vec
     v_lb = fp.v_lb.x.petsc_vec # retrieve upper and lower bounds as PETSc vectors
     v_ub = fp.v_ub.x.petsc_vec
@@ -111,12 +111,12 @@ def boxConstraints(fp,x):
     dist_upp = v_ub.array - v.array
     IS_low = np.where(dist_low < 0)[0] # find indices where v is below lower bound
     IS_upp = np.where(dist_upp < 0)[0] # find indices where v is above upper bound
-    dist_total = np.sum(dist_low[IS_low]) + np.sum(dist_upp[IS_upp])
+    # dist_total = np.sum(dist_low[IS_low]) + np.sum(dist_upp[IS_upp])
     v.array[IS_low] = v_lb.array[IS_low] # set v to boundary value if it crosses boundary
     v.array[IS_upp] = v_ub.array[IS_upp] # set v to boundary value if it crosses boundary
     v.assemblyBegin()
     v.assemblyEnd()
-    E1 = fp.updateEnergies(x)[2]
+    # E1 = fp.updateEnergies(x)[2]
     # print(f"Applied box constraints to {len(IS_low) + len(IS_upp)} entries, total distance from bounds was {dist_total}")
     # print(f"Energy before applying constraints: {E0}, Energy after applying constraints: {E1}")
 
