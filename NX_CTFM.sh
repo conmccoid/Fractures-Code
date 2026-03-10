@@ -7,7 +7,7 @@
 #SBATCH --ntasks-per-node=64
 #SBATCH --cpus-per-task=1
 #SBATCH --time=12:00:00
-#SBATCH --mail-type=ALL
+#SBATCH --mail-type=END
 #SBATCH --mail-user=mccoidc@mcmaster.ca
 
 srun apptainer exec fractures-code_dolfinx.sif python3 NX_CTFM.py --write
