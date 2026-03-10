@@ -144,7 +144,8 @@ class FPAltMin:
     def monitor(self, iteration):
         if self.rank == 0:
             # print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
-            PETSc.Log.view()
+            print(f"Matrices: {PETSc.Log.Class("Mat").getInfo()}")
+            print(f"Vectors: {PETSc.Log.Class("Vec").getInfo()}")
     
     def destroy(self):
         self.gradF.destroy()
