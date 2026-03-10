@@ -134,10 +134,9 @@ class FPAltMin:
         return self.error_L2
     
     def monitor(self, iteration):
-        # PETSc.garbage_view(self.comm)
+        PETSc.garbage_view()
         if self.rank == 0:
             print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
-            PETSc.garbage_view()
     
     def destroy(self):
         self.gradF.destroy()
