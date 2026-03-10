@@ -53,7 +53,8 @@ class FPAltMin:
 
         # debug
         PETSc.Log.begin()
-        self.viewer = PETSc.Viewer.createASCII("petsc_log.txt", None, comm=self.comm)
+        if self.rank == 0:
+            self.viewer = PETSc.Viewer.createASCII("petsc_log.txt", None, comm=self.comm)
 
     def createVecMat(self):
         b_u = self.u.x.petsc_vec.duplicate()
@@ -151,4 +152,5 @@ class FPAltMin:
         self.gradF.destroy()
         self.elastic_solver.destroy()
         self.damage_solver.destroy()
-        self.viewer.destroy()
+        if self.rank == 0:
+            self.viewer.destroy()
