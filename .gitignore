@@ -2,3 +2,5 @@
 __pycache__/*
 .Trash-0/*
 *.ipynb
+*.gz
+*.sif

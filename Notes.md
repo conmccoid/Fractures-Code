@@ -214,3 +214,18 @@ Important notes:
 - need to enforce boundary conditions before entering into Newton steps
 - often the energy for the AltMin step will be lower even after cubic backtracking, so it's probably a good idea to switch when that happens
 - each step of cubic backtracking requires a handful of FLOPs and an evaluation of the objective function (energies); this means it's fairly cheap, so the only serious additional costs of MSPIN over AltMin will be the Newton KSP solve
+
+## Debug tips
+
+See what is running on each node:
+```
+ps aux | grep <filename running>
+gdb -p <PID>
+(gdb) bt
+```
+PIDs are returned in the second column of the output of `ps aux`.
+
+Monitor memory usage:
+```
+watch -n 1 free -h
+```
