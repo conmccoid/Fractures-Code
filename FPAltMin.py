@@ -1,3 +1,5 @@
+import sys
+
 from dolfinx import fem, la, io
 from dolfinx.fem import petsc
 from mpi4py import MPI
@@ -137,6 +139,7 @@ class FPAltMin:
         PETSc.garbage_view()
         if self.rank == 0:
             print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
+            sys.stdout.flush()
     
     def destroy(self):
         self.gradF.destroy()
