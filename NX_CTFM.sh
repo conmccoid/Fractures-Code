@@ -10,4 +10,4 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=mccoidc@mcmaster.ca
 
-srun apptainer exec fractures-code_dolfinx.sif python3 NX_CTFM.py --write
+srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method CubicBacktracking
