@@ -417,3 +417,15 @@ def plotNX(example,id_list,en_list):
     ax3.set_ylabel('Time elapsed (s) per load step')
     ax3.legend()
     fig3.savefig(f"output/FIG_{example}_time.png")
+
+# debug
+import sys
+import psutil
+import os
+
+def monitorMem(rank, stage):
+    if rank==0:
+        process=psutil.Process(os.getpid())
+        mem_info=process.memory_info()
+        print(f"Current ({stage}) memory usage: {mem_info.rss / 10**6:.2f} MB")
+        sys.stdout.flush()

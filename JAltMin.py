@@ -5,12 +5,15 @@ from petsc4py import PETSc
 
 import numpy as np
 
+from Utilities import monitorMem
+
 class JAltMin:
     def __init__(self, elastic_solver, damage_solver, E_uv, E_vu):
         self.EuvForm = fem.form(E_uv)
         self.EvuForm = fem.form(E_vu)
         self.elastic_solver = elastic_solver
         self.damage_solver = damage_solver
+        self.rank = MPI.COMM_WORLD.rank
 
     def updateMat(self):
         self.Euu, _, _ = self.elastic_solver.getJacobian()
@@ -54,6 +57,8 @@ class JAltMin:
         self.Euv.multAdd(x2, y1, y1)
         self.Evu.multAdd(x1, y2, y2)
 
+        #====Memory leak====#
+        monitorMem(self.rank, 'pre-mult by P')
         # multiply by P
         ksp_uu, ksp_vv = self.getKSPs()
         ksp_uu.solve(y1, y1)
@@ -74,9 +79,12 @@ class JAltMin:
                 y2.restoreSubVector(IS, y2_inactive)
         else:
             ksp_vv.solve(y2, y2)
+        monitorMem(self.rank, 'post-mult by P')
+        #===#
         self.resetKSPs(ksp_uu)
         self.resetKSPs(ksp_vv)
         self.destroyMat()
+        monitorMem(self.rank, 'post-mult cleanup')
     
     def getInactiveSet(self,n):
         v_ext=self.damage_solver.getSolution() # get current damage solution (external)

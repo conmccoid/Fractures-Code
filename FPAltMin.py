@@ -11,11 +11,6 @@ from Solvers import Elastic, Damage
 from PLOT_DamageState import plot_damage_state
 from JAltMin import JAltMin
 
-# debug
-import sys
-import psutil
-import os
-
 class FPAltMin:
     def setUp(self,E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v):
         # self.comm=MPI.COMM_WORLD
@@ -146,14 +141,7 @@ class FPAltMin:
     def monitor(self, iteration):
         if self.rank == 0:
             print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
-    
-    def monitorMem(self, stage):
-        if self.rank==0:
-            process=psutil.Process(os.getpid())
-            mem_info=process.memory_info()
-            print(f"Current ({stage}) memory usage: {mem_info.rss / 10**6:.2f} MB")
-            sys.stdout.flush()
-    
+
     def destroy(self):
         self.gradF.destroy()
         self.elastic_solver.destroy()
