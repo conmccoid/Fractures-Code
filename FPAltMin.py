@@ -1,5 +1,3 @@
-import sys
-
 from dolfinx import fem, la, io
 from dolfinx.fem import petsc
 from mpi4py import MPI
@@ -14,7 +12,7 @@ from PLOT_DamageState import plot_damage_state
 from JAltMin import JAltMin
 
 # debug
-import tracemalloc
+import sys
 import psutil
 import os
 
@@ -50,11 +48,13 @@ class FPAltMin:
         ucopy.destroy()
         vcopy.destroy()
 
+        self.elastic_energy = fem.form(self.elastic_energy)
+        self.dissipated_energy = fem.form(self.dissipated_energy)
+        self.total_energy = fem.form(self.total_energy)
+        self.error = fem.form(ufl.inner(self.v - self.v_old, self.v - self.v_old) * ufl.dx + ufl.inner(self.u - self.u_old, self.u - self.u_old) * ufl.dx)
+
         pyvista.OFF_SCREEN = True
         pyvista.set_jupyter_backend(None)
-
-        # debug
-        tracemalloc.start()
 
     def createVecMat(self):
         b_u = self.u.x.petsc_vec.duplicate()
@@ -68,7 +68,7 @@ class FPAltMin:
         global_size = b.getSize()
         J = PETSc.Mat().createPython(
             ((local_size, global_size), (local_size, global_size)),
-            JAltMin,
+            self.PJ,
             comm=self.comm
         )
         return b, J
@@ -90,15 +90,15 @@ class FPAltMin:
         self.updateUV(x)
         energies=np.zeros((3,))
         energies[0] = self.comm.allreduce(
-            fem.assemble_scalar(fem.form(self.elastic_energy)),
+            fem.assemble_scalar(self.elastic_energy),
             op=MPI.SUM
         )
         energies[1] = self.comm.allreduce(
-            fem.assemble_scalar(fem.form(self.dissipated_energy)),
+            fem.assemble_scalar(self.dissipated_energy),
             op=MPI.SUM
         )
         energies[2] = self.comm.allreduce(
-            fem.assemble_scalar(fem.form(self.total_energy)),
+            fem.assemble_scalar(self.total_energy),
             op=MPI.SUM
         )
         return energies
@@ -131,34 +131,27 @@ class FPAltMin:
         F.assemblyEnd()
 
     def Jn(self, snes, x, J, P):
-        J.setPythonContext(self.PJ)
-        J.setUp()
+        # J.setPythonContext(self.PJ)
+        # J.setUp()
+        pass
 
     def plot(self, x, size=(800, 300)):
         self.updateUV(x)
         plot_damage_state(self.u, self.v, None, size)
 
     def updateError(self):
-        error = ufl.inner(self.v - self.v_old, self.v - self.v_old) * ufl.dx + ufl.inner(self.u - self.u_old, self.u - self.u_old) * ufl.dx
-        self.error_L2 = np.sqrt(self.comm.allreduce(fem.assemble_scalar(fem.form(error)), op=MPI.SUM))
+        self.error_L2 = np.sqrt(self.comm.allreduce(fem.assemble_scalar(self.error), op=MPI.SUM))
         return self.error_L2
     
     def monitor(self, iteration):
-        PETSc.garbage_view()
         if self.rank == 0:
             print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
-            if tracemalloc.is_tracing():
-                current, peak = tracemalloc.get_traced_memory()
-                print(f"Current memory usage: {current / 10**6:.2f} MB, Peak memory usage: {peak / 10**6:.2f} MB")
-                snapshot = tracemalloc.take_snapshot()
-                top_stats = snapshot.statistics('lineno')
-                print("Top allocations:")
-                for stat in top_stats[:5]:
-                    print(stat)
-            
+    
+    def monitorMem(self, stage):
+        if self.rank==0:
             process=psutil.Process(os.getpid())
             mem_info=process.memory_info()
-            print(f"Current memory usage: {mem_info.rss / 10**6:.2f} MB")
+            print(f"Current ({stage}) memory usage: {mem_info.rss / 10**6:.2f} MB")
             sys.stdout.flush()
     
     def destroy(self):

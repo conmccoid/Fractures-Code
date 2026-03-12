@@ -58,6 +58,7 @@ class OuterSolver:
 
             while error > tol and iteration < maxit:
                 iteration += 1
+                self.fp.monitorMem('pre-Fn')
                 self.fp.Fn(None, self.x, self.res)
                 if self.method=='AltMin':
                     if PlotSwitch:
@@ -65,7 +66,9 @@ class OuterSolver:
                         print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
                     self.x.axpy(1.0,self.res) # Add the residual to the solution vector
                 else:
+                    self.fp.monitorMem('pre-solve')
                     self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+                    self.fp.monitorMem('post-solve')
                     self.energies[i_t,6]=self.SNESKSP.getIterationNumber()
                     DBTrick(self.fp,self.x,self.p) # apply DB trick to search direction
                     if self.method=='CubicBacktracking': # Run cubic backtracking in situ
@@ -80,12 +83,13 @@ class OuterSolver:
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()
                 self.fp.monitor(iteration)
+                self.fp.monitorMem('post-update')
             
             if self.method=='CubicBacktracking' or self.method=='Parallelogram': # apply box constraints to final solution for backtracking methods
                 boxConstraints(self.fp,self.x) # apply box constraints to final solution
                 self.fp.updateUV(self.x) # update solution vectors after applying constraints
                 error = self.fp.updateError() # update error after applying constraints
-                self.fp.monitor(iteration)
+                self.fp.monitorMem('post-constraints')
             
             self.energies[i_t, 1:4] = self.fp.updateEnergies(self.x)[0:3]
             end_time = PETSc.Log.getTime()

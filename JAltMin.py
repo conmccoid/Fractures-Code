@@ -64,8 +64,7 @@ class JAltMin:
         if m_temp != n_temp:
             # IS=self.getInactiveSet(n_temp)
             IS=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
-            y2_inactive=PETSc.Vec().create(comm=y2.comm) # make sure this gets the same comm as y2 (y2.comm?)
-            y2.getSubVector(IS, y2_inactive)
+            y2_inactive=y2.getSubVector(IS)
             try:
                 ksp_vv.solve(y2_inactive, y2_inactive)
             except:
@@ -73,8 +72,6 @@ class JAltMin:
                 print(f"size of IS: {IS.getSize()}, size of v_temp: {n_temp}")
             finally:
                 y2.restoreSubVector(IS, y2_inactive)
-                y2_inactive.destroy()
-                IS.destroy()
         else:
             ksp_vv.solve(y2, y2)
         self.resetKSPs(ksp_uu)
