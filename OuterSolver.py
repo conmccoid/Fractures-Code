@@ -68,9 +68,15 @@ class OuterSolver:
                         print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
                     self.x.axpy(1.0,self.res) # Add the residual to the solution vector
                 else:
+                    # Solve the linear system
                     monitorMem(self.fp.rank, 'pre-solve')
+                    self.fp.PJ.updateMat() # update Jacobian matrix in Python context
+                    self.fp.PJ.getKSPs() # update KSPs
                     self.SNESKSP.solve(self.res, self.p)  # Solve the linear system ***BIG memory leak here in parallel***
+                    self.fp.PJ.resetKSPs() # reset KSPs
+                    self.fp.PJ.destroyMat() # destroy Jacobian matrix components to free memory before solve
                     monitorMem(self.fp.rank, 'post-solve')
+
                     self.energies[i_t,6]=self.SNESKSP.getIterationNumber()
                     DBTrick(self.fp,self.x,self.p) # apply DB trick to search direction
                     if self.method=='CubicBacktracking': # Run cubic backtracking in situ

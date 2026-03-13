@@ -30,26 +30,24 @@ class JAltMin:
         self.Evu.destroy()
     
     def getKSPs(self):
-        ksp_uu=self.elastic_solver.getKSP()
-        ksp_vv=self.damage_solver.getKSP()
-        opts=PETSc.Options()
-        opts['ksp_reuse_preconditioner'] = True
-        ksp_uu.setFromOptions()
-        ksp_vv.setFromOptions()
-        opts.destroy()
-        return ksp_uu, ksp_vv
+        self.ksp_uu=self.elastic_solver.getKSP()
+        self.ksp_vv=self.damage_solver.getKSP()
+        self.opts=PETSc.Options()
+        self.opts['ksp_reuse_preconditioner'] = True
+        self.ksp_uu.setFromOptions()
+        self.ksp_vv.setFromOptions()
+        self.IS=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
     
-    def resetKSPs(self, ksp):
-        opts= PETSc.Options()
-        opts['ksp_reuse_preconditioner'] = False
-        ksp.setFromOptions()
-        opts.destroy()
+    def resetKSPs(self):
+        self.opts['ksp_reuse_preconditioner'] = False
+        self.ksp_uu.setFromOptions()
+        self.ksp_vv.setFromOptions()
+        self.opts.destroy()
+        self.IS.destroy()
 
     def mult(self, mat, X, Y):
         x1, x2 = X.getNestSubVecs()
         y1, y2 = Y.getNestSubVecs()
-
-        self.updateMat()
 
         # multiply by J
         self.Euu.mult(x1, y1)
@@ -58,33 +56,26 @@ class JAltMin:
         self.Evu.multAdd(x1, y2, y2)
 
         #====Memory leak====#
-        monitorMem(self.rank, 'pre-mult by P')
         # multiply by P
-        ksp_uu, ksp_vv = self.getKSPs()
-        ksp_uu.solve(y1, y1)
+        monitorMem(self.rank, 'pre-solve u')
+        self.ksp_uu(y1, y1)
+        monitorMem(self.rank, 'post-solve u')
         self.Evu.multAdd(-y1,y2,y2)
-        n_temp=ksp_vv.getOperators()[0].getSize()[0]
+        n_temp=self.ksp_vv.getOperators()[0].getSize()[0]
         m_temp=y2.getSize()
 
         if m_temp != n_temp:
             # IS=self.getInactiveSet(n_temp)
-            IS=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
-            y2_inactive=y2.getSubVector(IS)
-            try:
-                ksp_vv.solve(y2_inactive, y2_inactive)
-            except:
-                print("Failed to solve inactive system")
-                print(f"size of IS: {IS.getSize()}, size of v_temp: {n_temp}")
-            finally:
-                y2.restoreSubVector(IS, y2_inactive)
+            y2_rhs=y2.getSubVector(self.IS)
+            y2_sol=y2_rhs.duplicate()
+            monitorMem(self.rank, 'pre-solve inactive')
+            self.ksp_vv(y2_rhs, y2_sol) # ***MEMORY LEAK***
+            monitorMem(self.rank, 'post-solve inactive')
+            y2.restoreSubVector(self.IS, y2_sol)
+            y2_rhs.destroy()
         else:
-            ksp_vv.solve(y2, y2)
-        monitorMem(self.rank, 'post-mult by P')
+            self.ksp_vv(y2, y2)
         #===#
-        self.resetKSPs(ksp_uu)
-        self.resetKSPs(ksp_vv)
-        self.destroyMat()
-        monitorMem(self.rank, 'post-mult cleanup')
     
     def getInactiveSet(self,n):
         v_ext=self.damage_solver.getSolution() # get current damage solution (external)
