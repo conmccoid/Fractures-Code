@@ -65,7 +65,7 @@ class OuterSolver:
 
             while error > tol and iteration < maxit:
                 iteration += 1
-                # monitorMem(self.fp.rank, 'pre-Fn')
+                monitorMem(self.fp.rank, 'pre-Fn')
                 self.fp.Fn(None, self.x, self.res) # *occasional memory leak here?*
                 if self.method=='AltMin':
                     if PlotSwitch:

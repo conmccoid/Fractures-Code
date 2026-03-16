@@ -14,6 +14,7 @@ class JAltMin:
         self.elastic_solver = elastic_solver
         self.damage_solver = damage_solver
         self.rank = MPI.COMM_WORLD.rank
+        self.mem=[0,0,0]
 
     def updateMat(self):
         self.Euu, _, _ = self.elastic_solver.getJacobian()
@@ -53,8 +54,6 @@ class JAltMin:
         self.ksp_vv.setFromOptions()
         self.IS=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
 
-        self.mem=[0,0,0]
-    
     def resetKSPs(self):
         self.opts['ksp_reuse_preconditioner'] = False
         self.ksp_uu.setFromOptions()
