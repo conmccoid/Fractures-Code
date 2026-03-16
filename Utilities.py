@@ -424,8 +424,29 @@ import psutil
 import os
 
 def monitorMem(rank, stage):
+    process=psutil.Process(os.getpid())
+    mem_info=process.memory_info()
+    mem_out=mem_info.rss / 10**6
     if rank==0:
-        process=psutil.Process(os.getpid())
-        mem_info=process.memory_info()
-        print(f"Current ({stage}) memory usage: {mem_info.rss / 10**6:.2f} MB")
-        sys.stdout.flush()
+        print(f"Current ({stage}) memory usage: {mem_out:.2f} MB")
+    sys.stdout.flush()
+    return mem_out
+
+import csv
+
+def storeMem(rank, mem):
+    if rank==0:
+        with open(f"memory_log.csv", 'a') as csv.file:
+            writer = csv.writer(csv.file, delimiter=',')
+            writer.writerow(mem)
+
+def plotMem():
+    mem_data = np.loadtxt(f"memory_log.csv", delimiter=',', skiprows=1)
+    plt.plot(mem_data[:,0], label='u solve')
+    plt.plot(mem_data[:,1], label='v solve')
+    plt.plot(mem_data[:,2], label='inactive set solve')
+    plt.xlabel('Iteration')
+    plt.ylabel('Memory usage (MB)')
+    plt.title('Memory Usage Over Time')
+    plt.legend()
+    plt.savefig(f"memory_log.png")

@@ -14,6 +14,8 @@ class FP(FPAltMin):
         self.t1.value = t
         self.t2.value =-t
 
+from Utilities import plotMem
+
 def main(method='AltMin', maxit=1000, tol=1e-4, WriteSwitch=False, PlotSwitch=False):
     fp = FP()
     example='CTFM'
@@ -26,6 +28,7 @@ def main(method='AltMin', maxit=1000, tol=1e-4, WriteSwitch=False, PlotSwitch=Fa
     identifier = os.identifier
     os.destroy()
     fp.destroy()
+    plotMem()
     return energies, identifier
 
 import argparse

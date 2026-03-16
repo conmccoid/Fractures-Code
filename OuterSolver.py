@@ -37,6 +37,11 @@ class OuterSolver:
                         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Number of iterations'])
                     else:
                         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Outer iterations','Inner iterations'])
+        # debugging memory leak
+        if self.fp.rank==0:
+            with open(f"memory_log.csv",'w') as csv.file:
+                writer=csv.writer(csv.file,delimiter=',')
+                writer.writerow(['u','v','inactive'])
 
         # main iteration
         for i_t, t in enumerate(self.loads):
@@ -60,7 +65,7 @@ class OuterSolver:
 
             while error > tol and iteration < maxit:
                 iteration += 1
-                monitorMem(self.fp.rank, 'pre-Fn')
+                # monitorMem(self.fp.rank, 'pre-Fn')
                 self.fp.Fn(None, self.x, self.res) # *occasional memory leak here?*
                 if self.method=='AltMin':
                     if PlotSwitch:
