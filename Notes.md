@@ -229,3 +229,12 @@ Monitor memory usage:
 ```
 watch -n 1 free -h
 ```
+
+### draft of message to PETSc Discord concerning KSP leak
+
+#### Memory leak when using KSP
+I have a memory leak when using KSPs in petsc4py. I've tried to identify which objects are responsible, but trace.malloc doesn't show any increases in memory and PETSc's garbage view doesn't show anything either. PETSc's malloc doesn't seem to be wrapped in Python.
+
+I've narrowed down the growth in memory to three instances of solves using KSPs. Individually, they don't leak much, usually 0.2MB or less, but each is called thousands of times, so that by the end I have 60GB+ of memory I can't seem to touch. These KSPs are taken from SNES objects using getKSP(). I've tried a version of the code that creates new KSPs that I can destroy, but that didn't help.
+
+I should mention that we've had to modify the base code for PETSc. There's one line, 506 in src/snes/impls/vi/rs/virs.c, we had to delete so that the IS for the inactive set of a variational inequality SNES can be reused. I don't see this being a problem because this should only create one IS per KSP, not a new IS every time I try to KSP.solve(). If it is a problem, I don't know how to fix it while keeping the IS for when I need it.
