@@ -427,8 +427,8 @@ def monitorMem(rank, stage):
     process=psutil.Process(os.getpid())
     mem_info=process.memory_info()
     mem_out=mem_info.rss / 10**6
-    if rank==0:
-        print(f"Current ({stage}) memory usage: {mem_out:.2f} MB")
+    # if rank==0:
+        # print(f"Current ({stage}) memory usage: {mem_out:.2f} MB")
     sys.stdout.flush()
     return mem_out
 
