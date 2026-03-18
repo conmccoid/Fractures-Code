@@ -1,6 +1,6 @@
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape, monitorMem
+from Utilities import KSPsetUp, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape, monitorMem, storeMem
 from dolfinx import io
 import csv
 
@@ -38,10 +38,11 @@ class OuterSolver:
                     else:
                         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Outer iterations','Inner iterations'])
         # debugging memory leak
+        mem=[0,0,0]
         if self.fp.rank==0:
             with open(f"memory_log.csv",'w') as csv.file:
                 writer=csv.writer(csv.file,delimiter=',')
-                writer.writerow(['u','v','inactive'])
+                writer.writerow(['Fn','solve','update'])
 
         # main iteration
         for i_t, t in enumerate(self.loads):
@@ -65,7 +66,7 @@ class OuterSolver:
 
             while error > tol and iteration < maxit:
                 iteration += 1
-                monitorMem(self.fp.rank, 'pre-Fn')
+                mem1=monitorMem(self.fp.rank, 'pre-Fn')
                 self.fp.Fn(None, self.x, self.res) # *occasional memory leak here?*
                 if self.method=='AltMin':
                     if PlotSwitch:
@@ -74,14 +75,15 @@ class OuterSolver:
                     self.x.axpy(1.0,self.res) # Add the residual to the solution vector
                 else:
                     # Solve the linear system
-                    monitorMem(self.fp.rank, 'pre-solve')
+                    mem2=monitorMem(self.fp.rank, 'pre-solve')
+                    mem[0]+=mem2-mem1
                     self.fp.PJ.updateMat() # update Jacobian matrix in Python context
                     self.fp.PJ.getKSPs() # update KSPs
                     self.SNESKSP.solve(self.res, self.p)  # Solve the linear system ***BIG memory leak here in parallel***
                     self.fp.PJ.resetKSPs() # reset KSPs
                     self.fp.PJ.destroyMat() # destroy Jacobian matrix components to free memory before solve
-                    monitorMem(self.fp.rank, 'post-solve')
-
+                    mem3=monitorMem(self.fp.rank, 'post-solve')
+                    mem[1]+=mem3-mem2
                     self.energies[i_t,6]=self.SNESKSP.getIterationNumber()
                     DBTrick(self.fp,self.x,self.p) # apply DB trick to search direction
                     if self.method=='CubicBacktracking': # Run cubic backtracking in situ
@@ -96,13 +98,15 @@ class OuterSolver:
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()
                 self.fp.monitor(iteration)
-                monitorMem(self.fp.rank, 'post-update')
+                mem4=monitorMem(self.fp.rank, 'post-update')
+                mem[2]+=mem4-mem1
+                storeMem(self.fp.rank, mem)
             
             if self.method=='CubicBacktracking' or self.method=='Parallelogram': # apply box constraints to final solution for backtracking methods
                 boxConstraints(self.fp,self.x) # apply box constraints to final solution
                 self.fp.updateUV(self.x) # update solution vectors after applying constraints
                 error = self.fp.updateError() # update error after applying constraints
-                monitorMem(self.fp.rank, 'post-constraints')
+                mem5=monitorMem(self.fp.rank, 'post-constraints')
             
             self.energies[i_t, 1:4] = self.fp.updateEnergies(self.x)[0:3]
             end_time = PETSc.Log.getTime()

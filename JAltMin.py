@@ -14,7 +14,7 @@ class JAltMin:
         self.elastic_solver = elastic_solver
         self.damage_solver = damage_solver
         self.rank = MPI.COMM_WORLD.rank
-        self.mem=[0,0,0]
+        # self.mem=[0,0,0]
 
     def updateMat(self):
         self.Euu, _, _ = self.elastic_solver.getJacobian()
@@ -64,53 +64,45 @@ class JAltMin:
         # self.ksp_vv.destroy()
 
     def mult(self, mat, X, Y):
+        stage=PETSc.Log.Stage("mult")
+        stage.push()
         x1, x2 = X.getNestSubVecs()
         y1, y2 = Y.getNestSubVecs()
 
         # multiply by J
         self.Euu.mult(x1, y1)
         self.Evv.mult(x2, y2)
-        stage=PETSc.Log.Stage("multAdd Euv and Evu")
-        stage.push()
         self.Euv.multAdd(x2, y1, y1)
         self.Evu.multAdd(x1, y2, y2)
-        stage.pop()
 
         #====Memory leak====#
         # multiply by P
-        stage2=PETSc.Log.Stage("solve u")
-        stage2.push()
-        mem_u1=monitorMem(self.rank, 'pre-solve u')
+        # mem_u1=monitorMem(self.rank, 'pre-solve u')
         self.ksp_uu(y1, y1)
-        mem_u2=monitorMem(self.rank, 'post-solve u')
-        self.mem[0]+=mem_u2-mem_u1
-        stage2.pop()
-        stage5=PETSc.Log.Stage("muldAdd Evu")
-        stage5.push()
-        self.Evu.multAdd(-y1,y2,y2)
-        stage5.pop()
+        # mem_u2=monitorMem(self.rank, 'post-solve u')
+        # self.mem[0]+=mem_u2-mem_u1
+        y1.scale(-1.0)
+        self.Evu.multAdd(y1,y2,y2)
         n_temp=self.ksp_vv.getOperators()[0].getSize()[0]
         m_temp=y2.getSize()
 
         if m_temp != n_temp:
-            stage3=PETSc.Log.Stage("solve inactive")
-            stage3.push()
             # IS=self.getInactiveSet(n_temp)
             y2_rhs=y2.getSubVector(self.IS)
             y2_sol=y2_rhs.duplicate()
-            mem_v1=monitorMem(self.rank, 'pre-solve inactive')
+            # mem_v1=monitorMem(self.rank, 'pre-solve inactive')
             self.ksp_vv(y2_rhs, y2_sol) # ***MEMORY LEAK***
-            mem_v2=monitorMem(self.rank, 'post-solve inactive')
-            self.mem[2]+=mem_v2-mem_v1
+            # mem_v2=monitorMem(self.rank, 'post-solve inactive')
+            # self.mem[2]+=mem_v2-mem_v1
             y2.restoreSubVector(self.IS, y2_sol)
             y2_rhs.destroy()
-            stage3.pop()
         else:
-            mem_v1=monitorMem(self.rank, 'pre-solve v')
+            # mem_v1=monitorMem(self.rank, 'pre-solve v')
             self.ksp_vv(y2, y2)
-            mem_v2=monitorMem(self.rank, 'post-solve v')
-            self.mem[1]+=mem_v2-mem_v1
-        storeMem(self.rank, self.mem)
+            # mem_v2=monitorMem(self.rank, 'post-solve v')
+            # self.mem[1]+=mem_v2-mem_v1
+        # storeMem(self.rank, self.mem)
+        stage.pop()
         #===#
     
     def getInactiveSet(self,n):
