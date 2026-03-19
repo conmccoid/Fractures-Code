@@ -11,4 +11,4 @@
 #SBATCH --mail-user=mccoidc@mcmaster.ca
 #SBATCH --no-requeue
 
-srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method CubicBacktracking
+srun apptainer exec fractures-code_dolfinx.sif python3 NX_CTFM.py

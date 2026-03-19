@@ -5,8 +5,6 @@ from petsc4py import PETSc
 
 import numpy as np
 
-from Utilities import monitorMem, storeMem
-
 class JAltMin:
     def __init__(self, elastic_solver, damage_solver, E_uv, E_vu):
         self.EuvForm = fem.form(E_uv)
@@ -14,7 +12,6 @@ class JAltMin:
         self.elastic_solver = elastic_solver
         self.damage_solver = damage_solver
         self.rank = MPI.COMM_WORLD.rank
-        # self.mem=[0,0,0]
 
     def updateMat(self):
         self.Euu, _, _ = self.elastic_solver.getJacobian()
@@ -33,21 +30,6 @@ class JAltMin:
     def getKSPs(self):
         self.ksp_uu=self.elastic_solver.getKSP()
         self.ksp_vv=self.damage_solver.getKSP()
-        # ksp_elastic=self.elastic_solver.getKSP()
-        # ksp_damage=self.damage_solver.getKSP()
-        # self.ksp_uu=PETSc.KSP().create(ksp_elastic.comm)
-        # self.ksp_vv=PETSc.KSP().create(ksp_damage.comm)
-        # self.ksp_uu.setOperators(ksp_elastic.getOperators()[0])
-        # self.ksp_vv.setOperators(ksp_damage.getOperators()[0])
-        # self.ksp_uu.setType(ksp_elastic.getType())
-        # self.ksp_vv.setType(ksp_damage.getType())
-        # rtol, atol, dtol, max_it = ksp_elastic.getTolerances()
-        # self.ksp_uu.setTolerances(rtol, atol, dtol, max_it)
-        # rtol, atol, dtol, max_it = ksp_damage.getTolerances()
-        # self.ksp_vv.setTolerances(rtol, atol, dtol, max_it)
-        # self.ksp_uu.setPC(ksp_elastic.getPC())
-        # self.ksp_vv.setPC(ksp_damage.getPC())
-
         self.opts=PETSc.Options()
         self.opts['ksp_reuse_preconditioner'] = True
         self.ksp_uu.setFromOptions()
@@ -59,9 +41,6 @@ class JAltMin:
         self.ksp_uu.setFromOptions()
         self.ksp_vv.setFromOptions()
         self.opts.destroy()
-        # self.IS.destroy()
-        # self.ksp_uu.destroy()
-        # self.ksp_vv.destroy()
 
     def mult(self, mat, X, Y):
         stage=PETSc.Log.Stage("mult")
@@ -75,12 +54,8 @@ class JAltMin:
         self.Euv.multAdd(x2, y1, y1)
         self.Evu.multAdd(x1, y2, y2)
 
-        #====Memory leak====#
         # multiply by P
-        # mem_u1=monitorMem(self.rank, 'pre-solve u')
         self.ksp_uu(y1, y1)
-        # mem_u2=monitorMem(self.rank, 'post-solve u')
-        # self.mem[0]+=mem_u2-mem_u1
         y1.scale(-1.0)
         self.Evu.multAdd(y1,y2,y2)
         n_temp=self.ksp_vv.getOperators()[0].getSize()[0]
@@ -90,20 +65,11 @@ class JAltMin:
             # IS=self.getInactiveSet(n_temp)
             y2_rhs=y2.getSubVector(self.IS)
             y2_sol=y2_rhs.duplicate()
-            # mem_v1=monitorMem(self.rank, 'pre-solve inactive')
-            self.ksp_vv(y2_rhs, y2_sol) # ***MEMORY LEAK***
-            # mem_v2=monitorMem(self.rank, 'post-solve inactive')
-            # self.mem[2]+=mem_v2-mem_v1
+            self.ksp_vv(y2_rhs, y2_sol)
             y2.restoreSubVector(self.IS, y2_sol)
             y2_rhs.destroy()
         else:
-            # mem_v1=monitorMem(self.rank, 'pre-solve v')
             self.ksp_vv(y2, y2)
-            # mem_v2=monitorMem(self.rank, 'post-solve v')
-            # self.mem[1]+=mem_v2-mem_v1
-        # storeMem(self.rank, self.mem)
-        stage.pop()
-        #===#
     
     def getInactiveSet(self,n):
         v_ext=self.damage_solver.getSolution() # get current damage solution (external)

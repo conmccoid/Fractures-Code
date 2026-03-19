@@ -417,36 +417,3 @@ def plotNX(example,id_list,en_list):
     ax3.set_ylabel('Time elapsed (s) per load step')
     ax3.legend()
     fig3.savefig(f"output/FIG_{example}_time.png")
-
-# debug
-import sys
-import psutil
-import os
-
-def monitorMem(rank, stage):
-    process=psutil.Process(os.getpid())
-    mem_info=process.memory_info()
-    mem_out=mem_info.rss / 10**6
-    if rank==0:
-        print(f"Current ({stage}) memory usage: {mem_out:.2f} MB")
-    sys.stdout.flush()
-    return mem_out
-
-import csv
-
-def storeMem(rank, mem):
-    if rank==0:
-        with open(f"memory_log.csv", 'a') as csv.file:
-            writer = csv.writer(csv.file, delimiter=',')
-            writer.writerow(mem)
-
-def plotMem():
-    mem_data = np.loadtxt(f"memory_log.csv", delimiter=',', skiprows=1)
-    plt.plot(mem_data[:,0], label='Fn')
-    plt.plot(mem_data[:,1], label='solve')
-    plt.plot(mem_data[:,2], label='update')
-    plt.xlabel('Iteration')
-    plt.ylabel('Memory usage (MB)')
-    plt.title('Memory Usage Over Time')
-    plt.legend()
-    plt.savefig(f"memory_log.png")
