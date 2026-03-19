@@ -43,8 +43,6 @@ class JAltMin:
         self.opts.destroy()
 
     def mult(self, mat, X, Y):
-        stage=PETSc.Log.Stage("mult")
-        stage.push()
         x1, x2 = X.getNestSubVecs()
         y1, y2 = Y.getNestSubVecs()
 
