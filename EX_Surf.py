@@ -8,9 +8,9 @@ class FP(FPAltMin):
         '''Initialize the problem by defining the domain, variational formulation, and boundary conditions.
         - p: problem parameters
         '''
-        u, v, dom, cell_tags, facet_tags=domain()
-        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, self.p, self.total_energy = VariationalFormulation(u,v,dom,cell_tags,facet_tags)
-        bcs_u, bcs_v, self.U, self.bdry_cells = BCs(u,v,dom,cell_tags, facet_tags, self.p)
+        self.u, self.v, self.dom, cell_tags, facet_tags=domain()
+        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, self.p, self.total_energy = VariationalFormulation(self.u, self.v, self.dom, cell_tags, facet_tags)
+        bcs_u, bcs_v, self.U, self.bdry_cells = BCs(self.u, self.v, self.dom, cell_tags, facet_tags, self.p)
         self.setUp(E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v)
 
     def updateBCs(self, t):
