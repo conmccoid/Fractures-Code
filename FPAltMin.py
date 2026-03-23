@@ -14,8 +14,8 @@ from JAltMin import JAltMin
 class FPAltMin:
     def setUp(self,E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v):
         
-        PETSc.Log.begin()
-        PETSc.Options().insertString("-log_view")
+        # PETSc.Log.begin()
+        # PETSc.Options().insertString("-log_view")
 
         # self.comm=MPI.COMM_WORLD
         self.comm=self.u.function_space.mesh.comm
