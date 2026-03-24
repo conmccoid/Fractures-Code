@@ -39,7 +39,6 @@ def plot_damage_state(u, alpha, load=None, window=[800,300], filename=None):
     grid.set_active_scalars("alpha")
     plotter.add_mesh(grid, show_edges=False, show_scalar_bar=True, clim=[0, 1])
     plotter.view_xy()
-    if not pyvista.OFF_SCREEN:
-        plotter.show()
+    plotter.show(jupyter_backend='static')
     if filename!=None:
         plotter.screenshot(filename)

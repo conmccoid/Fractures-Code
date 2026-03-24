@@ -53,7 +53,7 @@ class FPAltMin:
         self.error = fem.form(ufl.inner(self.v - self.v_old, self.v - self.v_old) * ufl.dx + ufl.inner(self.u - self.u_old, self.u - self.u_old) * ufl.dx)
 
         pyvista.OFF_SCREEN = True
-        pyvista.set_jupyter_backend(None)
+        pyvista.set_jupyter_backend('trame')
 
     def createVecMat(self):
         b_u = self.u.x.petsc_vec.duplicate()
