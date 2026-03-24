@@ -55,7 +55,6 @@ class OuterSolver:
             self.fp.updateUV(self.x)  # Update the solution vectors
             error = self.fp.updateError() # calculate error
             self.fp.monitor(iteration) # monitor convergence
-            #===#
 
             while error > tol and iteration < maxit:
                 iteration += 1
@@ -65,6 +64,12 @@ class OuterSolver:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary
                         print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
                     self.x.axpy(1.0,self.res) # Add the residual to the solution vector
+                elif self.method=='qbt':
+                    if PlotSwitch:
+                        plotEnergyLandscape(self.fp,self.x,self.res) # temporary
+                        print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
+                    CubicBacktracking(self.fp, self.x, self.res, None)
+                    self.x += self.res # update solution
                 else:
                     # Solve the linear system
                     self.fp.PJ.updateMat() # update Jacobian matrix in Python context
@@ -91,7 +96,7 @@ class OuterSolver:
                 boxConstraints(self.fp,self.x) # apply box constraints to final solution
                 self.fp.updateUV(self.x) # update solution vectors after applying constraints
                 error = self.fp.updateError() # update error after applying constraints
-            
+
             self.energies[i_t, 1:4] = self.fp.updateEnergies(self.x)[0:3]
             end_time = PETSc.Log.getTime()
             self.energies[i_t, 4] = end_time - start_time
