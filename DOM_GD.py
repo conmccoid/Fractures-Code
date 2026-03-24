@@ -70,13 +70,17 @@ def BCs(u,v,domain,L=1.,H=0.3):
     t_boundary_dofs_uy= fem.locate_dofs_topological(V_u.sub(1), fdim, t_facets)
     r_boundary_dofs_ux= fem.locate_dofs_topological(V_u.sub(0), fdim, r_facets)
     l_boundary_dofs_ux= fem.locate_dofs_topological(V_u.sub(0), fdim, l_facets)
+    r_boundary_dofs_uy= fem.locate_dofs_topological(V_u.sub(1), fdim, r_facets)
+    l_boundary_dofs_uy= fem.locate_dofs_topological(V_u.sub(1), fdim, l_facets)
 
     u_D= fem.Constant(domain,PETSc.ScalarType(1.))
     bc_u_l= fem.dirichletbc(0.0, l_boundary_dofs_ux, V_u.sub(0))
     bc_u_r= fem.dirichletbc(u_D, r_boundary_dofs_ux, V_u.sub(0)) # nonhomog. bc
     bc_u_t= fem.dirichletbc(0.0, t_boundary_dofs_uy, V_u.sub(1))
     bc_u_b= fem.dirichletbc(0.0, b_boundary_dofs_uy, V_u.sub(1))
-    bcs_u = [bc_u_l,bc_u_r]
+    bc_uy_r= fem.dirichletbc(0.0, r_boundary_dofs_uy, V_u.sub(1))
+    bc_uy_l= fem.dirichletbc(0.0, l_boundary_dofs_uy, V_u.sub(1))
+    bcs_u = [bc_u_l,bc_u_r,bc_uy_r,bc_uy_l]
 
     r_boundary_dofs_v= fem.locate_dofs_topological(V_v, fdim, r_facets)
     l_boundary_dofs_v= fem.locate_dofs_topological(V_v, fdim, l_facets)
@@ -91,15 +95,15 @@ def VariationalFormulation(u,v,domain):
     ndim=domain.geometry.dim
 
     # Variational formulation
-    E= fem.Constant(domain, PETSc.ScalarType(100.0))
+    E= fem.Constant(domain, PETSc.ScalarType(1.0))
     nu= fem.Constant(domain, PETSc.ScalarType(0.3))
 
     dx = ufl.Measure("dx",domain=domain)
     ds = ufl.Measure("ds",domain=domain)
 
     Gc=  fem.Constant(domain, PETSc.ScalarType(1.0))
-    ell= fem.Constant(domain, PETSc.ScalarType(0.1))
-    cw=  fem.Constant(domain, PETSc.ScalarType(1/2))
+    ell= fem.Constant(domain, PETSc.ScalarType(0.5))
+    cw=  fem.Constant(domain, PETSc.ScalarType(2))
     f =  fem.Constant(domain, PETSc.ScalarType((0.,0.)))
     load_c = np.sqrt(27 * Gc.value * E.value / (256 * ell.value) ) # AT2
 
