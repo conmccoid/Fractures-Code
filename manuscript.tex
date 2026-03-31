@@ -47,8 +47,62 @@
 \subsection{Cubic Backtracking}
 \label{subsec: cb}
 
+Many applications of Newton's method require globalization techniques to achieve convergence when starting away from the minimum.
+When the Newton direction overshoots the minimum, these globalization techniques should search for a minimum between the starting point and the destination, usually through a line search.
+
+Cubic backtracking performs this line search by repeatedly interpolating cubic polynomials and finding their minima.
+Note that a cubic polynomial interpolant requires four pieces of information, but Newton's method only provides three:
+the value of the function at the starting point, $f(\vec{x})$;
+the value of the function in the Newton direction, $f(\vec{x} + \vec{p})$, and;
+the derivative of the function in the Newton direction, $\vec{p} \cdot \nabla f(\vec{x})$.
+
+To get a fourth piece of information, first form a quadratic interpolant with this information.
+Find the minimum of this polynomial and test the value of the function there, thus getting enough information for a cubic polynomial.
+If the function is smaller at this point, then this ends the line search.
+Otherwise, find the minimum of the cubic interpolant and repeat.
+
 \section{Parallelogram globalization}
 \label{subsec: pg}
+
+When using MSPIN, one has two potential directions for minimization: the AltMin direction $\vec{q}$ and the Newton direction $\vec{p}$.
+Let's try using both while applying similar ideas to cubic backtracking.
+Rather than find the minimum of a single variable cubic polynomial, find the minimum of a two-variable quadratic polynomial.
+
+For this interpolant, we need six pieces of information.
+Five are provided by MSPIN:
+the value of the function at the starting point, $f(\vec{x})$;
+the value of the function in the AltMin direction, $f(\vec{x} + \vec{q})$;
+the value of the function in the Newton direction, $f(\vec{x} + \vec{p})$;
+the derivative of the function in the AltMin direction, $\vec{q} \cdot \nabla f(\vec{x})$, and;
+the derivative of the function in the Newton direciton, $\vec{p} \cdot \nabla f(\vec{x})$.
+
+One choice for a sixth piece of information is the value of the function at a point symmetric to the starting point.
+Suppose that the AltMin and Newton directions form two sides of a parallelogram.
+Then the other corners of the parallelogram are the starting point and $\vec{x} + \vec{p} + \vec{q}$.
+It is at this new point that we evaluate the function and find our sixth piece of information.
+
+We seek a point $\vec{x} + \alpha \vec{q} + \beta \vec{p}$ that minimizes the objective function.
+The interpolant appears as $P(\alpha,\beta) = a \alpha^2 + b \alpha \beta + c \beta^2 + d \alpha + e \beta + f$.
+It is straightforward to show how our six pieces of information relate to our six coefficients:
+\begin{align*}
+	d = & \vec{q} \cdot \nabla f(\vec{x}), &&
+	e = & \vec{p} \cdot \nabla f(\vec{x}), &&
+	f = & f(\vec{x}), \\
+	a = & f(\vec{x} + \vec{q}) - d - f, &&
+	c = & f(\vec{x} + \vec{p}) - e - f, &&
+	b = & f(\vec{x} + \vec{q} + \vec{p}) + f - f(\vec{x} + \vec{q}) - f(\vec{x} + \vec{p}).
+\end{align*}
+The minimum of this interpolant occurs at
+\begin{equation*}
+	\alpha = \frac{be - 2cd}{4ac-b^2}, \quad \beta = \frac{-db - 2ae}{4ac-b^2}.
+\end{equation*}
+
+It's possible for the minimum of the polynomial to occur outside of the parallelogram.
+This may be acceptable, but could also destabilize convergence.
+To stay within the parallelogram, we can also check the minima on the boundary:
+\begin{align*}
+	(0, -e/2c), && (-d/2a, 0), && (1, -(e+b)/2c), && (-(d+b)/2c, 1).
+\end{align*}
 
 \section{Numerical comparisons}
 \label{sec: num}
