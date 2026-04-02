@@ -37,6 +37,10 @@ class OuterSolver:
                         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Number of iterations'])
                     else:
                         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Outer iterations','Inner iterations'])
+                if self.method=='Parallelogram':
+                    with open(f"output/ConvCrit_{self.identifier}.csv",'w') as csv.file:
+                        writer=csv.writer(csv.file,delimiter=',')
+                        writer.writerow(['Iteration','Step size','Volume','Flatness','Angle','Alpha','Beta'])
 
         # main iteration
         for i_t, t in enumerate(self.loads):
@@ -85,7 +89,11 @@ class OuterSolver:
                         CubicBacktracking(self.fp, self.x, self.p, self.res)
                         self.x += self.p # update solution
                     elif self.method=='Parallelogram':
-                        v = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
+                        v, vol, flat, angle, alpha, beta = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
+                        if self.fp.rank==0:
+                            with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
+                                writer=csv.writer(csv.file,delimiter=',')
+                                writer.writerow([iteration,v.norm(),vol,flat,angle,alpha,beta])
                         self.x += v # update solution
                         v.destroy() # clean up parallelogram step vector
                 self.fp.updateUV(self.x)
