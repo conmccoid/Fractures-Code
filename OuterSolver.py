@@ -77,7 +77,7 @@ class OuterSolver:
                     self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
                     self.fp.PJ.resetKSPs() # reset KSPs
                     self.fp.PJ.destroyMat() # destroy Jacobian matrix components to free memory before solve
-                    self.energies[i_t,6]=self.SNESKSP.getIterationNumber()
+                    self.energies[i_t,6]+=self.SNESKSP.getIterationNumber()
                     DBTrick(self.fp,self.x,self.p) # apply DB trick to search direction
                     if self.method=='CubicBacktracking': # Run cubic backtracking in situ
                         if PlotSwitch:
