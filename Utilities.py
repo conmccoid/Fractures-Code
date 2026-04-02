@@ -186,9 +186,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     - q: direction towards the AltMin step
     - p: direction towards the Newton step
 
-    nb: some kinks to work out, currently minimum could be found outside parallelogram
-    also not clear what to do when r==0
-    need to check if minimum lies outside, and if it does, then find the minimum on the boundary
+    nb: some kinks to work out, not clear what to do when r==0
     """
     # need to do DB trick first - does gradF need to have a commensurate sign change?
     fp.updateGradF(x)
@@ -236,7 +234,10 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     # else:
         # print("Minimum outside parallelogram, finding minimum on boundary")
     # beta=0 minimum
-    alpha= -d/(2*a)
+    if a==0:
+        alpha=1
+    else:
+        alpha= -d/(2*a)
     if (alpha>0) & (alpha<1):
         beta_list.append(0)
         v=q.copy()
@@ -250,7 +251,10 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         xv.destroy()
     
     # alpha=0
-    beta= -e/(2*c)
+    if c==0:
+        beta=1
+    else:
+        beta= -e/(2*c)
     if (beta>0) & (beta<1):
         alpha_list.append(0)
         v=p.copy()
@@ -264,7 +268,10 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         xv.destroy()
 
     # beta=1
-    alpha= (-d - b)/(2*a)
+    if a==0:
+        alpha=1
+    else:
+        alpha= (-d - b)/(2*a)
     if (alpha>0) & (alpha<1):
         beta_list.append(1)
         v=q.copy()
@@ -279,7 +286,10 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         xv.destroy()
     
     # alpha=1
-    beta= (-e - b)/(2*c)
+    if c==0:
+        beta=1
+    else:
+        beta= (-e - b)/(2*c)
     if (beta>0) & (beta<1):
         alpha_list.append(1)
         v=q.copy()
