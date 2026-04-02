@@ -344,7 +344,7 @@ def plotEnergyLandscape(fp, x, p):
         xcopy.axpy(alpha_list[j],p)
         energies_list[j]=fp.updateEnergies(xcopy)[2] # total energy
         xcopy.destroy()
-    plt.plot(alpha_list,energies_list-E0[2],'b',label='Total energy')
+    plt.plot(alpha_list*p.norm(),energies_list-E0[2],'b',label='Total energy')
     plt.xlabel('Step length alpha')
     plt.ylabel('Total Energy')
     plt.show()
@@ -371,9 +371,9 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None):
             xcopy.axpy(beta[j],p)
             energies[i][j]=fp.updateEnergies(xcopy)[2]
             xcopy.destroy()
-    plt.contourf(beta, alpha, energies - E0)
+    plt.contourf(beta*res.norm(), alpha*p.norm(), energies - E0)
     if target is not None:
-        plt.plot(target[0], target[1], 'rx', markersize=10, label='Chosen step')
+        plt.plot(target[0]*res.norm(), target[1]*p.norm(), 'rx', markersize=10, label='Chosen step')
     plt.ylabel('AltMin')
     plt.xlabel('MSPIN')
     plt.colorbar(label='Total Energy')
@@ -415,7 +415,7 @@ def plotNX(example,id_list,en_list):
     ax1[2].set_ylabel('Ave. inner / outer')
     ax1[2].legend()
     ax1[2].set_title('Ave. inner per outer')
-    fig1.savefig(f"output/FIG_{example}_its.png")
+    fig1.savefig(f"output/FIG_{example}_its.pdf")
 
     ax2[0].set_xlabel('t')
     ax2[0].set_ylabel('Elastic energy')
@@ -426,7 +426,7 @@ def plotNX(example,id_list,en_list):
     ax2[2].set_xlabel('t')
     ax2[2].set_ylabel('Total energy')
     ax2[2].legend()
-    fig2.savefig(f"output/FIG_{example}_energy.png")
+    fig2.savefig(f"output/FIG_{example}_energy.pdf")
 
     ax3.set_xlabel('t')
     ax3.set_ylabel('Time elapsed (s) per load step')
