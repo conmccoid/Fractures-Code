@@ -211,6 +211,11 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     c=Ep-e-f
     a=Eq-d-f
     b=Epq + E0 - Ep - Eq
+    
+    vol = (a/3 + b/4 + c/3 + d/2 + e/2)*p.norm()*q.norm() # volume of quad poly above flat parallelogram
+    flat = max(E0,Ep,Eq,Epq) - min(E0,Ep,Eq,Epq) # difference between max and min energy at corners of parallelogram
+    angle = np.arccos(q.dot(p)/(q.norm()*p.norm())) # angle between AltMin and Newton steps
+
     r=4*a*c-b**2
     alpha = (-2*c*d + b*e)/r
     beta = (-2*a*e + b*d)/r
@@ -319,7 +324,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     xp.destroy()
     xpq.destroy()
 
-    return result
+    return result, vol, flat, angle, alpha, beta
 
 def plotEnergyLandscape(fp, x, p):
     """
@@ -426,4 +431,17 @@ def plotNX(example,id_list,en_list):
     ax3.set_xlabel('t')
     ax3.set_ylabel('Time elapsed (s) per load step')
     ax3.legend()
-    fig3.savefig(f"output/FIG_{example}_time.png")
+    fig3.savefig(f"output/FIG_{example}_time.pdf")
+
+def plotConvCrit(ConvCrit):
+    crits = np.loadtxt(ConvCrit, delimiter=',', skiprows=1)
+    plt.semilogy(range(len(crits)), crits[:,1], 'o-', label='Step size')
+    plt.semilogy(range(len(crits)), crits[:,2], 's-', label='Volume')
+    plt.semilogy(range(len(crits)), crits[:,3], 'D-', label='Flatness')
+    plt.semilogy(range(len(crits)), crits[:,4], '^-', label='Angle')
+    plt.semilogy(range(len(crits)), crits[:,5], 'v-', label='Alpha')
+    plt.semilogy(range(len(crits)), crits[:,6], 'x-', label='Beta')
+    plt.xlabel('Iteration')
+    plt.ylabel('Convergence criteria')
+    plt.legend()
+    plt.show()
