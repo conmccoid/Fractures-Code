@@ -14,10 +14,10 @@ class FP(FPAltMin):
         self.t1.value = t
         self.t2.value =-t
 
-def main(method='AltMin', maxit=1000, tol=1e-4, WriteSwitch=False, PlotSwitch=False):
+def main(method='AltMin', maxit=1000, tol=1e-3, WriteSwitch=False, PlotSwitch=False):
     fp = FP()
     example='CTFM'
-    loads = np.linspace(0, 1.5 * fp.load_c * 12 / 10, 20) # (load_c/E)*L
+    loads = np.linspace(0, 1, 101) # (load_c/E)*L
     # first critical load is between 0.87 and 1.31 (but sometimes up to 1.7?)
     # second critical load between 4.79 and 5.22
     os = OuterSolver(fp, example, method, loads)

@@ -74,14 +74,14 @@ def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
     ndim=domain.geometry.dim
 
     # Variational formulation
-    E= fem.Constant(domain, PETSc.ScalarType(100.0))
-    nu= fem.Constant(domain, PETSc.ScalarType(0.3))
+    E= fem.Constant(domain, PETSc.ScalarType(6e3)) # Young's modulus?
+    nu= fem.Constant(domain, PETSc.ScalarType(0.22)) # Poisson's ratio?
 
     dx = ufl.Measure("dx",domain=domain, subdomain_data=cell_tags)
     ds = ufl.Measure("ds",domain=domain, subdomain_data=facet_tags)
 
-    Gc=  fem.Constant(domain, PETSc.ScalarType(1.0))
-    ell= fem.Constant(domain, PETSc.ScalarType(0.5))
+    Gc=  fem.Constant(domain, PETSc.ScalarType(2.28)) # Fracture toughness??
+    ell= fem.Constant(domain, PETSc.ScalarType(1.)) # internal length?
     cw=  fem.Constant(domain, PETSc.ScalarType(1/2))
     f =  fem.Constant(domain, PETSc.ScalarType((0.,0.)))
     load_c = np.sqrt(27 * Gc.value * E.value / (256 * ell.value) ) # AT2
