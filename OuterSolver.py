@@ -1,6 +1,6 @@
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape, plotConvCrit
+from Utilities import KSPsetUp, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape
 from dolfinx import io
 import csv
 
@@ -37,10 +37,6 @@ class OuterSolver:
                         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Number of iterations'])
                     else:
                         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Outer iterations','Inner iterations'])
-                if self.method=='Parallelogram':
-                    with open(f"output/ConvCrit_{self.identifier}.csv",'w') as csv.file:
-                        writer=csv.writer(csv.file,delimiter=',')
-                        writer.writerow(['Iteration','Step size','Volume','Flatness','Angle','Alpha','Beta'])
 
         # main iteration
         for i_t, t in enumerate(self.loads):
@@ -60,16 +56,9 @@ class OuterSolver:
             error = self.fp.updateError() # calculate error
             self.fp.monitor(iteration) # monitor convergence
 
-            if self.method=='Parallelogram':
-                ConvCrit = np.empty(6,) # initialize array to store convergence criteria for parallelogram backtracking
-
             while error > tol and iteration < maxit:
                 iteration += 1
-                E0 = self.fp.updateEnergies(self.x)[2] # energy at previous step
                 self.fp.Fn(None, self.x, self.res)
-                Eq = self.fp.updateEnergies(self.x+self.res)[2] # energy at current residual step
-                if Eq > E0:
-                    print("Warning: energy at current residual step is higher than energy at initial AltMin step, check implementation of residual step")
                 if self.method=='AltMin':
                     if PlotSwitch:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary
@@ -96,13 +85,7 @@ class OuterSolver:
                         CubicBacktracking(self.fp, self.x, self.p, self.res)
                         self.x += self.p # update solution
                     elif self.method=='Parallelogram':
-                        v, vol, flat, angle, alpha, beta = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
-                        temp = np.array([v.norm(),vol,flat,angle,alpha,beta])
-                        ConvCrit = np.vstack([ConvCrit, temp])
-                        if self.fp.rank==0:
-                            with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
-                                writer=csv.writer(csv.file,delimiter=',')
-                                writer.writerow([iteration,v.norm(),vol,flat,angle,alpha,beta])
+                        v = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
                         self.x += v # update solution
                         v.destroy() # clean up parallelogram step vector
                 self.fp.updateUV(self.x)
@@ -113,9 +96,6 @@ class OuterSolver:
                 boxConstraints(self.fp,self.x) # apply box constraints to final solution
                 self.fp.updateUV(self.x) # update solution vectors after applying constraints
                 error = self.fp.updateError() # update error after applying constraints
-            
-            if self.method=='Parallelogram':
-                plotConvCrit(ConvCrit)
 
             self.energies[i_t, 1:4] = self.fp.updateEnergies(self.x)[0:3]
             end_time = PETSc.Log.getTime()
