@@ -81,7 +81,7 @@ def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
     ds = ufl.Measure("ds",domain=domain, subdomain_data=facet_tags)
 
     Gc=  fem.Constant(domain, PETSc.ScalarType(2.28)) # Fracture toughness??
-    ell= fem.Constant(domain, PETSc.ScalarType(1.)) # internal length?
+    ell= fem.Constant(domain, PETSc.ScalarType(0.2)) # internal length?
     cw=  fem.Constant(domain, PETSc.ScalarType(1/2))
     f =  fem.Constant(domain, PETSc.ScalarType((0.,0.)))
     load_c = np.sqrt(27 * Gc.value * E.value / (256 * ell.value) ) # AT2
