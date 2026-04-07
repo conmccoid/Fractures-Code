@@ -165,6 +165,7 @@ Convert a .geo into a .msh with the line
 gmsh fichier.geo -3 -o nomsortie.msh
 ```
 Replace `-3` with `-2` when using 2D meshes.
+This can be run in the `fractures-code:dolfinx` Docker container.
 
 ### Running code in Docker container from command line
 
