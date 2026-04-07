@@ -61,7 +61,7 @@ class OuterSolver:
             self.fp.monitor(iteration) # monitor convergence
 
             if self.method=='Parallelogram':
-                ConvCrit = np.empty(6,) # initialize array to store convergence criteria for parallelogram backtracking
+                ConvCrit = [] # initialize array to store convergence criteria for parallelogram backtracking
 
             while error > tol and iteration < maxit:
                 iteration += 1
@@ -97,8 +97,8 @@ class OuterSolver:
                         self.x += self.p # update solution
                     elif self.method=='Parallelogram':
                         v, vol, flat, angle, alpha, beta = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
-                        temp = np.array([v.norm(),vol,flat,angle,alpha,beta])
-                        ConvCrit = np.vstack([ConvCrit, temp])
+                        temp = [v.norm(),vol,flat,angle,alpha,beta]
+                        ConvCrit.append(temp)
                         if self.fp.rank==0:
                             with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
                                 writer=csv.writer(csv.file,delimiter=',')
@@ -115,7 +115,7 @@ class OuterSolver:
                 error = self.fp.updateError() # update error after applying constraints
             
             if self.method=='Parallelogram':
-                plotConvCrit(ConvCrit)
+                plotConvCrit(np.array(ConvCrit))
 
             self.energies[i_t, 1:4] = self.fp.updateEnergies(self.x)[0:3]
             end_time = PETSc.Log.getTime()

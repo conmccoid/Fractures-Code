@@ -444,6 +444,7 @@ def plotNX(example,id_list,en_list):
     fig3.savefig(f"output/FIG_{example}_time.pdf")
 
 def plotConvCrit(ConvCrit):
+    # check how angle of MSPIN and AltMin change from iteration to iteration
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,0], 'o-', label='Step size')
     plt.xlabel('Iteration')
     plt.ylabel('Convergence criteria')
@@ -464,7 +465,7 @@ def plotConvCrit(ConvCrit):
     plt.show()
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,4], 'v-', label='Alpha')
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,5], 'x-', label='Beta')
-    plt.ylim([1e-4, 1e2])
+    plt.ylim([1e-4, 1.5])
     plt.xlabel('Iteration')
     plt.ylabel('Convergence criteria')
     plt.legend()
