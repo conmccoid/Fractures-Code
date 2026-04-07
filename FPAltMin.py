@@ -116,10 +116,14 @@ class FPAltMin:
         self.updateUV(x)
         self.updateUV_old()
 
+        E0 = self.comm.allreduce(fem.assemble_scalar(self.total_energy), op=MPI.SUM)
         self.elastic_solver.solve(None, self.u.x.petsc_vec)
         self.u.x.scatter_forward()
         self.damage_solver.solve(None, self.v.x.petsc_vec)
         self.v.x.scatter_forward()
+        Eq = self.comm.allreduce(fem.assemble_scalar(self.total_energy), op=MPI.SUM)
+        if Eq > E0:
+            print("Warning: energy after sequential solves is higher than energy at current position")
 
         resu, resv = F.getNestSubVecs()
         resu.setArray(self.u.x.petsc_vec.getArray() - self.u_old.x.petsc_vec.getArray())

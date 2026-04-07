@@ -360,6 +360,7 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None):
     - p: Newton step
     """
     E0=fp.updateEnergies(x)[2]
+    angle = np.arccos(res.dot(p)/(res.norm()*p.norm())) # angle between AltMin and Newton steps
     nn=11
     alpha=np.linspace(0,1,nn)
     beta=np.linspace(-1,1,2*nn-1)
@@ -371,9 +372,12 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None):
             xcopy.axpy(beta[j],p)
             energies[i][j]=fp.updateEnergies(xcopy)[2]
             xcopy.destroy()
-    plt.contourf(beta*res.norm(), alpha*p.norm(), energies - E0)
+    Beta, Alpha = np.meshgrid(beta, alpha)
+    X = Beta*res.norm() + Alpha*p.norm()*np.sin(angle)
+    Y = Alpha*p.norm()*np.cos(angle)
+    plt.contourf(X,Y, energies - E0)
     if target is not None:
-        plt.plot(target[0]*res.norm(), target[1]*p.norm(), 'rx', markersize=10, label='Chosen step')
+        plt.plot(target[0]*res.norm() + target[1]*p.norm()*np.sin(angle), target[1]*p.norm()*np.cos(angle), 'rx', markersize=10, label='Chosen step')
     plt.ylabel('AltMin')
     plt.xlabel('MSPIN')
     plt.colorbar(label='Total Energy')
@@ -437,12 +441,14 @@ def plotConvCrit(ConvCrit):
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,0], 'o-', label='Step size')
     plt.xlabel('Iteration')
     plt.ylabel('Convergence criteria')
+    plt.ylim([1e-4, 1e2])
     plt.legend()
     plt.show()
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,1], 's-', label='Volume')
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,2], 'D-', label='Flatness')
     plt.xlabel('Iteration')
     plt.ylabel('Convergence criteria')
+    plt.ylim([1e-4, 1e2])
     plt.legend()
     plt.show()
     plt.plot(range(len(ConvCrit)), ConvCrit[:,3]*180/np.pi, '^-', label='Angle')
@@ -452,6 +458,7 @@ def plotConvCrit(ConvCrit):
     plt.show()
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,4], 'v-', label='Alpha')
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,5], 'x-', label='Beta')
+    plt.ylim([1e-4, 1e2])
     plt.xlabel('Iteration')
     plt.ylabel('Convergence criteria')
     plt.legend()
