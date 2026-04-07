@@ -60,14 +60,16 @@ class OuterSolver:
             error = self.fp.updateError() # calculate error
             self.fp.monitor(iteration) # monitor convergence
 
-            E0 = self.fp.updateEnergies(self.x)[2] # energy at initial AltMin step
-
             if self.method=='Parallelogram':
                 ConvCrit = np.empty(6,) # initialize array to store convergence criteria for parallelogram backtracking
 
             while error > tol and iteration < maxit:
                 iteration += 1
+                E0 = self.fp.updateEnergies(self.x)[2] # energy at previous step
                 self.fp.Fn(None, self.x, self.res)
+                Eq = self.fp.updateEnergies(self.x+self.res)[2] # energy at current residual step
+                if Eq > E0:
+                    print("Warning: energy at current residual step is higher than energy at initial AltMin step, check implementation of residual step")
                 if self.method=='AltMin':
                     if PlotSwitch:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary
