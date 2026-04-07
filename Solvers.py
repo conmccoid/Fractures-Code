@@ -19,10 +19,10 @@ def Elastic(E, u, bcs, J):
     elastic_solver.setFunction(elastic_problem.Fn,b_u)
     elastic_solver.setJacobian(elastic_problem.Jn,J_u)
     elastic_solver.setType("ksponly")
-    elastic_solver.setTolerances(rtol=1.0e-7, max_it=50)
-    elastic_solver.getKSP().setType("preonly") # testing
+    elastic_solver.setTolerances(rtol=1.0e-7, max_it=1000)
+    elastic_solver.getKSP().setType("cg") # testing
     elastic_solver.getKSP().setTolerances(rtol=1.0e-9)
-    elastic_solver.getKSP().getPC().setType("lu") # testing
+    elastic_solver.getKSP().getPC().setType("hypre") # testing
     return elastic_problem, elastic_solver
 
 def Damage(E, v, bcs, J):
@@ -36,10 +36,10 @@ def Damage(E, v, bcs, J):
     damage_solver.setFunction(damage_problem.Fn, b_v)
     damage_solver.setJacobian(damage_problem.Jn, J_v)
     damage_solver.setType("vinewtonrsls")
-    damage_solver.setTolerances(rtol=1.0e-7, max_it=50)
-    damage_solver.getKSP().setType("preonly")
+    damage_solver.setTolerances(rtol=1.0e-7, max_it=1000)
+    damage_solver.getKSP().setType("cg")
     damage_solver.getKSP().setTolerances(rtol=1.0e-9)
-    damage_solver.getKSP().getPC().setType("lu")
+    damage_solver.getKSP().getPC().setType("bjacobi")
 
     return damage_problem, damage_solver
 
