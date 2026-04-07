@@ -1,6 +1,6 @@
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape
+from Utilities import KSPsetUp, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape, plotConvCrit
 from dolfinx import io
 import csv
 
@@ -60,6 +60,11 @@ class OuterSolver:
             error = self.fp.updateError() # calculate error
             self.fp.monitor(iteration) # monitor convergence
 
+            E0 = self.fp.updateEnergies(self.x)[2] # energy at initial AltMin step
+
+            if self.method=='Parallelogram':
+                ConvCrit = np.empty(6,) # initialize array to store convergence criteria for parallelogram backtracking
+
             while error > tol and iteration < maxit:
                 iteration += 1
                 self.fp.Fn(None, self.x, self.res)
@@ -90,6 +95,8 @@ class OuterSolver:
                         self.x += self.p # update solution
                     elif self.method=='Parallelogram':
                         v, vol, flat, angle, alpha, beta = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
+                        temp = np.array([v.norm(),vol,flat,angle,alpha,beta])
+                        ConvCrit = np.vstack([ConvCrit, temp])
                         if self.fp.rank==0:
                             with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
                                 writer=csv.writer(csv.file,delimiter=',')
@@ -104,6 +111,9 @@ class OuterSolver:
                 boxConstraints(self.fp,self.x) # apply box constraints to final solution
                 self.fp.updateUV(self.x) # update solution vectors after applying constraints
                 error = self.fp.updateError() # update error after applying constraints
+            
+            if self.method=='Parallelogram':
+                plotConvCrit(ConvCrit)
 
             self.energies[i_t, 1:4] = self.fp.updateEnergies(self.x)[0:3]
             end_time = PETSc.Log.getTime()
