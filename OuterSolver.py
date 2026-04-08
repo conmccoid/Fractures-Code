@@ -65,11 +65,7 @@ class OuterSolver:
 
             while error > tol and iteration < maxit:
                 iteration += 1
-                E0 = self.fp.updateEnergies(self.x)[2] # energy at previous step
                 self.fp.Fn(None, self.x, self.res)
-                Eq = self.fp.updateEnergies(self.x+self.res)[2] # energy at current residual step
-                if Eq > E0:
-                    print("Warning: energy at AltMin step is higher than energy at current position")
                 if self.method=='AltMin':
                     if PlotSwitch:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary

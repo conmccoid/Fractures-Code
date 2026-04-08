@@ -124,6 +124,8 @@ class FPAltMin:
         Eq = self.comm.allreduce(fem.assemble_scalar(self.total_energy), op=MPI.SUM)
         if Eq > E0:
             print("Warning: energy after sequential solves is higher than energy at current position")
+            print(f"Convergence reason for elasticity: {self.elastic_solver.getConvergedReason()}, residual norm: {self.elastic_solver.getKSP().getResidualNorm()}")
+            print(f"Convergence reason for damage: {self.damage_solver.getConvergedReason()}, residual norm: {self.damage_solver.getKSP().getResidualNorm()}")
 
         resu, resv = F.getNestSubVecs()
         resu.setArray(self.u.x.petsc_vec.getArray() - self.u_old.x.petsc_vec.getArray())
