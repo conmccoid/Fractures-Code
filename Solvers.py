@@ -19,7 +19,7 @@ def Elastic(E, u, bcs, J):
     elastic_solver.setFunction(elastic_problem.Fn,b_u)
     elastic_solver.setJacobian(elastic_problem.Jn,J_u)
     elastic_solver.setType("ksponly")
-    elastic_solver.setTolerances(rtol=1.0e-7, max_it=10000)
+    elastic_solver.setTolerances(rtol=1.0e-7, max_it=50)
     elastic_solver.getKSP().setType("cg") # testing
     elastic_solver.getKSP().setTolerances(rtol=1.0e-9)
     elastic_solver.getKSP().getPC().setType("hypre") # testing

@@ -20,7 +20,7 @@ class OuterSolver:
         self.identifier=f"{self.example}_{self.method}"
 
     def setUp(self):
-        self.x, self.J = self.fp.createVecMat()  # Create empty vector and matrix
+        self.x, self.J = self.fp.createVecMat()  # Create empty vector and preconditioned Jacobian
         self.res = self.x.duplicate()  # Create a duplicate for the residual vector
         self.p = self.x.duplicate()  # Create a duplicate for the search direction
     
@@ -82,6 +82,7 @@ class OuterSolver:
                     self.fp.PJ.updateMat() # update Jacobian matrix in Python context
                     self.fp.PJ.getKSPs() # update KSPs
                     self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+                    self.fp.applyBCs(self.p,self.x) # apply BCs to search direction
                     self.fp.PJ.resetKSPs() # reset KSPs
                     self.fp.PJ.destroyMat() # destroy Jacobian matrix components to free memory before solve
                     self.energies[i_t,6]+=self.SNESKSP.getIterationNumber()
@@ -110,7 +111,7 @@ class OuterSolver:
                 self.fp.updateUV(self.x) # update solution vectors after applying constraints
                 error = self.fp.updateError() # update error after applying constraints
             
-            if self.method=='Parallelogram':
+            if self.method=='Parallelogram' and iteration>1:
                 plotConvCrit(np.array(ConvCrit))
 
             self.energies[i_t, 1:4] = self.fp.updateEnergies(self.x)[0:3]

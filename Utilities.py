@@ -455,7 +455,7 @@ def plotConvCrit(ConvCrit):
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,2], 'D-', label='Flatness')
     plt.xlabel('Iteration')
     plt.ylabel('Convergence criteria')
-    plt.ylim([1e-4, 1e2])
+    # plt.ylim([1e-10, 1e2])
     plt.legend()
     plt.show()
     plt.plot(range(len(ConvCrit)), ConvCrit[:,3]*180/np.pi, '^-', label='Angle')
@@ -470,3 +470,14 @@ def plotConvCrit(ConvCrit):
     plt.ylabel('Convergence criteria')
     plt.legend()
     plt.show()
+
+def plotStepByStep(fp, x, res):
+    resu, resv = res.getNestSubVecs()
+    resv0 = resv.copy()
+    resv0.zeroEntries()
+    resu0 = resu.copy()
+    resu0.zeroEntries()
+    stepu = PETSc.Vec().createNest([resu,resv0], None, fp.comm)
+    stepv = PETSc.Vec().createNest([resu0,resv], None, fp.comm)
+    plotEnergyLandscape(fp,x,stepu)
+    plotEnergyLandscape(fp,x+stepu,stepv)

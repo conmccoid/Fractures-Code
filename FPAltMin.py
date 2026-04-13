@@ -11,6 +11,8 @@ from Solvers import Elastic, Damage
 from PLOT_DamageState import plot_damage_state
 from JAltMin import JAltMin
 
+from Utilities import plotStepByStep
+
 class FPAltMin:
     def setUp(self,E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v):
         
@@ -26,6 +28,11 @@ class FPAltMin:
 
         elastic_problem, self.elastic_solver = Elastic(E_u, self.u, bcs_u, E_uu)
         damage_problem, self.damage_solver = Damage(E_v, self.v, bcs_v, E_vv)
+
+        self.Euu = elastic_problem.a
+        self.Evv = damage_problem.a
+        self.bcs_u = bcs_u
+        self.bcs_v = bcs_v
 
         self.u_old = fem.Function(V_u)
         self.v_old = fem.Function(V_v)
@@ -111,6 +118,7 @@ class FPAltMin:
             f_local.set(0.0)
         petsc.assemble_vector(Eu, self.Eu)
         petsc.assemble_vector(Ev, self.Ev)
+        # do BCs need to be applied to gradient?
 
     def Fn(self, snes, x, F):
         self.updateUV(x)
@@ -119,13 +127,10 @@ class FPAltMin:
         E0 = self.comm.allreduce(fem.assemble_scalar(self.total_energy), op=MPI.SUM)
         self.elastic_solver.solve(None, self.u.x.petsc_vec)
         self.u.x.scatter_forward()
+        EU = self.comm.allreduce(fem.assemble_scalar(self.total_energy), op=MPI.SUM)
         self.damage_solver.solve(None, self.v.x.petsc_vec)
         self.v.x.scatter_forward()
         Eq = self.comm.allreduce(fem.assemble_scalar(self.total_energy), op=MPI.SUM)
-        if Eq > E0:
-            print("Warning: energy after sequential solves is higher than energy at current position")
-            print(f"Convergence reason for elasticity: {self.elastic_solver.getConvergedReason()}, residual norm: {self.elastic_solver.getKSP().getResidualNorm()}")
-            print(f"Convergence reason for damage: {self.damage_solver.getConvergedReason()}, residual norm: {self.damage_solver.getKSP().getResidualNorm()}")
 
         resu, resv = F.getNestSubVecs()
         resu.setArray(self.u.x.petsc_vec.getArray() - self.u_old.x.petsc_vec.getArray())
@@ -134,6 +139,10 @@ class FPAltMin:
         resv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         F.assemblyBegin()
         F.assemblyEnd()
+        if Eq > E0:
+            print(f"Warning: u solve changes energy by {EU - E0:3.4e}, v solve changes energy by {Eq - EU:3.4e}")
+            # print(f"Difference in residual and gradient: {(Eu - Fu).norm():3.4e}, {(Ev - Fv).norm():3.4e}")
+            plotStepByStep(self,x,F)
 
     def Jn(self, snes, x, J, P):
         # J.setPythonContext(self.PJ)
@@ -151,6 +160,21 @@ class FPAltMin:
     def monitor(self, iteration):
         if self.rank == 0:
             print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
+    
+    def applyBCs(self,p,x):
+        # pcopy = p.copy()
+        pu, pv = p.getNestSubVecs()
+        xu, xv = x.getNestSubVecs()
+        petsc.apply_lifting(pu, [self.Euu], bcs=[self.bcs_u], x0=[xu], alpha=-1.0)
+        pu.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
+        petsc.set_bc(pu, self.bcs_u, xu, -1.0)
+        petsc.apply_lifting(pv, [self.Evv], bcs=[self.bcs_v], x0=[xv], alpha=-1.0)
+        pv.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
+        petsc.set_bc(pv, self.bcs_v, xv, -1.0)
+        # pcopy.axpy(-1.0,p)
+        # print(f"Change in p after applying BCs: {pcopy.norm():3.4e}")
+
+        # can we check the BCs of p? what is the value of p restricted to bdry DoFs?
 
     def destroy(self):
         self.gradF.destroy()
