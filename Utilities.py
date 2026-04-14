@@ -212,10 +212,6 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     a=Eq-d-f
     b=Epq + E0 - Ep - Eq
     
-    vol = (a/3 + b/4 + c/3 + d/2 + e/2)*p.norm()*q.norm() # volume of quad poly above flat parallelogram
-    flat = max(E0,Ep,Eq,Epq) - min(E0,Ep,Eq,Epq) # difference between max and min energy at corners of parallelogram
-    angle = np.arccos(q.dot(p)/(q.norm()*p.norm())) # angle between AltMin and Newton steps
-
     r=4*a*c-b**2
     alpha = (-2*c*d + b*e)/r
     beta = (-2*a*e + b*d)/r
@@ -324,7 +320,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     xp.destroy()
     xpq.destroy()
 
-    return result, vol, flat, angle, alpha, beta
+    return result
 
 def plotEnergyLandscape(fp, x, p):
     """
