@@ -44,7 +44,9 @@ class FPAltMin:
         self.v_ub.x.array[:] = 1.0
         self.damage_solver.setVariableBounds(self.v_lb.x.petsc_vec,self.v_ub.x.petsc_vec)
 
-        self.PJ = JAltMin(self.elastic_solver, self.damage_solver, E_uv, E_vu)
+        Euv = petsc.assemble_matrix(fem.form(E_uv), bcs=bcs_u, diag=0.0)
+        Evu = petsc.assemble_matrix(fem.form(E_vu), bcs=bcs_v, diag=0.0)
+        self.PJ = JAltMin(self.elastic_solver, self.damage_solver, Euv, Evu)
 
         self.Eu = fem.form(E_u)
         self.Ev = fem.form(E_v)
@@ -162,7 +164,7 @@ class FPAltMin:
             print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
     
     def applyBCs(self,p,x):
-        # pcopy = p.copy()
+        pcopy = p.copy()
         pu, pv = p.getNestSubVecs()
         xu, xv = x.getNestSubVecs()
         petsc.apply_lifting(pu, [self.Euu], bcs=[self.bcs_u], x0=[xu], alpha=-1.0)
@@ -171,8 +173,8 @@ class FPAltMin:
         petsc.apply_lifting(pv, [self.Evv], bcs=[self.bcs_v], x0=[xv], alpha=-1.0)
         pv.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
         petsc.set_bc(pv, self.bcs_v, xv, -1.0)
-        # pcopy.axpy(-1.0,p)
-        # print(f"Change in p after applying BCs: {pcopy.norm():3.4e}")
+        pcopy.axpy(-1.0,p)
+        print(f"Change in p after applying BCs: {pcopy.norm():3.4e}")
 
         # can we check the BCs of p? what is the value of p restricted to bdry DoFs?
 
