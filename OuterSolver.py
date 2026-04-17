@@ -57,9 +57,6 @@ class OuterSolver:
                 print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
             self.x.axpy(1.0,self.res) # Add the residual to the solution vector
             self.fp.updateUV(self.x)  # Update the solution vectors
-            err_bc = self.fp.checkBCs(self.x) # second self.x can't be correct, fix this
-            print(f"Error after applying BCs: {err_bc.norm():3.4e}")
-            err_bc.destroy()
             error = self.fp.updateError() # calculate error
             self.fp.monitor(iteration) # monitor convergence
 
@@ -105,9 +102,6 @@ class OuterSolver:
                         self.x += v # update solution
                         v.destroy() # clean up parallelogram step vector
                 self.fp.updateUV(self.x)
-                err_bc = self.fp.checkBCs(self.x) # second self.x can't be correct, fix this
-                print(f"Error after applying BCs: {err_bc.norm():3.4e}")
-                err_bc.destroy()
                 error = self.fp.updateError()
                 self.fp.monitor(iteration)
             
