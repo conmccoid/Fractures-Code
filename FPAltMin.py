@@ -163,18 +163,18 @@ class FPAltMin:
         if self.rank == 0:
             print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
     
-    def applyBCs(self,p,x):
-        pcopy = p.copy()
+    def checkBCs(self,x):
+        """"Check if BCs are applied to x by applying BCs to x and checking if it changes.
+        Inputs:
+            x: PETSc.Vec, the solution vector to check
+        """
+        self.updateUV(x)
+        p = x.copy()
         pu, pv = p.getNestSubVecs()
-        xu, xv = x.getNestSubVecs()
-        petsc.apply_lifting(pu, [self.Euu], bcs=[self.bcs_u], x0=[xu], alpha=-1.0)
-        pu.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
-        petsc.set_bc(pu, self.bcs_u, xu, -1.0)
-        petsc.apply_lifting(pv, [self.Evv], bcs=[self.bcs_v], x0=[xv], alpha=-1.0)
-        pv.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
-        petsc.set_bc(pv, self.bcs_v, xv, -1.0)
-        pcopy.axpy(-1.0,p)
-        print(f"Change in p after applying BCs: {pcopy.norm():3.4e}")
+        petsc.set_bc(pu, self.bcs_u, None, 1.0)
+        petsc.set_bc(pv, self.bcs_v, None, 1.0)
+        p.axpy(-1.0,x) # change in x after applying BCs
+        return p
 
         # can we check the BCs of p? what is the value of p restricted to bdry DoFs?
 
