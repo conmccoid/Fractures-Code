@@ -481,3 +481,12 @@ def plotStepByStep(fp, x, res):
     stepv = PETSc.Vec().createNest([resu0,resv], None, fp.comm)
     plotEnergyLandscape(fp,x,stepu)
     plotEnergyLandscape(fp,x+stepu,stepv)
+
+def plotDirectionChange(p, p_old):
+    angle = np.arccos(p.dot(p_old)/(p.norm()*p_old.norm()))
+    plt.quiver(0,-1,0,1, angles='xy', scale_units='xy', scale=1, color='r', label='Previous step')
+    plt.quiver(0,0,np.sin(angle),np.cos(angle), angles='xy', scale_units='xy', scale=1, color='b', label='Current step')
+    plt.title(f'Angle between steps: {angle*180/np.pi:3.2f} degrees')
+    plt.xlim(-1.5, 1.5)
+    plt.ylim(-1.5, 1.5)
+    plt.show()

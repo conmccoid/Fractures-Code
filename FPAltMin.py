@@ -142,8 +142,9 @@ class FPAltMin:
         F.assemblyBegin()
         F.assemblyEnd()
         if Eq > E0:
+            p = self.checkBCs(x)
             print(f"Warning: u solve changes energy by {EU - E0:3.4e}, v solve changes energy by {Eq - EU:3.4e}")
-            # print(f"Difference in residual and gradient: {(Eu - Fu).norm():3.4e}, {(Ev - Fv).norm():3.4e}")
+            print(f"Change after applying BCs to input: {p.norm():3.4e}")
             plotStepByStep(self,x,F)
 
     def Jn(self, snes, x, J, P):
@@ -175,8 +176,6 @@ class FPAltMin:
         petsc.set_bc(pv, self.bcs_v, None, 1.0)
         p.axpy(-1.0,x) # change in x after applying BCs
         return p
-
-        # can we check the BCs of p? what is the value of p restricted to bdry DoFs?
 
     def destroy(self):
         self.gradF.destroy()

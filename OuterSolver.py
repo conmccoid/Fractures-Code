@@ -1,6 +1,6 @@
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape, plotConvCrit
+from Utilities import KSPsetUp, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotDirectionChange, plotEnergyLandscape, plotConvCrit
 from dolfinx import io
 import csv
 
@@ -56,6 +56,8 @@ class OuterSolver:
                 plotEnergyLandscape(self.fp,self.x,self.res) # temporary
                 print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
             self.x.axpy(1.0,self.res) # Add the residual to the solution vector
+            self.p_old = self.res.copy() # store search direction
+
             self.fp.updateUV(self.x)  # Update the solution vectors
             error = self.fp.updateError() # calculate error
             self.fp.monitor(iteration) # monitor convergence
@@ -71,6 +73,8 @@ class OuterSolver:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary
                         print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
                     self.x.axpy(1.0,self.res) # Add the residual to the solution vector
+                    plotDirectionChange(self.res, self.p_old)
+                    self.p_old = self.res
                 elif self.method=='qbt':
                     if PlotSwitch:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary
@@ -90,7 +94,9 @@ class OuterSolver:
                         if PlotSwitch:
                             plotEnergyLandscape(self.fp,self.x,self.p)
                         CubicBacktracking(self.fp, self.x, self.p, self.res)
-                        self.x += self.p # update solution
+                        self.x.axpy(1.0, self.p) # update solution
+                        plotDirectionChange(self.p, self.p_old)
+                        self.p_old = self.p.copy() # store search direction
                     elif self.method=='Parallelogram':
                         v, vol, flat, angle, alpha, beta = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
                         temp = [v.norm(),vol,flat,angle,alpha,beta]
@@ -99,7 +105,9 @@ class OuterSolver:
                             with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
                                 writer=csv.writer(csv.file,delimiter=',')
                                 writer.writerow([iteration,v.norm(),vol,flat,angle,alpha,beta])
-                        self.x += v # update solution
+                        self.x.axpy(1.0, v) # update solution
+                        plotDirectionChange(v, self.p_old)
+                        self.p_old = v.copy() # store search direction
                         v.destroy() # clean up parallelogram step vector
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()
