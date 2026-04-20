@@ -4,3 +4,4 @@ __pycache__/*
 *.ipynb
 *.gz
 *.sif
+output/EX_CTFM_*.h5
