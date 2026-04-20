@@ -7,16 +7,14 @@ import numpy as np
 
 class JAltMin:
     def __init__(self, elastic_solver, damage_solver, E_uv, E_vu):
-        self.EuvForm = fem.form(E_uv)
-        self.EvuForm = fem.form(E_vu)
+        self.Euv = E_uv
+        self.Evu = E_vu
         self.elastic_solver = elastic_solver
         self.damage_solver = damage_solver
         self.rank = MPI.COMM_WORLD.rank
 
     def updateMat(self):
         self.Euu, _, _ = self.elastic_solver.getJacobian()
-        self.Euv = petsc.assemble_matrix(self.EuvForm)
-        self.Evu = petsc.assemble_matrix(self.EvuForm)
         self.Evv, _, _ = self.damage_solver.getJacobian()
         self.Euu.assemble()
         self.Euv.assemble()
@@ -24,8 +22,7 @@ class JAltMin:
         self.Evv.assemble()
 
     def destroyMat(self):
-        self.Euv.destroy()
-        self.Evu.destroy()
+        pass
     
     def getKSPs(self):
         self.ksp_uu=self.elastic_solver.getKSP()

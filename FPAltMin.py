@@ -37,7 +37,9 @@ class FPAltMin:
         self.v_ub.x.array[:] = 1.0
         self.damage_solver.setVariableBounds(self.v_lb.x.petsc_vec,self.v_ub.x.petsc_vec)
 
-        self.PJ = JAltMin(self.elastic_solver, self.damage_solver, E_uv, E_vu)
+        Euv = petsc.assemble_matrix(fem.form(E_uv), bcs=bcs_u, diag=0.0)
+        Evu = petsc.assemble_matrix(fem.form(E_vu), bcs=bcs_v, diag=0.0)
+        self.PJ = JAltMin(self.elastic_solver, self.damage_solver, Euv, Evu)
 
         self.Eu = fem.form(E_u)
         self.Ev = fem.form(E_v)
