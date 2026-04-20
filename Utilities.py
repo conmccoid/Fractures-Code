@@ -217,14 +217,14 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     angle = np.arccos(q.dot(p)/(q.norm()*p.norm())) # angle between AltMin and Newton steps
 
     r=4*a*c-b**2
-    alpha = (-2*c*d + b*e)/r
-    beta = (-2*a*e + b*d)/r
+    alpha = (-2*c*d + b*e)/r # step in q (AltMin)
+    beta = (-2*a*e + b*d)/r # step in p (MSPIN)
     E_list=[Eq, Ep, Epq]
     v_list=[q.copy(), p.copy(), qp]
     beta_list=[0, 1, 1]
     alpha_list=[1, 0, 1]
     step_list=["AltMin", "Newton", "Both"]
-    if (alpha>0) & (alpha<1) & (beta>0) & (beta<1):
+    if (alpha>0) & (alpha<10) & (beta>-1) & (beta<1):
         v=q.copy()
         v.scale(alpha)
         v.axpy(beta,p)
@@ -243,7 +243,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         alpha=1
     else:
         alpha= -d/(2*a)
-    if (alpha>0) & (alpha<1):
+    if (alpha>0) & (alpha<2):
         beta_list.append(0)
         v=q.copy()
         v.scale(alpha)
@@ -260,7 +260,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         beta=1
     else:
         beta= -e/(2*c)
-    if (beta>0) & (beta<1):
+    if (beta>-1) & (beta<1):
         alpha_list.append(0)
         v=p.copy()
         v.scale(beta)
@@ -277,7 +277,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         alpha=1
     else:
         alpha= (-d - b)/(2*a)
-    if (alpha>0) & (alpha<1):
+    if (alpha>0) & (alpha<2):
         beta_list.append(1)
         v=q.copy()
         v.scale(alpha)
@@ -295,7 +295,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         beta=1
     else:
         beta= (-e - b)/(2*c)
-    if (beta>0) & (beta<1):
+    if (beta>-1) & (beta<1):
         alpha_list.append(1)
         v=q.copy()
         v.axpy(beta,p)
@@ -362,7 +362,7 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None):
     E0=fp.updateEnergies(x)[2]
     angle = np.arccos(res.dot(p)/(res.norm()*p.norm())) # angle between AltMin and Newton steps
     nn=11
-    alpha=np.linspace(0,1,nn)
+    alpha=np.linspace(0,2,nn)
     beta=np.linspace(-1,1,2*nn-1)
     energies=np.zeros([nn,2*nn-1])
     for i in range(0,nn):
