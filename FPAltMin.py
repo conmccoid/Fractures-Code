@@ -11,7 +11,7 @@ from Solvers import Elastic, Damage
 from PLOT_DamageState import plot_damage_state
 from JAltMin import JAltMin
 
-from Utilities import plotStepByStep
+from Utilities import plotStepByStep, boxConstraints
 
 class FPAltMin:
     def setUp(self,E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v):
@@ -142,9 +142,7 @@ class FPAltMin:
         F.assemblyBegin()
         F.assemblyEnd()
         if Eq > E0:
-            p = self.checkBCs(x)
             print(f"Warning: u solve changes energy by {EU - E0:3.4e}, v solve changes energy by {Eq - EU:3.4e}")
-            print(f"Change after applying BCs to input: {p.norm():3.4e}")
             plotStepByStep(self,x,F)
 
     def Jn(self, snes, x, J, P):

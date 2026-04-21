@@ -116,6 +116,9 @@ def boxConstraints(fp,x):
     v.array[IS_upp] = v_ub.array[IS_upp] # set v to boundary value if it crosses boundary
     v.assemblyBegin()
     v.assemblyEnd()
+    _, xv = x.getNestSubVecs()
+    xv.setArray(v.array)
+    xv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
     # E1 = fp.updateEnergies(x)[2]
     # print(f"Applied box constraints to {len(IS_low) + len(IS_upp)} entries, total distance from bounds was {dist_total}")
     # print(f"Energy before applying constraints: {E0}, Energy after applying constraints: {E1}")

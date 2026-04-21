@@ -28,6 +28,7 @@ class JAltMin:
     def destroyMat(self):
         # self.Euv.destroy()
         # self.Evu.destroy()
+        self.IS_u.destroy()
         pass
     
     def getKSPs(self):
@@ -37,7 +38,8 @@ class JAltMin:
         self.opts['ksp_reuse_preconditioner'] = True
         self.ksp_uu.setFromOptions()
         self.ksp_vv.setFromOptions()
-        self.IS=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
+        self.IS_u=PETSc.IS().createStride(self.Euu.getSize()[0], comm=MPI.COMM_WORLD)
+        self.IS_v=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
 
     def resetKSPs(self):
         self.opts['ksp_reuse_preconditioner'] = False
@@ -49,48 +51,43 @@ class JAltMin:
         x1, x2 = X.getNestSubVecs()
         y1, y2 = Y.getNestSubVecs()
 
-        # multiply by J
-        self.Euu.mult(x1, y1)
-        self.Evv.mult(x2, y2)
-        self.Euv.multAdd(x2, y1, y1)
-        self.Evu.multAdd(x1, y2, y2)
-
-        # multiply by P
-        self.ksp_uu(y1, y1)
-        y1.scale(-1.0)
-        self.Evu.multAdd(y1,y2,y2)
         n_temp=self.ksp_vv.getOperators()[0].getSize()[0]
         m_temp=y2.getSize()
+        if m_temp == n_temp: # inactive set is entire set, no need for IS
+            # multiply by J
+            self.Euu.mult(x1, y1)
+            self.Evv.mult(x2, y2)
+            self.Euv.multAdd(x2, y1, y1)
+            self.Evu.multAdd(x1, y2, y2)
 
-        if m_temp != n_temp:
-            # IS=self.getInactiveSet(n_temp)
-            y2_rhs=y2.getSubVector(self.IS)
-            y2_sol=y2_rhs.duplicate()
-            self.ksp_vv(y2_rhs, y2_sol)
-            y2.restoreSubVector(self.IS, y2_sol)
-            y2_rhs.destroy()
-        else:
-            self.ksp_vv(y2, y2)
-    
-    def getInactiveSet(self,n):
-        v_ext=self.damage_solver.getSolution() # get current damage solution (external)
-        v_lb, v_ub = self.damage_solver.getVariableBounds() # get current bounds
+            # multiply by P
+            self.ksp_uu(y1, y1)
+            y1.scale(-1.0)
+            self.Evu.multAdd(y1,y2,y2)
+            self.ksp_vv(y2,y2)
+        
+        else: # inactive set is smaller than entire set, need to use IS
+            # extract components associated with inactive set
+            x2_IS=x2.getSubVector(self.IS_v)
+            y2_IS=y2.getSubVector(self.IS_v)
+            Evv_IS=self.Evv.createSubMatrix(self.IS_v,self.IS_v)
+            Evu_IS=self.Evu.createSubMatrix(self.IS_v,self.IS_u)
+            Euv_IS=self.Euv.createSubMatrix(self.IS_u,self.IS_v)
 
-        # determine distance from bounds
-        dist_low=v_ext.array - v_lb.array
-        dist_upp=v_ub.array - v_ext.array
-        dist=np.minimum(dist_low, dist_upp)
-        is_temp = np.sort(np.argsort(dist)[-n:]).astype(PETSc.IntType) # sort and take largest n indices
+            # multiply by J
+            self.Euu.mult(x1,y1)
+            Evv_IS.mult(x2_IS,y2_IS)
+            Euv_IS.multAdd(x2_IS,y1,y1)
+            Evu_IS.multAdd(x1,y2_IS,y2_IS)
 
-        # # conditions used in PETSc VI, but non-functional here
-        # f,F=self.damage_solver.getFunction() # get damage function and storage vector
-        # F[0](F[1],v_ext,f)  # evaluate Jacobian at current damage solution
-        # tol_bds=1e-8
-        # cond_low = v_ext.array > v_lb.array + tol_bds
-        # cond_upp = v_ext.array < v_ub.array - tol_bds
-        # grad_low = f.array <= 0.0
-        # grad_upp = f.array >= 0.0
-        # is_temp = np.where((cond_low | grad_low) & (cond_upp | grad_upp))[0].astype(PETSc.IntType)
+            # multiply by P
+            self.ksp_uu(y1,y1)
+            y1.scale(-1.0)
+            Evu_IS.multAdd(y1,y2_IS,y2_IS)
+            self.ksp_vv(y2_IS,y2_IS)
+            y2.restoreSubVector(self.IS_v,y2_IS)
 
-        IS = PETSc.IS().createGeneral(is_temp, comm=v_ext.comm) # construct PETSc index set
-        return IS
+            # clean-up
+            Evv_IS.destroy()
+            Evu_IS.destroy()
+            Euv_IS.destroy()

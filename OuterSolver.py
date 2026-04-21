@@ -109,15 +109,11 @@ class OuterSolver:
                         plotDirectionChange(v, self.p_old)
                         self.p_old = v.copy() # store search direction
                         v.destroy() # clean up parallelogram step vector
+                    boxConstraints(self.fp,self.x) # apply box constraints to solution for backtracking methods
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()
                 self.fp.monitor(iteration)
-            
-            if self.method=='CubicBacktracking' or self.method=='Parallelogram': # apply box constraints to final solution for backtracking methods
-                boxConstraints(self.fp,self.x) # apply box constraints to final solution
-                self.fp.updateUV(self.x) # update solution vectors after applying constraints
-                error = self.fp.updateError() # update error after applying constraints
-            
+
             if self.method=='Parallelogram' and iteration>1:
                 plotConvCrit(np.array(ConvCrit))
 
