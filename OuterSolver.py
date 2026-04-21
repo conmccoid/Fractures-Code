@@ -14,7 +14,7 @@ class OuterSolver:
         self.setIdentifier()
         self.setUp()
         if self.method!='AltMin':
-            self.SNESKSP = KSPsetUp(self.fp, self.J, type="gmres", rtol=1.0e-7, max_it=1000, restarts=1000, monitor='off')  # Set up the KSP solver
+            self.SNESKSP = KSPsetUp(self.fp, self.J, type="gmres", rtol=1.0e-3, max_it=100, restarts=100, monitor='off')  # Set up the KSP solver
 
     def setIdentifier(self):
         self.identifier=f"{self.example}_{self.method}"
