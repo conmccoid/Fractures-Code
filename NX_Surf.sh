@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=NX_Surf
-#SBATCH --output=output.txt
-#SBATCH --error=error.txt
+#SBATCH --output=output_Surf.txt
+#SBATCH --error=error_Surf.txt
 #SBATCH --partition=bb
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1

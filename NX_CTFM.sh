@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=NX_CTFM
-#SBATCH --output=output.txt
-#SBATCH --error=error.txt
+#SBATCH --output=output_CTFM.txt
+#SBATCH --error=error_CTFM.txt
 #SBATCH --partition=bb
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=64
