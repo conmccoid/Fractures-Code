@@ -116,6 +116,9 @@ def boxConstraints(fp,x):
     v.array[IS_upp] = v_ub.array[IS_upp] # set v to boundary value if it crosses boundary
     v.assemblyBegin()
     v.assemblyEnd()
+    _, xv = x.getNestSubVecs()
+    xv.setArray(v.array)
+    xv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
     # E1 = fp.updateEnergies(x)[2]
     # print(f"Applied box constraints to {len(IS_low) + len(IS_upp)} entries, total distance from bounds was {dist_total}")
     # print(f"Energy before applying constraints: {E0}, Energy after applying constraints: {E1}")
@@ -212,15 +215,17 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     a=Eq-d-f
     b=Epq + E0 - Ep - Eq
     
+    angle = np.arccos(q.dot(p)/(q.norm()*p.norm())) # angle between AltMin and Newton steps
+
     r=4*a*c-b**2
-    alpha = (-2*c*d + b*e)/r
-    beta = (-2*a*e + b*d)/r
+    alpha = (-2*c*d + b*e)/r # step in q (AltMin)
+    beta = (-2*a*e + b*d)/r # step in p (MSPIN)
     E_list=[Eq, Ep, Epq]
     v_list=[q.copy(), p.copy(), qp]
     beta_list=[0, 1, 1]
     alpha_list=[1, 0, 1]
     step_list=["AltMin", "Newton", "Both"]
-    if (alpha>0) & (alpha<1) & (beta>0) & (beta<1):
+    if (alpha>0) & (alpha<10) & (beta>-1) & (beta<1):
         v=q.copy()
         v.scale(alpha)
         v.axpy(beta,p)
@@ -239,7 +244,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         alpha=1
     else:
         alpha= -d/(2*a)
-    if (alpha>0) & (alpha<1):
+    if (alpha>0) & (alpha<2):
         beta_list.append(0)
         v=q.copy()
         v.scale(alpha)
@@ -256,7 +261,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         beta=1
     else:
         beta= -e/(2*c)
-    if (beta>0) & (beta<1):
+    if (beta>-1) & (beta<1):
         alpha_list.append(0)
         v=p.copy()
         v.scale(beta)
@@ -273,7 +278,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         alpha=1
     else:
         alpha= (-d - b)/(2*a)
-    if (alpha>0) & (alpha<1):
+    if (alpha>0) & (alpha<2):
         beta_list.append(1)
         v=q.copy()
         v.scale(alpha)
@@ -291,7 +296,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         beta=1
     else:
         beta= (-e - b)/(2*c)
-    if (beta>0) & (beta<1):
+    if (beta>-1) & (beta<1):
         alpha_list.append(1)
         v=q.copy()
         v.axpy(beta,p)
@@ -320,7 +325,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     xp.destroy()
     xpq.destroy()
 
-    return result
+    return result, angle, alpha, beta
 
 def plotEnergyLandscape(fp, x, p):
     """
@@ -356,8 +361,9 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None):
     - p: Newton step
     """
     E0=fp.updateEnergies(x)[2]
+    angle = np.arccos(res.dot(p)/(res.norm()*p.norm())) # angle between AltMin and Newton steps
     nn=11
-    alpha=np.linspace(0,1,nn)
+    alpha=np.linspace(0,2,nn)
     beta=np.linspace(-1,1,2*nn-1)
     energies=np.zeros([nn,2*nn-1])
     for i in range(0,nn):
@@ -367,12 +373,21 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None):
             xcopy.axpy(beta[j],p)
             energies[i][j]=fp.updateEnergies(xcopy)[2]
             xcopy.destroy()
-    plt.contourf(beta*res.norm(), alpha*p.norm(), energies - E0)
+    fig, ax = plt.subplots(1,2)
+    cf=ax[0].contourf(beta, alpha, energies - E0)
     if target is not None:
-        plt.plot(target[0]*res.norm(), target[1]*p.norm(), 'rx', markersize=10, label='Chosen step')
-    plt.ylabel('AltMin')
-    plt.xlabel('MSPIN')
-    plt.colorbar(label='Total Energy')
+        ax[0].plot(target[0], target[1], 'rx', markersize=10, label='Chosen step')
+    ax[0].set_ylabel('AltMin')
+    ax[0].set_xlabel('MSPIN')
+    ax[0].set_title('Energy Landscape')
+    fig.colorbar(cf, label='Total Energy')
+    ax[1].quiver(0,0,res.norm()*np.cos(angle),res.norm()*np.sin(angle), angles='xy', scale_units='xy', scale=1, color='b', label='AltMin step')
+    ax[1].quiver(0,0,p.norm(),0, angles='xy', scale_units='xy', scale=1, color='r', label='Newton step')
+    ax[1].set_ylabel('AltMin')
+    ax[1].set_xlabel('MSPIN')
+    ax[1].set_title('Search Directions')
+    ax[1].set_xlim(-1.5*p.norm(), 1.5*p.norm())
+    ax[1].set_ylim(-1.5*res.norm(), 1.5*res.norm())
     plt.show()
 
 def plotNX(example,id_list,en_list):
@@ -428,3 +443,51 @@ def plotNX(example,id_list,en_list):
     ax3.set_ylabel('Time elapsed (s) per load step')
     ax3.legend()
     fig3.savefig(f"output/FIG_{example}_time.pdf")
+
+def plotConvCrit(ConvCrit):
+    # check how angle of MSPIN and AltMin change from iteration to iteration
+    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,0], 'o-', label='Step size')
+    plt.xlabel('Iteration')
+    plt.ylabel('Convergence criteria')
+    plt.ylim([1e-4, 1e2])
+    plt.legend()
+    plt.show()
+    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,1], 's-', label='Volume')
+    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,2], 'D-', label='Flatness')
+    plt.xlabel('Iteration')
+    plt.ylabel('Convergence criteria')
+    # plt.ylim([1e-10, 1e2])
+    plt.legend()
+    plt.show()
+    plt.plot(range(len(ConvCrit)), ConvCrit[:,3]*180/np.pi, '^-', label='Angle')
+    plt.xlabel('Iteration')
+    plt.ylabel('Convergence criteria')
+    plt.legend()
+    plt.show()
+    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,4], 'v-', label='Alpha')
+    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,5], 'x-', label='Beta')
+    plt.ylim([1e-4, 1.5])
+    plt.xlabel('Iteration')
+    plt.ylabel('Convergence criteria')
+    plt.legend()
+    plt.show()
+
+def plotStepByStep(fp, x, res):
+    resu, resv = res.getNestSubVecs()
+    resv0 = resv.copy()
+    resv0.zeroEntries()
+    resu0 = resu.copy()
+    resu0.zeroEntries()
+    stepu = PETSc.Vec().createNest([resu,resv0], None, fp.comm)
+    stepv = PETSc.Vec().createNest([resu0,resv], None, fp.comm)
+    plotEnergyLandscape(fp,x,stepu)
+    plotEnergyLandscape(fp,x+stepu,stepv)
+
+def plotDirectionChange(p, p_old):
+    angle = np.arccos(p.dot(p_old)/(p.norm()*p_old.norm()))
+    plt.quiver(0,-1,0,1, angles='xy', scale_units='xy', scale=1, color='r', label='Previous step')
+    plt.quiver(0,0,np.sin(angle),np.cos(angle), angles='xy', scale_units='xy', scale=1, color='b', label='Current step')
+    plt.title(f'Angle between steps: {angle*180/np.pi:3.2f} degrees')
+    plt.xlim(-1.5, 1.5)
+    plt.ylim(-1.5, 1.5)
+    plt.show()

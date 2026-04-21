@@ -20,7 +20,7 @@ class OuterSolver:
         self.identifier=f"{self.example}_{self.method}"
 
     def setUp(self):
-        self.x, self.J = self.fp.createVecMat()  # Create empty vector and matrix
+        self.x, self.J = self.fp.createVecMat()  # Create empty vector and preconditioned Jacobian
         self.res = self.x.duplicate()  # Create a duplicate for the residual vector
         self.p = self.x.duplicate()  # Create a duplicate for the search direction
     
@@ -37,6 +37,10 @@ class OuterSolver:
                         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Number of iterations'])
                     else:
                         writer.writerow(['t','Elastic energy','Dissipated energy','Total energy','Time elapsed','Outer iterations','Inner iterations'])
+                if self.method=='Parallelogram':
+                    with open(f"output/ConvCrit_{self.identifier}.csv",'w') as csv.file:
+                        writer=csv.writer(csv.file,delimiter=',')
+                        writer.writerow(['Iteration','Step size','Angle','Alpha','Beta'])
 
         # main iteration
         for i_t, t in enumerate(self.loads):
@@ -52,6 +56,7 @@ class OuterSolver:
                 plotEnergyLandscape(self.fp,self.x,self.res) # temporary
                 print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
             self.x.axpy(1.0,self.res) # Add the residual to the solution vector
+
             self.fp.updateUV(self.x)  # Update the solution vectors
             error = self.fp.updateError() # calculate error
             self.fp.monitor(iteration) # monitor convergence
@@ -83,19 +88,19 @@ class OuterSolver:
                         if PlotSwitch:
                             plotEnergyLandscape(self.fp,self.x,self.p)
                         CubicBacktracking(self.fp, self.x, self.p, self.res)
-                        self.x += self.p # update solution
+                        self.x.axpy(1.0, self.p) # update solution
                     elif self.method=='Parallelogram':
-                        v = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
-                        self.x += v # update solution
+                        v, angle, alpha, beta = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
+                        if self.fp.rank==0:
+                            with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
+                                writer=csv.writer(csv.file,delimiter=',')
+                                writer.writerow([iteration,v.norm(),angle,alpha,beta])
+                        self.x.axpy(1.0, v) # update solution
                         v.destroy() # clean up parallelogram step vector
+                    boxConstraints(self.fp,self.x) # apply box constraints to solution for backtracking methods
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()
                 self.fp.monitor(iteration)
-            
-            if self.method=='CubicBacktracking' or self.method=='Parallelogram': # apply box constraints to final solution for backtracking methods
-                boxConstraints(self.fp,self.x) # apply box constraints to final solution
-                self.fp.updateUV(self.x) # update solution vectors after applying constraints
-                error = self.fp.updateError() # update error after applying constraints
 
             self.energies[i_t, 1:4] = self.fp.updateEnergies(self.x)[0:3]
             end_time = PETSc.Log.getTime()
