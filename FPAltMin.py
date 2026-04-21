@@ -11,8 +11,6 @@ from Solvers import Elastic, Damage
 from PLOT_DamageState import plot_damage_state
 from JAltMin import JAltMin
 
-from Utilities import plotStepByStep, boxConstraints
-
 class FPAltMin:
     def setUp(self,E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v):
         
@@ -28,11 +26,6 @@ class FPAltMin:
 
         elastic_problem, self.elastic_solver = Elastic(E_u, self.u, bcs_u, E_uu)
         damage_problem, self.damage_solver = Damage(E_v, self.v, bcs_v, E_vv)
-
-        self.Euu = elastic_problem.a
-        self.Evv = damage_problem.a
-        self.bcs_u = bcs_u
-        self.bcs_v = bcs_v
 
         self.u_old = fem.Function(V_u)
         self.v_old = fem.Function(V_v)
@@ -120,19 +113,15 @@ class FPAltMin:
             f_local.set(0.0)
         petsc.assemble_vector(Eu, self.Eu)
         petsc.assemble_vector(Ev, self.Ev)
-        # do BCs need to be applied to gradient?
 
     def Fn(self, snes, x, F):
         self.updateUV(x)
         self.updateUV_old()
 
-        E0 = self.comm.allreduce(fem.assemble_scalar(self.total_energy), op=MPI.SUM)
         self.elastic_solver.solve(None, self.u.x.petsc_vec)
         self.u.x.scatter_forward()
-        EU = self.comm.allreduce(fem.assemble_scalar(self.total_energy), op=MPI.SUM)
         self.damage_solver.solve(None, self.v.x.petsc_vec)
         self.v.x.scatter_forward()
-        Eq = self.comm.allreduce(fem.assemble_scalar(self.total_energy), op=MPI.SUM)
 
         resu, resv = F.getNestSubVecs()
         resu.setArray(self.u.x.petsc_vec.getArray() - self.u_old.x.petsc_vec.getArray())
@@ -141,9 +130,6 @@ class FPAltMin:
         resv.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
         F.assemblyBegin()
         F.assemblyEnd()
-        if Eq > E0:
-            print(f"Warning: u solve changes energy by {EU - E0:3.4e}, v solve changes energy by {Eq - EU:3.4e}")
-            plotStepByStep(self,x,F)
 
     def Jn(self, snes, x, J, P):
         # J.setPythonContext(self.PJ)
@@ -161,19 +147,6 @@ class FPAltMin:
     def monitor(self, iteration):
         if self.rank == 0:
             print(f"Iteration: {iteration}, Error: {self.error_L2: 3.4e}")
-    
-    def checkBCs(self,x):
-        """"Check if BCs are applied to x by applying BCs to x and checking if it changes.
-        Inputs:
-            x: PETSc.Vec, the solution vector to check
-        """
-        self.updateUV(x)
-        p = x.copy()
-        pu, pv = p.getNestSubVecs()
-        petsc.set_bc(pu, self.bcs_u, None, 1.0)
-        petsc.set_bc(pv, self.bcs_v, None, 1.0)
-        p.axpy(-1.0,x) # change in x after applying BCs
-        return p
 
     def destroy(self):
         self.gradF.destroy()
