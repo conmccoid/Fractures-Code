@@ -1,0 +1,2051 @@
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+Traceback (most recent call last):
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 987, in petsc4py.PETSc.MatMult_Python
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+    Euv_IS.multAdd(x2_IS,y1,y1)
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+petsc4py.PETSc.Error: error code 60
+[53] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[53] Nonconforming object sizes
+[53] Mat mat,Vec v3: local dim 239070 3700
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[17] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[17] Nonconforming object sizes
+[17] Mat mat,Vec v3: local dim 239070 3816
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[21] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[21] Nonconforming object sizes
+[21] Mat mat,Vec v3: local dim 239070 3666
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[31] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[31] Nonconforming object sizes
+[31] Mat mat,Vec v3: local dim 239070 3746
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[33] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[33] Nonconforming object sizes
+[33] Mat mat,Vec v3: local dim 239070 3682
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[38] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[38] Nonconforming object sizes
+[38] Mat mat,Vec v3: local dim 239070 3654
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[56] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[56] Nonconforming object sizes
+[56] Mat mat,Vec v3: local dim 239070 3704
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[59] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[59] Nonconforming object sizes
+[59] Mat mat,Vec v3: local dim 239070 3726
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[63] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[63] Nonconforming object sizes
+[63] Mat mat,Vec v3: local dim 239070 3746
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[ 0] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 0] Nonconforming object sizes
+[ 0] Mat mat,Vec v3: local dim 239070 3736
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[ 4] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 4] Nonconforming object sizes
+[ 4] Mat mat,Vec v3: local dim 239070 3738
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[ 6] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 6] Nonconforming object sizes
+[ 6] Mat mat,Vec v3: local dim 239070 3802
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[13] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[13] Nonconforming object sizes
+[13] Mat mat,Vec v3: local dim 239070 3734
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[16] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[16] Nonconforming object sizes
+[16] Mat mat,Vec v3: local dim 239070 3764
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[30] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[30] Nonconforming object sizes
+[30] Mat mat,Vec v3: local dim 239070 3742
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[34] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[34] Nonconforming object sizes
+[34] Mat mat,Vec v3: local dim 239070 3780
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[35] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[35] Nonconforming object sizes
+[35] Mat mat,Vec v3: local dim 239070 3642
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[43] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[43] Nonconforming object sizes
+[43] Mat mat,Vec v3: local dim 239070 3748
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[45] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[45] Nonconforming object sizes
+[45] Mat mat,Vec v3: local dim 239070 3622
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[46] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[46] Nonconforming object sizes
+[46] Mat mat,Vec v3: local dim 239070 3772
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[48] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[48] Nonconforming object sizes
+[48] Mat mat,Vec v3: local dim 239070 3756
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[50] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[50] Nonconforming object sizes
+[50] Mat mat,Vec v3: local dim 239070 3802
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[51] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[51] Nonconforming object sizes
+[51] Mat mat,Vec v3: local dim 239070 3806
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[52] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[52] Nonconforming object sizes
+[52] Mat mat,Vec v3: local dim 239070 3712
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+petsc4py.PETSc.Error: error code 60
+[54] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[54] Nonconforming object sizes
+[54] Mat mat,Vec v3: local dim 239070 3694
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[58] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[58] Nonconforming object sizes
+[58] Mat mat,Vec v3: local dim 239070 3676
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+petsc4py.PETSc.Error: error code 60
+[60] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[60] Nonconforming object sizes
+[60] Mat mat,Vec v3: local dim 239070 3726
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+petsc4py.PETSc.Error: error code 60
+[62] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[62] Nonconforming object sizes
+[62] Mat mat,Vec v3: local dim 239070 3750
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[ 2] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 2] Nonconforming object sizes
+[ 2] Mat mat,Vec v3: local dim 239070 3798
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[ 3] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 3] Nonconforming object sizes
+[ 3] Mat mat,Vec v3: local dim 239070 3838
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[ 5] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 5] Nonconforming object sizes
+[ 5] Mat mat,Vec v3: local dim 239070 3748
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[11] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[11] Nonconforming object sizes
+[11] Mat mat,Vec v3: local dim 239070 3650
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[15] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[15] Nonconforming object sizes
+[15] Mat mat,Vec v3: local dim 239070 3736
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[19] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[19] Nonconforming object sizes
+[19] Mat mat,Vec v3: local dim 239070 3654
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[22] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[22] Nonconforming object sizes
+[22] Mat mat,Vec v3: local dim 239070 3722
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[23] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[23] Nonconforming object sizes
+[23] Mat mat,Vec v3: local dim 239070 3760
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[27] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[27] Nonconforming object sizes
+[27] Mat mat,Vec v3: local dim 239070 3728
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[29] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[29] Nonconforming object sizes
+[29] Mat mat,Vec v3: local dim 239070 3766
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[32] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[32] Nonconforming object sizes
+[32] Mat mat,Vec v3: local dim 239070 3688
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[44] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[44] Nonconforming object sizes
+[44] Mat mat,Vec v3: local dim 239070 3688
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[49] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[49] Nonconforming object sizes
+[49] Mat mat,Vec v3: local dim 239070 3742
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[55] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[55] Nonconforming object sizes
+[55] Mat mat,Vec v3: local dim 239070 3772
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[ 9] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 9] Nonconforming object sizes
+[ 9] Mat mat,Vec v3: local dim 239070 3824
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[36] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[36] Nonconforming object sizes
+[36] Mat mat,Vec v3: local dim 239070 3770
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+petsc4py.PETSc.Error: error code 60
+[39] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[39] Nonconforming object sizes
+[39] Mat mat,Vec v3: local dim 239070 3708
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[41] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[41] Nonconforming object sizes
+[41] Mat mat,Vec v3: local dim 239070 3748
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[ 7] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 7] Nonconforming object sizes
+[ 7] Mat mat,Vec v3: local dim 239070 3780
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[10] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[10] Nonconforming object sizes
+[10] Mat mat,Vec v3: local dim 239070 3716
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[12] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[12] Nonconforming object sizes
+[12] Mat mat,Vec v3: local dim 239070 3722
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[14] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[14] Nonconforming object sizes
+[14] Mat mat,Vec v3: local dim 239070 3758
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[18] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[18] Nonconforming object sizes
+[18] Mat mat,Vec v3: local dim 239070 3638
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[20] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[20] Nonconforming object sizes
+[20] Mat mat,Vec v3: local dim 239070 3678
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[24] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[24] Nonconforming object sizes
+[24] Mat mat,Vec v3: local dim 239070 3730
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[25] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[25] Nonconforming object sizes
+[25] Mat mat,Vec v3: local dim 239070 3796
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[26] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[26] Nonconforming object sizes
+[26] Mat mat,Vec v3: local dim 239070 3760
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[28] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[28] Nonconforming object sizes
+[28] Mat mat,Vec v3: local dim 239070 3756
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[37] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[37] Nonconforming object sizes
+[37] Mat mat,Vec v3: local dim 239070 3766
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[40] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[40] Nonconforming object sizes
+[40] Mat mat,Vec v3: local dim 239070 3754
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[42] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[42] Nonconforming object sizes
+[42] Mat mat,Vec v3: local dim 239070 3742
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[47] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[47] Nonconforming object sizes
+[47] Mat mat,Vec v3: local dim 239070 3756
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[57] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[57] Nonconforming object sizes
+[57] Mat mat,Vec v3: local dim 239070 3708
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+petsc4py.PETSc.Error: error code 60
+[61] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[61] Nonconforming object sizes
+[61] Mat mat,Vec v3: local dim 239070 3664
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+petsc4py.PETSc.Error: error code 60
+[ 8] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 8] Nonconforming object sizes
+[ 8] Mat mat,Vec v3: local dim 239070 3854
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+  File "/home/mccoidc/Fractures-Code/JAltMin.py", line 76, in mult
+    Euv_IS.multAdd(x2_IS,y1,y1)
+  File "petsc4py/PETSc/Mat.pyx", line 3873, in petsc4py.PETSc.Mat.multAdd
+petsc4py.PETSc.Error: error code 60
+[ 1] MatMultAdd() at /usr/local/petsc/src/mat/interface/matrix.c:2880
+[ 1] Nonconforming object sizes
+[ 1] Mat mat,Vec v3: local dim 239070 3710
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 29, in <module>
+    main(WriteSwitch=args.write)
+  File "/home/mccoidc/Fractures-Code/NX_CTFM.py", line 14, in main
+    en2, id2=EX('CubicBacktracking',WriteSwitch=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mccoidc/Fractures-Code/EX_CTFM.py", line 24, in main
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
+  File "/home/mccoidc/Fractures-Code/OuterSolver.py", line 82, in solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+petsc4py.PETSc.Error: error code 101
+[ 7] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 7] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 7] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 7] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 7] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 7] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 7] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[31] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[31] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[31] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[31] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[31] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[31] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[31] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[33] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[33] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[33] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[33] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[33] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[33] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[33] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[37] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[37] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[37] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[37] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[37] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[37] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[37] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[41] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[41] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[41] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[41] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[41] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[41] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[41] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[52] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[52] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[52] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[52] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[52] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[52] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[52] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[54] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[54] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[54] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[54] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[54] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[54] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[54] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[62] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[62] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[62] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[62] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[62] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[62] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[62] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[ 1] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 1] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 1] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 1] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 1] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 1] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 1] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[ 4] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 4] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 4] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 4] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 4] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 4] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 4] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[11] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[11] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[11] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[11] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[11] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[11] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[11] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[13] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[13] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[13] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[13] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[13] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[13] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[13] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[15] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[15] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[15] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[15] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[15] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[15] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[15] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[19] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[19] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[19] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[19] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[19] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[19] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[19] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[21] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[21] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[21] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[21] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[21] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[21] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[21] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[23] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[23] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[23] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[23] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[23] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[23] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[23] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[24] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[24] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[24] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[24] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[24] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[24] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[24] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[25] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[25] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[25] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[25] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[25] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[25] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[25] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[30] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[30] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[30] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[30] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[30] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[30] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[30] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[36] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[36] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[36] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[36] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[36] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[36] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[36] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[38] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[38] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[38] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[38] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[38] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[38] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[38] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[39] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[39] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[39] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[39] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[39] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[39] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[39] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[44] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[44] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[44] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[44] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[44] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[44] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[44] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[47] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[47] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[47] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[47] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[47] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[47] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[47] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[48] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[48] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[48] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[48] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[48] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[48] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[48] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[49] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[49] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[49] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[49] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[49] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[49] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[49] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[51] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[51] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[51] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[51] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[51] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[51] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[51] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[53] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[53] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[53] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[53] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[53] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[53] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[53] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[55] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[55] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[55] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[55] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[55] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[55] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[55] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[58] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[58] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[58] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[58] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[58] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[58] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[58] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[61] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[61] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[61] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[61] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[61] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[61] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[61] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[45] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[45] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[45] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[45] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[45] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[45] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[45] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[50] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[50] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[50] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[50] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[50] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[50] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[50] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[ 0] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 0] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 0] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 0] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 0] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 0] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 0] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[12] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[12] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[12] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[12] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[12] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[12] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[12] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[16] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[16] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[16] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[16] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[16] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[16] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[16] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[18] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[18] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[18] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[18] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[18] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[18] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[18] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[20] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[20] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[20] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[20] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[20] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[20] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[20] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[26] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[26] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[26] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[26] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[26] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[26] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[26] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[28] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[28] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[28] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[28] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[28] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[28] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[28] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[34] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[34] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[34] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[34] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[34] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[34] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[34] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[46] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[46] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[46] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[46] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[46] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[46] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[46] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[59] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[59] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[59] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[59] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[59] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[59] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[59] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[42] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[42] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[42] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[42] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[42] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[42] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[42] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[ 3] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 3] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 3] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 3] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 3] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 3] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 3] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[ 5] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 5] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 5] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 5] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 5] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 5] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 5] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[ 8] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 8] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 8] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 8] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 8] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 8] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 8] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[ 9] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 9] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 9] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 9] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 9] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 9] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 9] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[10] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[10] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[10] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[10] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[10] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[10] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[10] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[14] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[14] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[14] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[14] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[14] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[14] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[14] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[22] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[22] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[22] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[22] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[22] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[22] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[22] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[35] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[35] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[35] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[35] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[35] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[35] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[35] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[40] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[40] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[40] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[40] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[40] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[40] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[40] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[57] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[57] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[57] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[57] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[57] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[57] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[57] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[63] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[63] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[63] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[63] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[63] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[63] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[63] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+petsc4py.PETSc.Error: error code 101
+[17] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[17] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[17] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[17] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[17] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[17] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[17] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+petsc4py.PETSc.Error: error code 101
+[29] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[29] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[29] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[29] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[29] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[29] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[29] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[32] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[32] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[32] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[32] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[32] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[32] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[32] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+petsc4py.PETSc.Error: error code 101
+[56] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[56] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[56] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[56] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[56] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[56] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[56] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+petsc4py.PETSc.Error: error code 101
+[60] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[60] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[60] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[60] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[60] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[60] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[60] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+petsc4py.PETSc.Error: error code 101
+[27] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[27] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[27] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[27] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[27] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[27] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[27] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+petsc4py.PETSc.Error: error code 101
+[ 6] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 6] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 6] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 6] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 6] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 6] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 6] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+petsc4py.PETSc.Error: error code 101
+[43] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[43] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[43] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[43] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[43] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[43] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[43] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+    self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "petsc4py/PETSc/KSP.pyx", line 1782, in petsc4py.PETSc.KSP.solve
+petsc4py.PETSc.Error: error code 101
+[ 2] KSPSolve() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:1090
+[ 2] KSPSolve_Private() at /usr/local/petsc/src/ksp/ksp/interface/itfunc.c:913
+[ 2] KSPSolve_GMRES() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:215
+[ 2] KSPGMRESCycle() at /usr/local/petsc/src/ksp/ksp/impls/gmres/gmres.c:133
+[ 2] KSP_PCApplyBAorAB() at /usr/local/petsc/include/petsc/private/kspimpl.h:465
+[ 2] PCApplyBAorAB() at /usr/local/petsc/src/ksp/pc/interface/precon.c:836
+[ 2] MatMult() at /usr/local/petsc/src/mat/interface/matrix.c:2715
+slurmstepd: error: Failed to send MESSAGE_TASK_EXIT: Connection refused
+srun: error: bb02: tasks 0,34: Exited with exit code 1
+srun: error: bb02: tasks 1-33,35-63: Exited with exit code 1
