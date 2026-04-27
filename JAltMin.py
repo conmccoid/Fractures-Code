@@ -34,7 +34,9 @@ class JAltMin:
         self.opts['ksp_reuse_preconditioner'] = True
         self.ksp_uu.setFromOptions()
         self.ksp_vv.setFromOptions()
-        self.IS_u=PETSc.IS().createStride(self.Euu.getSize()[0], comm=MPI.COMM_WORLD)
+        u = self.elastic_solver.getSolution()
+        rstart, rend = u.getOwnershipRange()
+        self.IS_u=PETSc.IS().createStride(rend - rstart,rstart,1,comm=self.Euu.getComm())
         self.IS_v=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
 
     def resetKSPs(self):
@@ -73,7 +75,7 @@ class JAltMin:
             # multiply by J
             self.Euu.mult(x1,y1)
             Evv_IS.mult(x2_IS,y2_IS)
-            Euv_IS.multAdd(x2_IS,y1,y1)
+            Euv_IS.multAdd(x2_IS,y1,y1) # issue here
             Evu_IS.multAdd(x1,y2_IS,y2_IS)
 
             # multiply by P
