@@ -215,7 +215,10 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     a=Eq-d-f
     b=Epq + E0 - Ep - Eq
     
-    angle = np.arccos(q.dot(p)/(q.norm()*p.norm())) # angle between AltMin and Newton steps
+    try:
+        angle = np.arccos(q.dot(p)/(q.norm()*p.norm())) # angle between AltMin and Newton steps
+    except:
+        print("Error calculating angle", flush=True)
 
     r=4*a*c-b**2
     alpha = (-2*c*d + b*e)/r # step in q (AltMin)

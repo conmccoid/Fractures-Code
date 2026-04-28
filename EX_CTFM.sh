@@ -4,7 +4,7 @@
 #SBATCH --error=error_CTFM.txt
 #SBATCH --partition=bb
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=64
+#SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --time=12:00:00
 #SBATCH --mail-user=mccoidc@mcmaster.ca
