@@ -139,6 +139,23 @@ To warp by displacement but colour by damage:
 3. Warp by Vector filter on appended blocks.
 4. Change the Coloring variable from the dropdown to the scalar block.
 
+### ParaView: remote work on bbserv
+
+```
+ssh -L 8080:localhost:1785 mccoidc@bbserv.mcmaster.ca /1/HPC/paraview/5.11.1/bin/pvserver --sp=1785
+```
+May need to replace the port number 1785 with some other number between 1000 and 2000.
+
+#### First time
+
+1. File > Connect > Add Server
+2. Put in the following configuration:
+   1. Name: bbserv
+   2. Server Type: Client / Server
+   3. Host: localhost
+   4. Port: 8080
+3. 
+
 ## Coding up MSPEN
 
 ### Concatenating vectors
