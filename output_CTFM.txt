@@ -3859,3 +3859,498 @@ Iteration: 2, Error:  1.2145e-03
 Iteration: 3, Error:  2.0239e-04
 -- Solving for t = 0.00 --
 Iteration: 0, Error:  1.4194e+00
+Iteration: 1, Error:  3.6898e-13
+-- Solving for t = 0.01 --
+Iteration: 0, Error:  5.3106e-01
+Iteration: 1, Error:  7.2365e-12
+-- Solving for t = 0.02 --
+Iteration: 0, Error:  5.3106e-01
+Iteration: 1, Error:  1.0362e-11
+-- Solving for t = 0.03 --
+Iteration: 0, Error:  5.3109e-01
+Iteration: 1, Error:  4.6539e-14
+-- Solving for t = 0.04 --
+Iteration: 0, Error:  5.3115e-01
+Iteration: 1, Error:  1.2429e-12
+-- Solving for t = 0.05 --
+Iteration: 0, Error:  5.3122e-01
+Iteration: 1, Error:  7.0201e-12
+-- Solving for t = 0.06 --
+Iteration: 0, Error:  5.3132e-01
+Iteration: 1, Error:  4.7691e-13
+-- Solving for t = 0.07 --
+Iteration: 0, Error:  5.3144e-01
+Iteration: 1, Error:  4.2375e-16
+-- Solving for t = 0.08 --
+Iteration: 0, Error:  5.3159e-01
+Iteration: 1, Error:  8.7318e-14
+-- Solving for t = 0.09 --
+Iteration: 0, Error:  5.3176e-01
+Iteration: 1, Error:  6.3484e-16
+-- Solving for t = 0.10 --
+Iteration: 0, Error:  5.3195e-01
+Iteration: 1, Error:  6.5854e-13
+-- Solving for t = 0.11 --
+Iteration: 0, Error:  5.3217e-01
+Iteration: 1, Error:  1.7059e-19
+-- Solving for t = 0.12 --
+Iteration: 0, Error:  5.3242e-01
+Iteration: 1, Error:  2.6065e-13
+-- Solving for t = 0.13 --
+Iteration: 0, Error:  5.3270e-01
+Iteration: 1, Error:  1.0448e-13
+-- Solving for t = 0.14 --
+Iteration: 0, Error:  5.3301e-01
+Iteration: 1, Error:  2.0293e-14
+-- Solving for t = 0.15 --
+Iteration: 0, Error:  5.3335e-01
+Iteration: 1, Error:  3.3709e-03
+Iteration: 2, Error:  1.3981e-03
+Iteration: 3, Error:  2.1829e-04
+-- Solving for t = 0.16 --
+Iteration: 0, Error:  5.3207e-01
+Iteration: 1, Error:  6.3931e-14
+-- Solving for t = 0.17 --
+Iteration: 0, Error:  5.3401e-01
+Iteration: 1, Error:  4.4956e-03
+Iteration: 2, Error:  2.0883e-03
+Iteration: 3, Error:  4.2726e-04
+-- Solving for t = 0.18 --
+Iteration: 0, Error:  5.3237e-01
+Iteration: 1, Error:  1.2569e-15
+-- Solving for t = 0.19 --
+Iteration: 0, Error:  5.3488e-01
+Iteration: 1, Error:  5.9109e-03
+Iteration: 2, Error:  3.0441e-03
+Iteration: 3, Error:  7.9773e-04
+-- Solving for t = 0.20 --
+Iteration: 0, Error:  5.3272e-01
+Iteration: 1, Error:  6.0705e-03
+Iteration: 2, Error:  3.0748e-03
+Iteration: 3, Error:  8.9478e-04
+-- Solving for t = 0.21 --
+Iteration: 0, Error:  5.3292e-01
+Iteration: 1, Error:  6.8206e-03
+Iteration: 2, Error:  3.5925e-03
+Iteration: 3, Error:  1.1699e-03
+Iteration: 4, Error:  4.2392e-04
+-- Solving for t = 0.22 --
+Iteration: 0, Error:  5.3318e-01
+Iteration: 1, Error:  3.5255e-03
+Iteration: 2, Error:  1.7188e-03
+Iteration: 3, Error:  2.2314e-14
+-- Solving for t = 0.23 --
+Iteration: 0, Error:  5.3602e-01
+Iteration: 1, Error:  4.3690e-03
+Iteration: 2, Error:  2.0286e-03
+Iteration: 3, Error:  1.0719e-03
+Iteration: 4, Error:  1.8737e-05
+-- Solving for t = 0.24 --
+Iteration: 0, Error:  5.3635e-01
+Iteration: 1, Error:  5.0792e-03
+Iteration: 2, Error:  2.2540e-03
+Iteration: 3, Error:  1.4502e-03
+Iteration: 4, Error:  9.3886e-04
+-- Solving for t = 0.25 --
+Iteration: 0, Error:  5.3761e-01
+Iteration: 1, Error:  5.6404e-03
+Iteration: 2, Error:  2.4074e-03
+Iteration: 3, Error:  1.5945e-03
+Iteration: 4, Error:  9.7643e-04
+-- Solving for t = 0.26 --
+Iteration: 0, Error:  5.3848e-01
+Iteration: 1, Error:  1.5994e-04
+-- Solving for t = 0.27 --
+Iteration: 0, Error:  5.4233e-01
+Iteration: 1, Error:  3.8545e-04
+-- Solving for t = 0.28 --
+Iteration: 0, Error:  5.4375e-01
+Iteration: 1, Error:  7.9645e-04
+-- Solving for t = 0.29 --
+Iteration: 0, Error:  5.4544e-01
+Iteration: 1, Error:  1.4363e-03
+Iteration: 2, Error:  6.9920e-03
+Iteration: 3, Error:  2.4539e-03
+Iteration: 4, Error:  2.6569e-04
+-- Solving for t = 0.30 --
+Iteration: 0, Error:  5.4389e-01
+Iteration: 1, Error:  2.9518e-03
+Iteration: 2, Error:  6.6507e-03
+Iteration: 3, Error:  2.2194e-03
+Iteration: 4, Error:  1.7229e-12
+-- Solving for t = 0.31 --
+Iteration: 0, Error:  5.4609e-01
+Iteration: 1, Error:  5.6885e-03
+Iteration: 2, Error:  5.1982e-03
+Iteration: 3, Error:  1.6924e-03
+Iteration: 4, Error:  4.1005e-13
+-- Solving for t = 0.32 --
+Iteration: 0, Error:  5.4831e-01
+Iteration: 1, Error:  1.0179e-02
+Iteration: 2, Error:  5.7280e-05
+-- Solving for t = 0.33 --
+Iteration: 0, Error:  5.5200e-01
+Iteration: 1, Error:  1.5410e-02
+Iteration: 2, Error:  1.7866e-03
+Iteration: 3, Error:  8.5156e-14
+-- Solving for t = 0.34 --
+Iteration: 0, Error:  5.5460e-01
+Iteration: 1, Error:  1.9619e-02
+Iteration: 2, Error:  4.4856e-03
+Iteration: 3, Error:  1.9749e-11
+-- Solving for t = 0.35 --
+Iteration: 0, Error:  5.5986e-01
+Iteration: 1, Error:  2.2592e-02
+Iteration: 2, Error:  3.9246e-03
+Iteration: 3, Error:  7.6965e-13
+-- Solving for t = 0.36 --
+Iteration: 0, Error:  5.6379e-01
+Iteration: 1, Error:  2.4498e-02
+Iteration: 2, Error:  4.5915e-04
+-- Solving for t = 0.37 --
+Iteration: 0, Error:  5.6730e-01
+Iteration: 1, Error:  2.5028e-02
+Iteration: 2, Error:  1.9181e-04
+-- Solving for t = 0.38 --
+Iteration: 0, Error:  5.7574e-01
+Iteration: 1, Error:  2.0896e-02
+Iteration: 2, Error:  1.0753e-02
+Iteration: 3, Error:  2.8355e-03
+Iteration: 4, Error:  4.6525e-13
+-- Solving for t = 0.39 --
+Iteration: 0, Error:  5.8170e-01
+Iteration: 1, Error:  2.2834e-02
+Iteration: 2, Error:  1.1175e-02
+Iteration: 3, Error:  3.3246e-03
+Iteration: 4, Error:  1.6172e-03
+Iteration: 5, Error:  5.2246e-04
+-- Solving for t = 0.40 --
+Iteration: 0, Error:  5.8879e-01
+Iteration: 1, Error:  2.0124e-02
+Iteration: 2, Error:  1.9269e-02
+Iteration: 3, Error:  5.5253e-03
+Iteration: 4, Error:  2.6685e-03
+Iteration: 5, Error:  3.4655e-04
+-- Solving for t = 0.41 --
+Iteration: 0, Error:  5.9612e-01
+Iteration: 1, Error:  2.5878e-02
+Iteration: 2, Error:  1.7173e-02
+Iteration: 3, Error:  4.7638e-03
+Iteration: 4, Error:  2.3205e-03
+Iteration: 5, Error:  7.2269e-04
+-- Solving for t = 0.42 --
+Iteration: 0, Error:  6.0384e-01
+Iteration: 1, Error:  2.4417e-02
+Iteration: 2, Error:  2.4903e-02
+Iteration: 3, Error:  6.5337e-03
+Iteration: 4, Error:  3.2751e-03
+Iteration: 5, Error:  9.9701e-04
+-- Solving for t = 0.43 --
+Iteration: 0, Error:  6.1169e-01
+Iteration: 1, Error:  2.2007e-02
+Iteration: 2, Error:  3.2999e-02
+Iteration: 3, Error:  8.5336e-03
+Iteration: 4, Error:  4.2842e-03
+Iteration: 5, Error:  1.3113e-03
+Iteration: 6, Error:  3.0695e-15
+-- Solving for t = 0.44 --
+Iteration: 0, Error:  6.2092e-01
+Iteration: 1, Error:  3.0343e-02
+Iteration: 2, Error:  2.7612e-02
+Iteration: 3, Error:  7.9971e-03
+Iteration: 4, Error:  3.9526e-03
+Iteration: 5, Error:  4.9765e-04
+-- Solving for t = 0.45 --
+Iteration: 0, Error:  6.3054e-01
+Iteration: 1, Error:  3.3967e-02
+Iteration: 2, Error:  2.7345e-02
+Iteration: 3, Error:  8.2314e-03
+Iteration: 4, Error:  3.9605e-03
+Iteration: 5, Error:  2.0076e-12
+-- Solving for t = 0.46 --
+Iteration: 0, Error:  6.4178e-01
+Iteration: 1, Error:  4.0799e-02
+Iteration: 2, Error:  2.3730e-02
+Iteration: 3, Error:  3.3093e-03
+Iteration: 4, Error:  1.0921e-12
+-- Solving for t = 0.47 --
+Iteration: 0, Error:  6.5301e-01
+Iteration: 1, Error:  4.8529e-02
+Iteration: 2, Error:  7.7932e-04
+-- Solving for t = 0.48 --
+Iteration: 0, Error:  6.8512e-01
+Iteration: 1, Error:  5.9319e-02
+Iteration: 2, Error:  9.3690e-03
+Iteration: 3, Error:  1.8717e-13
+-- Solving for t = 0.49 --
+Iteration: 0, Error:  6.8084e-01
+Iteration: 1, Error:  6.8717e-02
+Iteration: 2, Error:  5.2957e-03
+Iteration: 3, Error:  8.6933e-15
+-- Solving for t = 0.50 --
+Iteration: 0, Error:  6.9475e-01
+Iteration: 1, Error:  7.9456e-02
+Iteration: 2, Error:  1.8427e-03
+Iteration: 3, Error:  3.3617e-15
+-- Solving for t = 0.51 --
+Iteration: 0, Error:  7.0737e-01
+Iteration: 1, Error:  8.7127e-02
+Iteration: 2, Error:  7.0366e-04
+-- Solving for t = 0.52 --
+Iteration: 0, Error:  7.2028e-01
+Iteration: 1, Error:  1.0038e-01
+Iteration: 2, Error:  9.2737e-03
+Iteration: 3, Error:  4.3130e-03
+Iteration: 4, Error:  6.2990e-13
+-- Solving for t = 0.53 --
+Iteration: 0, Error:  7.3374e-01
+Iteration: 1, Error:  1.0953e-01
+Iteration: 2, Error:  1.2513e-02
+Iteration: 3, Error:  6.1928e-03
+Iteration: 4, Error:  1.6924e-12
+-- Solving for t = 0.54 --
+Iteration: 0, Error:  7.4685e-01
+Iteration: 1, Error:  1.2084e-01
+Iteration: 2, Error:  1.8274e-02
+Iteration: 3, Error:  9.4404e-03
+Iteration: 4, Error:  3.0547e-03
+Iteration: 5, Error:  1.5481e-03
+Iteration: 6, Error:  5.2146e-04
+-- Solving for t = 0.55 --
+Iteration: 0, Error:  7.6225e-01
+Iteration: 1, Error:  1.3040e-01
+Iteration: 2, Error:  2.1125e-02
+Iteration: 3, Error:  1.1150e-02
+Iteration: 4, Error:  3.5346e-03
+Iteration: 5, Error:  8.7678e-13
+-- Solving for t = 0.56 --
+Iteration: 0, Error:  7.7758e-01
+Iteration: 1, Error:  1.3881e-01
+Iteration: 2, Error:  8.0739e-03
+Iteration: 3, Error:  1.4119e-03
+Iteration: 4, Error:  1.2495e-04
+-- Solving for t = 0.57 --
+Iteration: 0, Error:  7.8170e-01
+Iteration: 1, Error:  1.4301e-01
+Iteration: 2, Error:  1.0651e-02
+Iteration: 3, Error:  8.6457e-04
+-- Solving for t = 0.58 --
+Iteration: 0, Error:  8.0115e-01
+Iteration: 1, Error:  1.4888e-01
+Iteration: 2, Error:  8.5664e-03
+Iteration: 3, Error:  1.8367e-04
+-- Solving for t = 0.59 --
+Iteration: 0, Error:  8.1205e-01
+Iteration: 1, Error:  1.5662e-01
+Iteration: 2, Error:  8.7984e-03
+Iteration: 3, Error:  8.9144e-04
+-- Solving for t = 0.60 --
+Iteration: 0, Error:  8.2689e-01
+Iteration: 1, Error:  1.6593e-01
+Iteration: 2, Error:  8.0864e-03
+Iteration: 3, Error:  1.0236e-04
+-- Solving for t = 0.61 --
+Iteration: 0, Error:  8.3576e-01
+Iteration: 1, Error:  1.7212e-01
+Iteration: 2, Error:  7.1681e-03
+Iteration: 3, Error:  9.7891e-04
+-- Solving for t = 0.62 --
+Iteration: 0, Error:  8.4955e-01
+Iteration: 1, Error:  1.7780e-01
+Iteration: 2, Error:  6.1700e-03
+Iteration: 3, Error:  7.8189e-04
+-- Solving for t = 0.63 --
+Iteration: 0, Error:  8.6126e-01
+Iteration: 1, Error:  1.8368e-01
+Iteration: 2, Error:  6.7021e-03
+Iteration: 3, Error:  1.3613e-03
+Iteration: 4, Error:  2.9980e-16
+-- Solving for t = 0.64 --
+Iteration: 0, Error:  8.7538e-01
+Iteration: 1, Error:  1.9038e-01
+Iteration: 2, Error:  7.8438e-03
+Iteration: 3, Error:  1.8248e-03
+Iteration: 4, Error:  4.8798e-14
+-- Solving for t = 0.65 --
+Iteration: 0, Error:  8.8803e-01
+Iteration: 1, Error:  1.9854e-01
+Iteration: 2, Error:  6.3156e-03
+Iteration: 3, Error:  7.0837e-19
+-- Solving for t = 0.66 --
+Iteration: 0, Error:  8.9066e-01
+Iteration: 1, Error:  2.0493e-01
+Iteration: 2, Error:  4.7077e-03
+Iteration: 3, Error:  7.2843e-04
+-- Solving for t = 0.67 --
+Iteration: 0, Error:  8.9792e-01
+Iteration: 1, Error:  2.1035e-01
+Iteration: 2, Error:  4.8775e-03
+Iteration: 3, Error:  2.8178e-04
+-- Solving for t = 0.68 --
+Iteration: 0, Error:  9.0540e-01
+Iteration: 1, Error:  2.1470e-01
+Iteration: 2, Error:  3.3761e-03
+Iteration: 3, Error:  1.9087e-14
+-- Solving for t = 0.69 --
+Iteration: 0, Error:  9.1056e-01
+Iteration: 1, Error:  2.1848e-01
+Iteration: 2, Error:  3.8364e-03
+Iteration: 3, Error:  3.9798e-16
+-- Solving for t = 0.70 --
+Iteration: 0, Error:  9.1761e-01
+Iteration: 1, Error:  2.2185e-01
+Iteration: 2, Error:  4.3886e-03
+Iteration: 3, Error:  2.1532e-15
+-- Solving for t = 0.71 --
+Iteration: 0, Error:  9.2349e-01
+Iteration: 1, Error:  2.2352e-01
+Iteration: 2, Error:  2.6563e-03
+Iteration: 3, Error:  3.5405e-04
+-- Solving for t = 0.72 --
+Iteration: 0, Error:  9.2935e-01
+Iteration: 1, Error:  2.2157e-01
+Iteration: 2, Error:  1.0743e-03
+Iteration: 3, Error:  1.4924e-15
+-- Solving for t = 0.73 --
+Iteration: 0, Error:  9.3724e-01
+Iteration: 1, Error:  2.1610e-01
+Iteration: 2, Error:  4.9145e-04
+-- Solving for t = 0.74 --
+Iteration: 0, Error:  9.5036e-01
+Iteration: 1, Error:  2.1017e-01
+Iteration: 2, Error:  3.2307e-03
+Iteration: 3, Error:  6.9798e-15
+-- Solving for t = 0.75 --
+Iteration: 0, Error:  9.6649e-01
+Iteration: 1, Error:  2.0372e-01
+Iteration: 2, Error:  3.6144e-03
+Iteration: 3, Error:  8.5512e-05
+-- Solving for t = 0.76 --
+Iteration: 0, Error:  9.8064e-01
+Iteration: 1, Error:  1.9888e-01
+Iteration: 2, Error:  8.7907e-03
+Iteration: 3, Error:  1.5478e-03
+Iteration: 4, Error:  2.6699e-13
+-- Solving for t = 0.77 --
+Iteration: 0, Error:  9.9958e-01
+Iteration: 1, Error:  1.9678e-01
+Iteration: 2, Error:  1.0445e-02
+Iteration: 3, Error:  5.5867e-16
+-- Solving for t = 0.78 --
+Iteration: 0, Error:  1.0067e+00
+Iteration: 1, Error:  1.9422e-01
+Iteration: 2, Error:  4.3259e-03
+Iteration: 3, Error:  7.4646e-11
+-- Solving for t = 0.79 --
+Iteration: 0, Error:  1.0060e+00
+Iteration: 1, Error:  1.9339e-01
+Iteration: 2, Error:  3.8581e-03
+Iteration: 3, Error:  2.0489e-12
+-- Solving for t = 0.80 --
+Iteration: 0, Error:  1.0090e+00
+Iteration: 1, Error:  1.9393e-01
+Iteration: 2, Error:  1.0440e-04
+-- Solving for t = 0.81 --
+Iteration: 0, Error:  1.0066e+00
+Iteration: 1, Error:  1.9552e-01
+Iteration: 2, Error:  1.6889e-03
+Iteration: 3, Error:  2.2631e-12
+-- Solving for t = 0.82 --
+Iteration: 0, Error:  1.0070e+00
+Iteration: 1, Error:  1.9733e-01
+Iteration: 2, Error:  1.9113e-03
+Iteration: 3, Error:  3.4277e-10
+-- Solving for t = 0.83 --
+Iteration: 0, Error:  1.0054e+00
+Iteration: 1, Error:  1.9928e-01
+Iteration: 2, Error:  1.6586e-03
+Iteration: 3, Error:  1.1422e-11
+-- Solving for t = 0.84 --
+Iteration: 0, Error:  1.0026e+00
+Iteration: 1, Error:  2.0311e-01
+Iteration: 2, Error:  4.1253e-03
+Iteration: 3, Error:  1.8846e-13
+-- Solving for t = 0.85 --
+Iteration: 0, Error:  1.0013e+00
+Iteration: 1, Error:  2.0798e-01
+Iteration: 2, Error:  3.8428e-03
+Iteration: 3, Error:  3.5535e-04
+-- Solving for t = 0.86 --
+Iteration: 0, Error:  9.9562e-01
+Iteration: 1, Error:  2.1661e-01
+Iteration: 2, Error:  8.2733e-03
+Iteration: 3, Error:  1.6092e-19
+-- Solving for t = 0.87 --
+Iteration: 0, Error:  9.9244e-01
+Iteration: 1, Error:  2.2859e-01
+Iteration: 2, Error:  7.3428e-03
+Iteration: 3, Error:  1.5358e-03
+Iteration: 4, Error:  1.5691e-04
+-- Solving for t = 0.88 --
+Iteration: 0, Error:  9.8392e-01
+Iteration: 1, Error:  2.3958e-01
+Iteration: 2, Error:  8.2068e-03
+Iteration: 3, Error:  1.9774e-03
+Iteration: 4, Error:  1.2354e-04
+-- Solving for t = 0.89 --
+Iteration: 0, Error:  9.7808e-01
+Iteration: 1, Error:  2.5005e-01
+Iteration: 2, Error:  4.7458e-03
+Iteration: 3, Error:  9.1623e-04
+-- Solving for t = 0.90 --
+Iteration: 0, Error:  9.6917e-01
+Iteration: 1, Error:  2.5930e-01
+Iteration: 2, Error:  1.0864e-02
+Iteration: 3, Error:  1.5122e-03
+Iteration: 4, Error:  9.3013e-05
+-- Solving for t = 0.91 --
+Iteration: 0, Error:  9.7381e-01
+Iteration: 1, Error:  2.7047e-01
+Iteration: 2, Error:  1.0780e-02
+Iteration: 3, Error:  1.1396e-03
+Iteration: 4, Error:  4.7115e-14
+-- Solving for t = 0.92 --
+Iteration: 0, Error:  9.7508e-01
+Iteration: 1, Error:  2.7710e-01
+Iteration: 2, Error:  4.2684e-02
+Iteration: 3, Error:  5.0148e-13
+-- Solving for t = 0.93 --
+Iteration: 0, Error:  1.0256e+00
+Iteration: 1, Error:  2.8729e-01
+Iteration: 2, Error:  3.5561e-02
+Iteration: 3, Error:  2.0112e-13
+-- Solving for t = 0.94 --
+Iteration: 0, Error:  1.0322e+00
+Iteration: 1, Error:  2.9565e-01
+Iteration: 2, Error:  5.1148e-13
+-- Solving for t = 0.95 --
+Iteration: 0, Error:  1.0106e+00
+Iteration: 1, Error:  3.0657e-01
+Iteration: 2, Error:  3.7251e-15
+-- Solving for t = 0.96 --
+Iteration: 0, Error:  1.0443e+00
+Iteration: 1, Error:  3.2916e-01
+Iteration: 2, Error:  1.6143e-13
+-- Solving for t = 0.97 --
+Iteration: 0, Error:  1.0878e+00
+Iteration: 1, Error:  4.0383e-01
+Iteration: 2, Error:  3.5483e-02
+Iteration: 3, Error:  8.7169e-14
+-- Solving for t = 0.98 --
+Iteration: 0, Error:  1.1751e+00
+Iteration: 1, Error:  4.9727e-01
+Iteration: 2, Error:  2.0453e-03
+Iteration: 3, Error:  3.2508e-14
+-- Solving for t = 0.99 --
+Iteration: 0, Error:  1.1991e+00
+Iteration: 1, Error:  4.7910e-01
+Iteration: 2, Error:  1.3466e-01
+Iteration: 3, Error:  2.6767e-14
+-- Solving for t = 1.00 --
+Iteration: 0, Error:  1.3652e+00
+Iteration: 1, Error:  4.2397e-01
+Info    : Reading 'CTFM.msh'...
+Info    : 42 entities
+Info    : 119535 nodes
+Info    : [  0%] Reading nodes                                                                                Info    : [ 10%] Reading nodes                                                                                Info    : [ 20%] Reading nodes                                                                                Info    : [ 30%] Reading nodes                                                                                Info    : [ 40%] Reading nodes                                                                                Info    : [ 50%] Reading nodes                                                                                Info    : [ 60%] Reading nodes                                                                                Info    : [ 70%] Reading nodes                                                                                Info    : [ 80%] Reading nodes                                                                                Info    : [ 90%] Reading nodes                                                                                                                                                                Info    : 237185 elements
+Info    : [  0%] Reading elements                                                                                Info    : [ 10%] Reading elements                                                                                Info    : [ 20%] Reading elements                                                                                Info    : [ 30%] Reading elements                                                                                Info    : [ 40%] Reading elements                                                                                Info    : [ 50%] Reading elements                                                                                Info    : [ 60%] Reading elements                                                                                Info    : [ 70%] Reading elements                                                                                Info    : [ 80%] Reading elements                                                                                Info    : [ 90%] Reading elements                                                                                                                                                                Info    : Done reading 'CTFM.msh'
