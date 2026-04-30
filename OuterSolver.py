@@ -5,7 +5,7 @@ from dolfinx import io
 import csv
 
 class OuterSolver:
-    def __init__(self, fp, example, method, loads):
+    def __init__(self, fp, example, method, loads, ksp_type="gmres", rtol=1.0e-3, max_it=100, restarts=100, monitor='off'):
         self.fp = fp
         self.example = example
         self.method = method
@@ -14,7 +14,7 @@ class OuterSolver:
         self.setIdentifier()
         self.setUp()
         if self.method!='AltMin':
-            self.SNESKSP = KSPsetUp(self.fp, self.J, type="gmres", rtol=1.0e-3, max_it=100, restarts=100, monitor='off')  # Set up the KSP solver
+            self.SNESKSP = KSPsetUp(self.fp, self.J, type=ksp_type, rtol=rtol, max_it=max_it, restarts=restarts, monitor=monitor)  # Set up the KSP solver
 
     def setIdentifier(self):
         self.identifier=f"{self.example}_{self.method}"
