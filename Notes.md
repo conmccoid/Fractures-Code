@@ -142,9 +142,10 @@ To warp by displacement but colour by damage:
 ### ParaView: remote work on bbserv
 
 ```
-ssh -L 8080:localhost:1785 mccoidc@bbserv.mcmaster.ca /1/HPC/paraview/5.11.1/bin/pvserver --sp=1785
+ssh -L 8080:localhost:1785 mccoidc@bbserv.mcmaster.ca /2/sw/HPC/paraview/ParaView-6.1.0-MPI-Linux-Python3.12-x86_64/bin/pvserver --sp=1785
 ```
 May need to replace the port number 1785 with some other number between 1000 and 2000.
+Make sure ParaView is updated client-side to the same version as server-side (6.1.0).
 
 #### First time
 
@@ -154,7 +155,6 @@ May need to replace the port number 1785 with some other number between 1000 and
    2. Server Type: Client / Server
    3. Host: localhost
    4. Port: 8080
-3. 
 
 ## Coding up MSPEN
 
