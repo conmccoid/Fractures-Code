@@ -4,20 +4,20 @@ from FPAltMin import FPAltMin
 from OuterSolver import OuterSolver
 
 class FP(FPAltMin):
-    def __init__(self):
+    def __init__(self, ell=0.5):
         '''Initialize the problem by defining the domain, variational formulation, and boundary conditions.
         - p: problem parameters
         '''
         self.u, self.v, self.dom, cell_tags, facet_tags=domain()
-        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, self.p, self.total_energy = VariationalFormulation(self.u, self.v, self.dom, cell_tags, facet_tags)
+        E_u, E_v, E_uu, E_vv, E_uv, E_vu, self.elastic_energy, self.dissipated_energy, self.p, self.total_energy = VariationalFormulation(self.u, self.v, self.dom, cell_tags, facet_tags, ell)
         bcs_u, bcs_v, self.U, self.bdry_cells = BCs(self.u, self.v, self.dom, cell_tags, facet_tags, self.p)
         self.setUp(E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v)
 
     def updateBCs(self, t):
         self.U.interpolate(lambda x: SurfBC(x,t,self.p),self.bdry_cells)
 
-def main(method='AltMin', maxit=1000, tol=1e-4, WriteSwitch=False, PlotSwitch=False):
-    fp = FP()
+def main(method='AltMin', maxit=1000, tol=1e-4, WriteSwitch=False, PlotSwitch=False, ell=0.5):
+    fp = FP(ell=ell)
     example = 'Surf'
     loads = np.linspace(0.5, 6, 18)  # Load values
     os = OuterSolver(fp, example, method, loads)

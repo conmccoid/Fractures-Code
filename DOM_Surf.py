@@ -80,13 +80,14 @@ def BCs(u,v,domain, cell_tags, facet_tags, p):
     bcs_v=[crack_bcs, bc_v]
     return bcs_u, bcs_v, U, bdry_cells
 
-def VariationalFormulation(u,v,domain,cell_tags,facet_tags):
+def VariationalFormulation(u,v,domain,cell_tags,facet_tags, ell):
     V_u=u.function_space
     V_v=v.function_space
     ndim=domain.geometry.dim
 
     # Variational formulation
     p=Parameters(domain)
+    p.ell.value=ell
     f =  fem.Constant(domain, PETSc.ScalarType((0.,0.)))
     dx = ufl.Measure("dx",domain=domain, subdomain_data=cell_tags)
     ds = ufl.Measure("ds",domain=domain, subdomain_data=facet_tags)
