@@ -91,10 +91,10 @@ class OuterSolver:
                         self.x.axpy(1.0, self.p) # update solution
                     elif self.method=='Parallelogram':
                         v, angle, alpha, beta = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
-                        if self.fp.rank==0:
-                            with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
-                                writer=csv.writer(csv.file,delimiter=',')
-                                writer.writerow([iteration,v.norm(),angle,alpha,beta])
+                        # if self.fp.rank==0: # nb: this section is bugged and stalls out for certain load steps
+                        #     with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
+                        #         writer=csv.writer(csv.file,delimiter=',')
+                        #         writer.writerow([iteration,v.norm(),angle,alpha,beta])
                         self.x.axpy(1.0, v) # update solution
                         v.destroy() # clean up parallelogram step vector
                     boxConstraints(self.fp,self.x) # apply box constraints to solution for backtracking methods
