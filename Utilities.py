@@ -222,8 +222,10 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
         angle=180
 
     r=4*a*c-b**2
-    alpha = (-2*c*d + b*e)/r # step in q (AltMin)
-    beta = (-2*a*e + b*d)/r # step in p (MSPIN)
+    alpha_opt = (-2*c*d + b*e)/r # step in q (AltMin)
+    beta_opt = (-2*a*e + b*d)/r # step in p (MSPIN)
+    alpha = alpha_opt
+    beta = beta_opt
     E_list=[Eq, Ep, Epq]
     v_list=[q.copy(), p.copy(), qp]
     beta_list=[0, 1, 1]
@@ -329,7 +331,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     xp.destroy()
     xpq.destroy()
 
-    return result, angle, alpha, beta
+    return result, angle, alpha, beta, alpha_opt, beta_opt
 
 def plotEnergyLandscape(fp, x, p):
     """
@@ -452,27 +454,20 @@ def plotConvCrit(ConvCrit):
     # check how angle of MSPIN and AltMin change from iteration to iteration
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,0], 'o-', label='Step size')
     plt.xlabel('Iteration')
-    plt.ylabel('Convergence criteria')
+    plt.ylabel('Step size')
     plt.ylim([1e-4, 1e2])
-    plt.legend()
-    plt.show()
-    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,1], 's-', label='Volume')
-    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,2], 'D-', label='Flatness')
-    plt.xlabel('Iteration')
-    plt.ylabel('Convergence criteria')
-    # plt.ylim([1e-10, 1e2])
-    plt.legend()
     plt.show()
     plt.plot(range(len(ConvCrit)), ConvCrit[:,3]*180/np.pi, '^-', label='Angle')
     plt.xlabel('Iteration')
-    plt.ylabel('Convergence criteria')
-    plt.legend()
+    plt.ylabel('Angle between directions')
     plt.show()
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,4], 'v-', label='Alpha')
     plt.semilogy(range(len(ConvCrit)), ConvCrit[:,5], 'x-', label='Beta')
-    plt.ylim([1e-4, 1.5])
+    # plt.semilogy(range(len(ConvCrit)), ConvCrit[:,6], 's-', label='Alpha opt')
+    # plt.semilogy(range(len(ConvCrit)), ConvCrit[:,7], 'd-', label='Beta opt')
+    # plt.ylim([1e-4, 1.5])
     plt.xlabel('Iteration')
-    plt.ylabel('Convergence criteria')
+    plt.ylabel('Step percentages')
     plt.legend()
     plt.show()
 
