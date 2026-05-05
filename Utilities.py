@@ -340,7 +340,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False, restrict=False):
     xp.destroy()
     xpq.destroy()
 
-    return result, angle, alpha, beta, alpha_opt, beta_opt, r
+    return result, angle, alpha, beta, alpha_opt, beta_opt, r, a
 
 def plotEnergyLandscape(fp, x, p):
     """
@@ -481,9 +481,11 @@ def plotConvCrit(ConvCrit):
     plt.ylabel('Step percentages')
     plt.legend()
     plt.show()
-    plt.semilogy(ConvCrit[:,0], ConvCrit[:,7], '.', label='Determinant')
+    plt.plot(ConvCrit[:,0], ConvCrit[:,7], '.', label='Determinant')
+    plt.plot(ConvCrit[:,0], ConvCrit[:,8], 'd', label='Curvature in AltMin direction')
     plt.xlabel('Iteration')
     plt.ylabel('Determinant of quadratic form')
+    plt.legend()
     plt.show()
 
 def plotStepByStep(fp, x, res):

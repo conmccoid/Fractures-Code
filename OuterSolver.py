@@ -40,7 +40,7 @@ class OuterSolver:
                 if self.method=='Parallelogram':
                     with open(f"output/ConvCrit_{self.identifier}.csv",'w') as csv.file:
                         writer=csv.writer(csv.file,delimiter=',')
-                        writer.writerow(['Iteration','Step size','Angle','Alpha','Beta','Alpha_opt','Beta_opt','Determinant'])
+                        writer.writerow(['Iteration','Step size','Angle','Alpha','Beta','Alpha_opt','Beta_opt','Determinant','Curvature in AltMin direction'])
 
         # main iteration
         for i_t, t in enumerate(self.loads):
@@ -90,12 +90,12 @@ class OuterSolver:
                         CubicBacktracking(self.fp, self.x, self.p, self.res)
                         self.x.axpy(1.0, self.p) # update solution
                     elif self.method=='Parallelogram':
-                        v, angle, alpha, beta, alpha_opt, beta_opt, det = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
+                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
                         vnorm = v.norm()
                         if self.fp.rank==0: # nb: this section is bugged and stalls out for certain load steps
                             with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
                                 writer=csv.writer(csv.file,delimiter=',')
-                                writer.writerow([iteration,vnorm,angle,alpha,beta,alpha_opt,beta_opt,det])
+                                writer.writerow([iteration,vnorm,angle,alpha,beta,alpha_opt,beta_opt,det,curv_AltMin])
                         self.x.axpy(1.0, v) # update solution
                         v.destroy() # clean up parallelogram step vector
                     boxConstraints(self.fp,self.x) # apply box constraints to solution for backtracking methods
