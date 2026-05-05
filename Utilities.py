@@ -179,7 +179,7 @@ def CubicBacktracking(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     p.scale(alpha)
     xcopy.destroy()
 
-def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
+def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False, restrict=False):
     """
     Find the minimum of a quadratic 2D polynomial that interpolates the residual in a parallelogram
 
@@ -226,99 +226,108 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     beta_opt = (-2*a*e + b*d)/r # step in p (MSPIN)
     alpha = alpha_opt
     beta = beta_opt
-    E_list=[Eq, Ep, Epq]
-    v_list=[q.copy(), p.copy(), qp]
-    beta_list=[0, 1, 1]
-    alpha_list=[1, 0, 1]
-    step_list=["AltMin", "Newton", "Both"]
-    if (alpha>0) & (alpha<10) & (beta>-1) & (beta<1):
-        v=q.copy()
-        v.scale(alpha)
-        v.axpy(beta,p)
-        xv=x.copy()
-        xv.axpy(1,v)
-        v_list.append(v)
-        alpha_list.append(alpha)
-        beta_list.append(beta)
-        E_list.append(fp.updateEnergies(xv)[2])
-        step_list.append("Parallelogram interior")
-        xv.destroy()
-    # else:
-        # print("Minimum outside parallelogram, finding minimum on boundary")
-    # beta=0 minimum
-    if a==0:
-        alpha=1
-    else:
-        alpha= -d/(2*a)
-    if (alpha>0) & (alpha<2):
-        beta_list.append(0)
-        v=q.copy()
-        v.scale(alpha)
-        xv=x.copy()
-        xv.axpy(1,v)
-        E_list.append(fp.updateEnergies(xv)[2])
-        v_list.append(v)
-        alpha_list.append(alpha)
-        step_list.append("AltMin linesearch")
-        xv.destroy()
-    
-    # alpha=0
-    if c==0:
-        beta=1
-    else:
-        beta= -e/(2*c)
-    if (beta>-1) & (beta<1):
-        alpha_list.append(0)
-        v=p.copy()
-        v.scale(beta)
-        xv=x.copy()
-        xv.axpy(1,v)
-        E_list.append(fp.updateEnergies(xv)[2])
-        v_list.append(v)
-        beta_list.append(beta)
-        step_list.append("Newton linesearch")
-        xv.destroy()
 
-    # beta=1
-    if a==0:
-        alpha=1
-    else:
-        alpha= (-d - b)/(2*a)
-    if (alpha>0) & (alpha<2):
-        beta_list.append(1)
-        v=q.copy()
-        v.scale(alpha)
-        v.axpy(1,p)
-        xv=x.copy()
-        xv.axpy(1,v)
-        E_list.append(fp.updateEnergies(xv)[2])
-        v_list.append(v)
-        alpha_list.append(alpha)
-        step_list.append("Newton + AltMin linesearch")
-        xv.destroy()
-    
-    # alpha=1
-    if c==0:
-        beta=1
-    else:
-        beta= (-e - b)/(2*c)
-    if (beta>-1) & (beta<1):
-        alpha_list.append(1)
-        v=q.copy()
-        v.axpy(beta,p)
-        xv=x.copy()
-        xv.axpy(1,v)
-        E_list.append(fp.updateEnergies(xv)[2])
-        v_list.append(v)
-        beta_list.append(beta)
-        step_list.append("AltMin + Newton linesearch")
-        xv.destroy()
+    if restrict==True: # restrict to parallelogram formed by 0, q, p, q+p
+        E_list=[Eq, Ep, Epq]
+        v_list=[q.copy(), p.copy(), qp]
+        beta_list=[0, 1, 1]
+        alpha_list=[1, 0, 1]
+        step_list=["AltMin", "Newton", "Both"]
+        if (alpha>0) & (alpha<10) & (beta>-1) & (beta<1):
+            v=q.copy()
+            v.scale(alpha)
+            v.axpy(beta,p)
+            xv=x.copy()
+            xv.axpy(1,v)
+            v_list.append(v)
+            alpha_list.append(alpha)
+            beta_list.append(beta)
+            E_list.append(fp.updateEnergies(xv)[2])
+            step_list.append("Parallelogram interior")
+            xv.destroy()
+        # else:
+            # print("Minimum outside parallelogram, finding minimum on boundary")
+        # beta=0 minimum
+        if a==0:
+            alpha=1
+        else:
+            alpha= -d/(2*a)
+        if (alpha>0) & (alpha<2):
+            beta_list.append(0)
+            v=q.copy()
+            v.scale(alpha)
+            xv=x.copy()
+            xv.axpy(1,v)
+            E_list.append(fp.updateEnergies(xv)[2])
+            v_list.append(v)
+            alpha_list.append(alpha)
+            step_list.append("AltMin linesearch")
+            xv.destroy()
+        
+        # alpha=0
+        if c==0:
+            beta=1
+        else:
+            beta= -e/(2*c)
+        if (beta>-1) & (beta<1):
+            alpha_list.append(0)
+            v=p.copy()
+            v.scale(beta)
+            xv=x.copy()
+            xv.axpy(1,v)
+            E_list.append(fp.updateEnergies(xv)[2])
+            v_list.append(v)
+            beta_list.append(beta)
+            step_list.append("Newton linesearch")
+            xv.destroy()
 
-    min_index=np.argmin(E_list)
-    result=v_list[min_index].copy()
-    alpha=alpha_list[min_index]
-    beta=beta_list[min_index]
-    # print(f"Chosen step: {step_list[min_index]}, Energy: {E_list[min_index]}")
+        # beta=1
+        if a==0:
+            alpha=1
+        else:
+            alpha= (-d - b)/(2*a)
+        if (alpha>0) & (alpha<2):
+            beta_list.append(1)
+            v=q.copy()
+            v.scale(alpha)
+            v.axpy(1,p)
+            xv=x.copy()
+            xv.axpy(1,v)
+            E_list.append(fp.updateEnergies(xv)[2])
+            v_list.append(v)
+            alpha_list.append(alpha)
+            step_list.append("Newton + AltMin linesearch")
+            xv.destroy()
+        
+        # alpha=1
+        if c==0:
+            beta=1
+        else:
+            beta= (-e - b)/(2*c)
+        if (beta>-1) & (beta<1):
+            alpha_list.append(1)
+            v=q.copy()
+            v.axpy(beta,p)
+            xv=x.copy()
+            xv.axpy(1,v)
+            E_list.append(fp.updateEnergies(xv)[2])
+            v_list.append(v)
+            beta_list.append(beta)
+            step_list.append("AltMin + Newton linesearch")
+            xv.destroy()
+
+        min_index=np.argmin(E_list)
+        result=v_list[min_index].copy()
+        alpha=alpha_list[min_index]
+        beta=beta_list[min_index]
+        # print(f"Chosen step: {step_list[min_index]}, Energy: {E_list[min_index]}")
+    
+    else:
+        result=q.copy()
+        result.scale(alpha)
+        result.axpy(beta,p)
+        v_list=[]
+
     if PlotSwitch:
         print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
         plotEnergyLandscape2D(fp,x,q,p,[beta, alpha])
@@ -331,7 +340,7 @@ def ParallelogramBacktracking(fp, x, q, p, PlotSwitch=False):
     xp.destroy()
     xpq.destroy()
 
-    return result, angle, alpha, beta, alpha_opt, beta_opt
+    return result, angle, alpha, beta, alpha_opt, beta_opt, r
 
 def plotEnergyLandscape(fp, x, p):
     """
@@ -452,23 +461,29 @@ def plotNX(example,id_list,en_list):
 
 def plotConvCrit(ConvCrit):
     # check how angle of MSPIN and AltMin change from iteration to iteration
-    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,0], 'o-', label='Step size')
+    plt.semilogy(ConvCrit[:,0], ConvCrit[:,1], '.--', label='Step size')
     plt.xlabel('Iteration')
     plt.ylabel('Step size')
-    plt.ylim([1e-4, 1e2])
+    # plt.ylim([1e-4, 1e2])
     plt.show()
-    plt.plot(range(len(ConvCrit)), ConvCrit[:,3]*180/np.pi, '^-', label='Angle')
+    plt.plot(ConvCrit[:,0], ConvCrit[:,2]*180/np.pi, '.', label='Angle')
     plt.xlabel('Iteration')
     plt.ylabel('Angle between directions')
     plt.show()
-    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,4], 'v-', label='Alpha')
-    plt.semilogy(range(len(ConvCrit)), ConvCrit[:,5], 'x-', label='Beta')
-    # plt.semilogy(range(len(ConvCrit)), ConvCrit[:,6], 's-', label='Alpha opt')
-    # plt.semilogy(range(len(ConvCrit)), ConvCrit[:,7], 'd-', label='Beta opt')
+    plt.semilogy(ConvCrit[:,0], ConvCrit[:,3], '.', label='Alpha')
+    plt.semilogy(ConvCrit[:,0], ConvCrit[:,4], 'v', label='+Beta')
+    plt.semilogy(ConvCrit[:,0], -ConvCrit[:,4], '^', label='-Beta')
+    plt.semilogy(ConvCrit[:,0], ConvCrit[:,5], 'o', label='Alpha opt')
+    plt.semilogy(ConvCrit[:,0], ConvCrit[:,6], 'd', label='+Beta opt')
+    plt.semilogy(ConvCrit[:,0], -ConvCrit[:,6], 's', label='-Beta opt')
     # plt.ylim([1e-4, 1.5])
     plt.xlabel('Iteration')
     plt.ylabel('Step percentages')
     plt.legend()
+    plt.show()
+    plt.semilogy(ConvCrit[:,0], ConvCrit[:,7], '.', label='Determinant')
+    plt.xlabel('Iteration')
+    plt.ylabel('Determinant of quadratic form')
     plt.show()
 
 def plotStepByStep(fp, x, res):
