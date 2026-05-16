@@ -106,7 +106,7 @@ class OuterSolver:
                         self.x.axpy(1.0, v) # update solution
                         v.destroy() # clean up parallelogram step vector
                     elif self.method=='pm3':
-                        v = pm3(self.fp, self.x, self.res, self.p, PlotSwitch=True, filename=f"test/landscape_{i_t}_{iteration}.png")
+                        v = pm3(self.fp, self.x, self.res, self.p, filename=f"test/landscape_{i_t}_{iteration}.png")
                         self.x.axpy(1.0, v) # update solution
                         v.destroy() # clean up step vector
                     boxConstraints(self.fp,self.x) # apply box constraints to solution for backtracking methods
