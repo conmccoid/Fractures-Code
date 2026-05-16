@@ -1,6 +1,6 @@
 from EX_Test import main as EX
 import sys
-from Utilities import plotNX
+from Plotters import plotNX
 
 def main(linesearch_list=['fp','ls','2step'],WriteSwitch=False):
 

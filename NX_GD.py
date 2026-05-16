@@ -1,5 +1,5 @@
 from EX_GD import main as EX
-from Utilities import plotNX
+from Plotters import plotNX
 from mpi4py import MPI
 import argparse
 import sys

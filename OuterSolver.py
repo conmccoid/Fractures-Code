@@ -1,6 +1,8 @@
 import numpy as np
 from petsc4py import PETSc
-from Utilities import KSPsetUp, DBTrick, boxConstraints, CubicBacktracking, ParallelogramBacktracking, plotEnergyLandscape
+from Utilities import KSPsetUp, DBTrick, boxConstraints
+from GlobalizationTechniques import cbt, pm1, pm3
+from Plotters import plotEnergyLandscape, plotEnergyLandscape2D
 from dolfinx import io
 import csv
 
@@ -73,7 +75,7 @@ class OuterSolver:
                     if PlotSwitch:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary
                         print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
-                    CubicBacktracking(self.fp, self.x, self.res, None)
+                    cbt(self.fp, self.x, self.res, None)
                     self.x += self.res # update solution
                 else:
                     # Solve the linear system
@@ -87,17 +89,26 @@ class OuterSolver:
                     if self.method=='CubicBacktracking': # Run cubic backtracking in situ
                         if PlotSwitch:
                             plotEnergyLandscape(self.fp,self.x,self.p)
-                        CubicBacktracking(self.fp, self.x, self.p, self.res)
+                        cbt(self.fp, self.x, self.p, self.res)
                         self.x.axpy(1.0, self.p) # update solution
                     elif self.method=='Parallelogram':
-                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = ParallelogramBacktracking(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
+                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm1(self.fp, self.x, self.res, self.p, PlotSwitch=PlotSwitch)
+                        if PlotSwitch:
+                            print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
+                            plotEnergyLandscape2D(self.fp,self.x,self.res,self.p,[beta, alpha])
+
                         vnorm = v.norm()
                         if self.fp.rank==0: # nb: this section is bugged and stalls out for certain load steps
                             with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
                                 writer=csv.writer(csv.file,delimiter=',')
                                 writer.writerow([iteration,vnorm,angle,alpha,beta,alpha_opt,beta_opt,det,curv_AltMin])
+
                         self.x.axpy(1.0, v) # update solution
                         v.destroy() # clean up parallelogram step vector
+                    elif self.method=='pm3':
+                        v = pm3(self.fp, self.x, self.res, self.p, PlotSwitch=True, filename=f"test/landscape_{i_t}_{iteration}.png")
+                        self.x.axpy(1.0, v) # update solution
+                        v.destroy() # clean up step vector
                     boxConstraints(self.fp,self.x) # apply box constraints to solution for backtracking methods
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()
