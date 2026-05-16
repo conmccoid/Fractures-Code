@@ -201,17 +201,20 @@ def pm3(fp, x, q, p, filename=None):
             result.axpy(beta,p)
         else:
             # plotEnergyLandscape2D(fp,x,q,p,[beta,alpha],filename=filename)
-            while Eq < E0:
-                E0=Eq
-                q.scale(2)
-                xq=x.copy()
-                xq.axpy(1,q)
-                Eq=fp.updateEnergies(xq)[2]
-            q.scale(0.5)
+            # while Eq < E0:
+            #     E0=Eq
+            #     q.scale(2)
+            #     xq=x.copy()
+            #     xq.axpy(1,q)
+            #     Eq=fp.updateEnergies(xq)[2]
+            # q.scale(0.5)
+            # result=q.copy()
             result=q.copy()
+            result.scale(alpha)
+            result.axpy(beta,p)
     else:
-        alpha = -b
-        beta = (a-c) - np.sqrt((a-c)**2 + b**2)
+        # alpha = -b
+        # beta = (a-c) - np.sqrt((a-c)**2 + b**2)
         plotEnergyLandscape2D(fp,x,q,p,[beta, alpha],filename=filename)
         result=q.copy()
         result.scale(alpha)
