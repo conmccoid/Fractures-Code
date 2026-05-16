@@ -200,6 +200,7 @@ def pm3(fp, x, q, p, filename=None):
             result.scale(alpha)
             result.axpy(beta,p)
         else:
+            plotEnergyLandscape2D(fp,x,q,p,[beta,alpha],filename=filename)
             while Eq < E0:
                 E0=Eq
                 q.scale(2)
