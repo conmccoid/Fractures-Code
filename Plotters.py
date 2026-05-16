@@ -66,6 +66,7 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None,filename=None):
     plt.show()
     if filename is not None:
         fig.savefig(filename)
+        fig.clf()
 
 def plotNX(example,id_list,en_list):
     marker= ['o', 's', 'D', '^', 'v']
