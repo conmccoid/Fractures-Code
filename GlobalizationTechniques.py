@@ -215,7 +215,7 @@ def pm3(fp, x, q, p, filename=None):
     else:
         # alpha = -b
         # beta = (a-c) - np.sqrt((a-c)**2 + b**2)
-        plotEnergyLandscape2D(fp,x,q,p,[beta, alpha],filename=filename)
+        plotEnergyLandscape2D(fp,x,q,p,[beta, alpha],filename=filename, coeffs=[a,b,c,d,e,f])
         result=q.copy()
         result.scale(alpha)
         result.axpy(beta,p)
