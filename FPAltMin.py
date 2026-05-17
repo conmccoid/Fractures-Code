@@ -43,11 +43,17 @@ class FPAltMin:
 
         self.Eu = fem.form(E_u)
         self.Ev = fem.form(E_v)
-        ucopy=self.u.x.petsc_vec.duplicate()
-        vcopy=self.v.x.petsc_vec.duplicate()
-        self.gradF = PETSc.Vec().createNest([ucopy, vcopy], None, self.comm) # I think there's a better way to initialize this using Eu and Ev
-        ucopy.destroy()
-        vcopy.destroy()
+        Eu=self.u.x.petsc_vec.duplicate()
+        Ev=self.v.x.petsc_vec.duplicate()
+        with Eu.localForm() as f_local:
+            f_local.set(0.0)
+        with Ev.localForm() as f_local:
+            f_local.set(0.0)
+        petsc.assemble_vector(Eu, self.Eu)
+        petsc.assemble_vector(Ev, self.Ev)
+        petsc.set_bc(Eu, bcs_u)
+        petsc.set_bc(Ev, bcs_v)
+        self.gradF = PETSc.Vec().createNest([Eu, Ev], None, self.comm) # I think there's a better way to initialize this using Eu and Ev
 
         self.elastic_energy = fem.form(self.elastic_energy)
         self.dissipated_energy = fem.form(self.dissipated_energy)
@@ -107,12 +113,8 @@ class FPAltMin:
     def updateGradF(self,x):
         self.updateUV(x)
         Eu, Ev = self.gradF.getNestSubVecs()
-        with Eu.localForm() as f_local:
-            f_local.set(0.0)
-        with Ev.localForm() as f_local:
-            f_local.set(0.0)
-        petsc.assemble_vector(Eu, self.Eu)
-        petsc.assemble_vector(Ev, self.Ev)
+        Eu.assemble()
+        Ev.assemble()
 
     def Fn(self, snes, x, F):
         self.updateUV(x)
