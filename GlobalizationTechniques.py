@@ -1,6 +1,6 @@
 from petsc4py import PETSc
 import numpy as np
-from Plotters import plotEnergyLandscape2D
+from Plotters import plotEnergyLandscape2D, plotInterpolantAcc
 
 def cbt(fp,x,p,res, tol1=1e-16, tol2=1e-4):
     """
@@ -180,8 +180,8 @@ def pm2(fp, x, q, p, filename=None):
     result.scale(alpha)
     result.axpy(beta,p)
     qp.destroy()
-    if filename is not None:
-        plotEnergyLandscape2D(fp,x,q,p,[beta, alpha], filename=filename, coeffs=[a,b,c,d,e,f])
+    if filename is not None and r<=0:
+        plotInterpolantAcc(fp,x,q,p,[beta, alpha], filename=filename, coeffs=[a,b,c,d,e,f])
     return result, angle, alpha, beta, alpha, beta, r, a
 
 def pm3(fp, x, q, p, filename=None):

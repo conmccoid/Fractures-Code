@@ -25,7 +25,7 @@ def plotEnergyLandscape(fp, x, p):
     plt.ylabel('Total Energy')
     plt.show()
 
-def plotEnergyLandscape2D(fp,x,res,p,target=None,filename=None, coeffs=None):
+def plotEnergyLandscape2D(fp,x,res,p,target=None,filename=None):
     """
     Plot the energy landscape in a parallelogram bounded by the AltMin and Newton steps (both + and -)
 
@@ -41,8 +41,6 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None,filename=None, coeffs=None):
     alpha=np.linspace(0,2,nn)
     beta=np.linspace(-1,1,2*nn-1)
     energies=np.zeros([nn,2*nn-1])
-    if coeffs is not None:
-        poly=energies.copy()
     for i in range(0,nn):
         for j in range(0,2*nn-1):
             xcopy=x.copy()
@@ -50,8 +48,6 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None,filename=None, coeffs=None):
             xcopy.axpy(beta[j],p)
             energies[i][j]=fp.updateEnergies(xcopy)[2]
             xcopy.destroy()
-            if coeffs is not None:
-                poly[i][j]=coeffs[0]*alpha[i]**2 + coeffs[1]*alpha[i]*beta[j] + coeffs[2]*beta[j]**2 + coeffs[3]*alpha[i] + coeffs[4]*beta[j] + coeffs[5]
     fig, ax = plt.subplots(1,2)
     cf=ax[0].contourf(beta, alpha, energies - E0)
     if target is not None:
@@ -60,22 +56,13 @@ def plotEnergyLandscape2D(fp,x,res,p,target=None,filename=None, coeffs=None):
     ax[0].set_xlabel('MSPIN')
     ax[0].set_title('Energy Landscape')
     fig.colorbar(cf, label='Total Energy')
-    if coeffs is None:
-        ax[1].quiver(0,0,res.norm()*np.cos(angle),res.norm()*np.sin(angle), angles='xy', scale_units='xy', scale=1, color='b', label='AltMin step')
-        ax[1].quiver(0,0,p.norm(),0, angles='xy', scale_units='xy', scale=1, color='r', label='Newton step')
-        ax[1].set_ylabel('AltMin')
-        ax[1].set_xlabel('MSPIN')
-        ax[1].set_title('Search Directions')
-        ax[1].set_xlim(-1.5*p.norm(), 1.5*p.norm())
-        ax[1].set_ylim(-1.5*res.norm(), 1.5*res.norm())
-    else:
-        cf1=ax[1].contourf(beta,alpha,poly-E0)
-        if target is not None:
-            ax[1].plot(target[0],target[1],'rx',markersize=10,label='Chosen step')
-        ax[1].set_ylabel('AltMin')
-        ax[1].set_xlabel('MSPIN')
-        ax[1].set_title('Interpolant landscape')
-        fig.colorbar(cf1, label='Total energy')
+    ax[1].quiver(0,0,res.norm()*np.cos(angle),res.norm()*np.sin(angle), angles='xy', scale_units='xy', scale=1, color='b', label='AltMin step')
+    ax[1].quiver(0,0,p.norm(),0, angles='xy', scale_units='xy', scale=1, color='r', label='Newton step')
+    ax[1].set_ylabel('AltMin')
+    ax[1].set_xlabel('MSPIN')
+    ax[1].set_title('Search Directions')
+    ax[1].set_xlim(-1.5*p.norm(), 1.5*p.norm())
+    ax[1].set_ylim(-1.5*res.norm(), 1.5*res.norm())
     plt.show()
     if filename is not None:
         fig.savefig(filename)
@@ -187,3 +174,29 @@ def plotDirectionChange(p, p_old):
     plt.xlim(-1.5, 1.5)
     plt.ylim(-1.5, 1.5)
     plt.show()
+
+def plotInterpolantAcc(fp,x,res,p,coeffs,filename=None):
+
+    nn=11
+    alpha=np.linspace(0,1,nn)
+    beta=np.linspace(0,1,nn)
+    energies=np.zeros([nn,nn])
+    poly=energies.copy()
+    for i in range(0,nn):
+        for j in range(0,2*nn-1):
+            xcopy=x.copy()
+            xcopy.axpy(alpha[i],res)
+            xcopy.axpy(beta[j],p)
+            energies[i][j]=fp.updateEnergies(xcopy)[2]
+            xcopy.destroy()
+            poly[i][j]=coeffs[0]*alpha[i]**2 + coeffs[1]*alpha[i]*beta[j] + coeffs[2]*beta[j]**2 + coeffs[3]*alpha[i] + coeffs[4]*beta[j]
+    fig, ax = plt.subplots(1,2)
+    cf=ax[0].contourf(beta, alpha, energies - poly)
+    ax[0].set_ylabel('AltMin')
+    ax[0].set_xlabel('MSPIN')
+    ax[0].set_title('Interpolant accuracy')
+    fig.colorbar(cf, label='Accuracy')
+    plt.show()
+    if filename is not None:
+        fig.savefig(filename)
+        plt.close(fig)
