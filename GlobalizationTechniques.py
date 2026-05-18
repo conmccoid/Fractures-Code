@@ -181,7 +181,7 @@ def pm2(fp, x, q, p, filename=None):
     result.axpy(beta,p)
     qp.destroy()
     if filename is not None and r<=0:
-        plotInterpolantAcc(fp,x,q,p,[beta, alpha], filename=filename, coeffs=[a,b,c,d,e,f])
+        plotInterpolantAcc(fp,x,q,p,[a,b,c,d,e,f], filename=filename)
     return result, angle, alpha, beta, alpha, beta, r, a
 
 def pm3(fp, x, q, p, filename=None):
