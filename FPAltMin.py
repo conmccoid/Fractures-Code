@@ -43,6 +43,8 @@ class FPAltMin:
 
         self.Eu = fem.form(E_u)
         self.Ev = fem.form(E_v)
+        self.bcs_u = bcs_u
+        self.bcs_v = bcs_v
         ucopy=self.u.x.petsc_vec.duplicate()
         vcopy=self.v.x.petsc_vec.duplicate()
         self.gradF = PETSc.Vec().createNest([ucopy, vcopy], None, self.comm) # I think there's a better way to initialize this using Eu and Ev
@@ -113,6 +115,8 @@ class FPAltMin:
             f_local.set(0.0)
         petsc.assemble_vector(Eu, self.Eu)
         petsc.assemble_vector(Ev, self.Ev)
+        petsc.set_bc(Eu, self.bcs_u)
+        petsc.set_bc(Ev, self.bcs_v)
 
     def Fn(self, snes, x, F):
         self.updateUV(x)
