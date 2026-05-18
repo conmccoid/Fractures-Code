@@ -183,7 +183,7 @@ def plotInterpolantAcc(fp,x,res,p,coeffs,filename=None):
     energies=np.zeros([nn,nn])
     poly=energies.copy()
     for i in range(0,nn):
-        for j in range(0,2*nn-1):
+        for j in range(0,nn):
             xcopy=x.copy()
             xcopy.axpy(alpha[i],res)
             xcopy.axpy(beta[j],p)
