@@ -92,7 +92,7 @@ class OuterSolver:
                         cbt(self.fp, self.x, self.p, self.res)
                         self.x.axpy(1.0, self.p) # update solution
                     elif self.method=='Parallelogram':
-                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm2(self.fp, self.x, self.res, self.p)
+                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm2(self.fp, self.x, self.res, self.p, filename=f"test/landscape2_{i_t}_{iteration}.png")
                         if PlotSwitch:
                             print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
                             plotEnergyLandscape2D(self.fp,self.x,self.res,self.p,[beta, alpha])

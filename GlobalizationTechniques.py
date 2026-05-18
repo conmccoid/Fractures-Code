@@ -163,7 +163,7 @@ def pm1(fp, x, q, p):
 
     return result, angle, alpha, beta, alpha_opt, beta_opt, r, a
 
-def pm2(fp, x, q, p):
+def pm2(fp, x, q, p, filename=None):
     """
     Find the minimum of a quadratic 2D polynomial that interpolates the residual in a parallelogram.
     There is no restriction on the minimum.
@@ -180,6 +180,8 @@ def pm2(fp, x, q, p):
     result.scale(alpha)
     result.axpy(beta,p)
     qp.destroy()
+    if filename is not None:
+        plotEnergyLandscape2D(fp,x,q,p,[beta, alpha], filename=filename, coeffs=[a,b,c,d,e,f])
     return result, angle, alpha, beta, alpha, beta, r, a
 
 def pm3(fp, x, q, p, filename=None):
