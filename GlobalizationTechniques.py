@@ -175,11 +175,12 @@ def pm2(fp, x, q, p):
     - p: direction towards the Newton step
     """
     [a,b,c,d,e,f,r,alpha,beta], _, qp = pbt(fp,x,q,p)
+    angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
     result=q.copy()
     result.scale(alpha)
     result.axpy(beta,p)
     qp.destroy()
-    return result
+    return result, angle, alpha, beta, alpha, beta, r, a
 
 def pm3(fp, x, q, p, filename=None):
     """
