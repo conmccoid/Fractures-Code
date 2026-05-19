@@ -17,13 +17,13 @@ class FP(FPAltMin):
     def updateBCs(self, t):
         self.u_D.value = t*10. # t*L
 
-def main(method='AltMin', maxit=100, tol=1e-4, WriteSwitch=False, PlotSwitch=False):
+def main(maxit=100, tol=1e-4, WriteSwitch=False, PlotSwitch=False):
 
     fp=FP()
     example='GD'
     loads = np.linspace(0, 1.5, 21)  # Load values
 
-    os=OuterSolver(fp, example, method, loads)
+    os=OuterSolver(fp, example, loads)
     os.solve(WriteSwitch=WriteSwitch, PlotSwitch=PlotSwitch, maxit=maxit, tol=tol)
     energies=os.energies.copy()
     identifier=os.identifier
@@ -36,11 +36,10 @@ import sys
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run the FP problem with specified parameters.')
-    parser.add_argument('--method', type=str, default='AltMin', help='Optimization method to use (default: AltMin)')
     parser.add_argument('--maxit', type=int, default=100, help='Maximum number of iterations (default: 100)')
     parser.add_argument('--tol', type=float, default=1e-4, help='Tolerance for convergence (default: 1e-4)')
     parser.add_argument('--write', action='store_true', default=False, help='Write results to file')
     parser.add_argument('--plot', action='store_true', default=False, help='Plot results')
     args = parser.parse_args()
-    energies, identifier = main(method=args.method, maxit=args.maxit, tol=args.tol, WriteSwitch=args.write, PlotSwitch=args.plot)
+    energies, identifier = main(maxit=args.maxit, tol=args.tol, WriteSwitch=args.write, PlotSwitch=args.plot)
     sys.exit() # is this necessary?
