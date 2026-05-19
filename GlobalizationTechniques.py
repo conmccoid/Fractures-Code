@@ -224,3 +224,30 @@ def pm3(fp, x, q, p, filename=None):
         result.axpy(beta,p)
 
     return result
+
+def pm4(fp, x, q, p):
+    """
+    Find the minimum of a quadratic 2D polynomial that interpolates the residual in a parallelogram.
+    The minimum is bounded in the infinite parallelogram extending in the AltMin direction, bounded by beta=+/-1.
+
+    Parameters:
+    - fp: function handling example
+    - x: current solution
+    - q: direction towards the AltMin step
+    - p: direction towards the Newton step
+    """
+    # need to do DB trick first - does gradF need to have a commensurate sign change?
+    [a,b,c,d,e,f,r,alpha,beta], [E0,Eq,Ep,Epq], qp = pbt(fp,x,q,p)
+    angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
+
+    if alpha>=0:
+        if np.abs(beta)<=1:
+            result=q.copy()
+            result.scale(alpha)
+            result.axpy(beta,p)
+        else:
+            beta=np.sign(beta)*1
+            # minimize along this line
+    else:
+        # minimize along line alpha=0
+        pass
