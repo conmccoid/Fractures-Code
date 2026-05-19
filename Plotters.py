@@ -189,8 +189,8 @@ def plotInterpolantAcc(fp,x,res,p,coeffs,filename=None):
             xcopy.axpy(beta[j],p)
             energies[i][j]=fp.updateEnergies(xcopy)[2]
             xcopy.destroy()
-            poly[i][j]=coeffs[0]*alpha[i]**2 + coeffs[1]*alpha[i]*beta[j] + coeffs[2]*beta[j]**2 + coeffs[3]*alpha[i] + coeffs[4]*beta[j]
-    fig, ax = plt.subplots(1,2)
+            poly[i][j]=coeffs[0]*alpha[i]**2 + coeffs[1]*alpha[i]*beta[j] + coeffs[2]*beta[j]**2 + coeffs[3]*alpha[i] + coeffs[4]*beta[j] + coeffs[5]
+    fig, ax = plt.subplots(1,1) # remove subplots()
     cf=ax[0].contourf(beta, alpha, energies - poly)
     ax[0].set_ylabel('AltMin')
     ax[0].set_xlabel('MSPIN')
