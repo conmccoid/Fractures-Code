@@ -190,13 +190,12 @@ def plotInterpolantAcc(fp,x,res,p,coeffs,filename=None):
             energies[i][j]=fp.updateEnergies(xcopy)[2]
             xcopy.destroy()
             poly[i][j]=coeffs[0]*alpha[i]**2 + coeffs[1]*alpha[i]*beta[j] + coeffs[2]*beta[j]**2 + coeffs[3]*alpha[i] + coeffs[4]*beta[j] + coeffs[5]
-    fig, ax = plt.subplots(1,1) # remove subplots()
-    cf=ax[0].contourf(beta, alpha, energies - poly)
-    ax[0].set_ylabel('AltMin')
-    ax[0].set_xlabel('MSPIN')
-    ax[0].set_title('Interpolant accuracy')
-    fig.colorbar(cf, label='Accuracy')
+    cf=plt.contourf(beta, alpha, energies - poly)
+    plt.ylabel('AltMin')
+    plt.xlabel('MSPIN')
+    plt.title('Interpolant accuracy')
+    plt.colorbar(cf, label='Accuracy')
     plt.show()
     if filename is not None:
-        fig.savefig(filename)
-        plt.close(fig)
+        plt.savefig(filename)
+        plt.close()
