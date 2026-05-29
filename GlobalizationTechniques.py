@@ -197,7 +197,6 @@ def pm3(fp, x, q, p, filename=None):
     """
     [a,b,c,d,e,f,r,alpha_opt,beta_opt], [E0,Eq,Ep,Epq], qp = pbt(fp,x,q,p)
     angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
-    qp.destroy()
 
     if r>0 and a>0:
         result=q.copy()
