@@ -134,6 +134,22 @@ We will see examples of this behaviour in the next section.
 
 % nb: what about the smallest value within a tolerated distance of the starting point?
 
+Before accepting the critical point of the interpolant as the next step in the algorithm, one should perform the second derivative test to confirm that this point is in fact a minimum.
+The determinant of the Jacobian matrix is $D = 4ac - b^2$, used in the denominator of both $\alpha$ and $\beta$.
+If $D>0$ and $a>0$, then the critical point is indeed a minimum.
+Otherwise, this point may be a maximum or a saddle point.
+This becomes more likely when the calculation of the gradient of the function is subject to numerical error, especially when the magnitude of the gradient is small in the AltMin and Newton directions.
+To compensate for these situations, one can try replacing the information from the gradient with more evaluations of the function, resulting in a P2 finite element:
+\begin{align*}
+	a = \frac{1}{2} \left ( f(\vec{x} + 2 \vec{q}) + f \right ) - f(\vec{x} + \vec{q}), \qquad
+	d = f(\vec{x} + \vec{q}) - f - a, \\
+	c = \frac{1}{2} \left ( f(\vec{x} + 2 \vec{p}) + f \right ) - f(\vec{x} + \vec{p}), \qquad
+	e = f(\vec{x} + \vec{p}) - f - c,
+\end{align*}
+with $b$ and $f$ remaining the same.
+This requires only two more evaluations of the objective function.
+If the new interpolant still fails the second derivative test, then the next step in the algorithm can be chosen as that which has the lowest value of the objective function from amongst the five values already found.
+
 \section{Numerical comparisons}
 \label{sec: num}
 

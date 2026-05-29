@@ -187,6 +187,7 @@ def pm2(fp, x, q, p, filename=None):
 def pm3(fp, x, q, p, filename=None):
     """
     Find the minimum of a quadratic 2D polynomial that interpolates the residual in a parallelogram.
+    Check convexity of the interpolant; if concave down or saddle point, change interpolant; if still not concave up, choose min energy from list.
     
     Parameters:
     - fp: function handling example
@@ -194,24 +195,56 @@ def pm3(fp, x, q, p, filename=None):
     - q: direction towards the AltMin step
     - p: direction towards the Newton step
     """
-    [a,b,c,d,e,f,r,alpha,beta], [E0,Eq,Ep,Epq], qp = pbt(fp,x,q,p)
+    [a,b,c,d,e,f,r,alpha_opt,beta_opt], [E0,Eq,Ep,Epq], qp = pbt(fp,x,q,p)
+    angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
     qp.destroy()
 
     if r>0 & a>0:
         result=q.copy()
-        result.scale(alpha)
-        result.axpy(beta,p)
+        result.scale(alpha_opt)
+        result.axpy(beta_opt,p)
+        alpha=alpha_opt
+        beta=beta_opt
     else:
-        # change interpolant to include new information -- accuracy of derivative calculation in question
-        
-        # alpha = -b
-        # beta = (a-c) - np.sqrt((a-c)**2 + b**2)
-        plotEnergyLandscape2D(fp,x,q,p,[beta, alpha],filename=filename, coeffs=[a,b,c,d,e,f])
-        result=q.copy()
-        result.scale(alpha)
-        result.axpy(beta,p)
+        # change to P2 element on triangle bounded by 2q and 2p -- b and f remain the same, a, c, d, e change
+        print("Interpolant not convex, changing to P2 element")
+        x2q=x.copy()
+        x2q.axpy(2,q)
+        E2q=fp.updateEnergies(x2q)[2]
+        x2p=x.copy()
+        x2p.axpy(2,p)
+        E2p=fp.updateEnergies(x2p)[2]
+        a=(E2q + f)/2 - Eq
+        c=(E2p + f)/2 - Ep
+        d=Eq - f - a
+        e=Ep - f - c
 
-    return result
+        r=4*a*c-b**2
+        if r>0 & a>0:
+            print("New interpolant convex, using minimum")
+            alpha = (-2*c*d + b*e)/r # step in q (AltMin)
+            beta = (-2*a*e + b*d)/r # step in p (MSPIN)
+            result=q.copy()
+            result.scale(alpha)
+            result.axpy(beta,p)
+        else:
+            print("New interpolant still not convex, choosing minimum energy from list")
+            E_list=[Eq, Ep, Epq, E2q, E2p]
+            q2=q.copy()
+            q2.scale(2)
+            p2=p.copy()
+            p2.scale(2)
+            v_list=[q.copy(), p.copy(), qp, q2, p2]
+            alpha_list=[1, 0, 1, 2, 0]
+            beta_list=[0, 1, 1, 0, 2]
+            min_index=np.argmin(E_list)
+            alpha=alpha_list[min_index]
+            beta=beta_list[min_index]
+            result=v_list[min_index].copy()
+            for v in v_list:
+                v.destroy()
+
+    return result, angle, alpha, beta, alpha_opt, beta_opt, r, a
 
 def pm4(fp, x, q, p):
     """

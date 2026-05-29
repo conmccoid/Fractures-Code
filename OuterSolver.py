@@ -92,23 +92,19 @@ class OuterSolver:
                         cbt(self.fp, self.x, self.p, self.res)
                         self.x.axpy(1.0, self.p) # update solution
                     elif self.method=='Parallelogram':
-                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm2(self.fp, self.x, self.res, self.p, filename=f"test/landscape2_{i_t}_{iteration}.png")
+                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm3(self.fp, self.x, self.res, self.p, filename=f"test/landscape2_{i_t}_{iteration}.png")
                         if PlotSwitch:
                             print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
                             plotEnergyLandscape2D(self.fp,self.x,self.res,self.p,[beta, alpha])
 
                         vnorm = v.norm()
-                        if self.fp.rank==0: # nb: this section is bugged and stalls out for certain load steps
+                        if self.fp.rank==0:
                             with open(f"output/ConvCrit_{self.identifier}.csv",'a') as csv.file:
                                 writer=csv.writer(csv.file,delimiter=',')
                                 writer.writerow([iteration,vnorm,angle,alpha,beta,alpha_opt,beta_opt,det,curv_AltMin])
 
                         self.x.axpy(1.0, v) # update solution
                         v.destroy() # clean up parallelogram step vector
-                    elif self.method=='pm3':
-                        v = pm3(self.fp, self.x, self.res, self.p, filename=f"test/landscape_{i_t}_{iteration}.png")
-                        self.x.axpy(1.0, v) # update solution
-                        v.destroy() # clean up step vector
                     boxConstraints(self.fp,self.x) # apply box constraints to solution for backtracking methods
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()
