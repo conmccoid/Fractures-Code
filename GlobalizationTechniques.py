@@ -220,7 +220,7 @@ def pm3(fp, x, q, p, filename=None):
         e=Ep - f - c
 
         r=4*a*c-b**2
-        if r>0 & a>0:
+        if r>0 and a>0:
             print("New interpolant convex, using minimum")
             alpha = (-2*c*d + b*e)/r # step in q (AltMin)
             beta = (-2*a*e + b*d)/r # step in p (MSPIN)
