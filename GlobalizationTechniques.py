@@ -196,7 +196,8 @@ def pm3(fp, x, q, p, filename=None):
     - p: direction towards the Newton step
     """
     [a,b,c,d,e,f,r,alpha_opt,beta_opt], [E0,Eq,Ep,Epq], qp = pbt(fp,x,q,p)
-    angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
+    # angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
+    angle=0
     qp.destroy()
 
     if r>0 and a>0:
