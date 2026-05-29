@@ -204,9 +204,12 @@ def pm3(fp, x, q, p, filename=None):
         result.axpy(beta_opt,p)
         alpha=alpha_opt
         beta=beta_opt
+
+        qp.destroy()
     else:
         # change to P2 element on triangle bounded by 2q and 2p -- b and f remain the same, a, c, d, e change
-        print("Interpolant not convex, changing to P2 element")
+        if fp.rank==0:
+            print("Interpolant not convex, changing to P2 element")
         x2q=x.copy()
         x2q.axpy(2,q)
         E2q=fp.updateEnergies(x2q)[2]
@@ -218,16 +221,23 @@ def pm3(fp, x, q, p, filename=None):
         d=Eq - f - a
         e=Ep - f - c
 
+        x2q.destroy()
+        x2p.destroy()
+
         r=4*a*c-b**2
         if r>0 and a>0:
-            print("New interpolant convex, using minimum")
+            if fp.rank==0:
+                print("New interpolant convex, using minimum")
             alpha = (-2*c*d + b*e)/r # step in q (AltMin)
             beta = (-2*a*e + b*d)/r # step in p (MSPIN)
             result=q.copy()
             result.scale(alpha)
             result.axpy(beta,p)
+
+            qp.destroy()
         else:
-            print("New interpolant still not convex, choosing minimum energy from list")
+            if fp.rank==0:
+                print("New interpolant still not convex, choosing minimum energy from list")
             E_list=[Eq, Ep, Epq, E2q, E2p]
             q2=q.copy()
             q2.scale(2)
