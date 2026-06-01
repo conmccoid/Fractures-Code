@@ -243,6 +243,8 @@ def pm3(fp, x, q, p, filename=None):
             q2.scale(2)
             p2=p.copy()
             p2.scale(2)
+            if filename is not None:
+                plotInterpolantAcc(fp,x,q2,p2,[a,b,c,d,e,f], filename=filename)
             v_list=[q.copy(), p.copy(), qp, q2, p2]
             alpha_list=[1, 0, 1, 2, 0]
             beta_list=[0, 1, 1, 0, 2]
