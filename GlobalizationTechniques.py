@@ -235,6 +235,7 @@ def pm3(fp, x, q, p, filename=None):
             result.axpy(beta,p)
 
             qp.destroy()
+            angle=-angle
         else:
             if fp.rank==0:
                 print("New interpolant still not convex, choosing minimum energy from list")

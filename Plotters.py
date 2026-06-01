@@ -94,10 +94,12 @@ def plotNX(example,id_list,en_list):
 
     ax1[0].set_xlabel('t')
     ax1[0].set_ylabel('Iterations')
+    # ax1[0].set_yscale('log')
     # ax1[0].legend()
     ax1[0].set_title('Outer iterations')
     ax1[1].set_xlabel('t')
     ax1[1].set_ylabel('Iterations')
+    # ax1[1].set_yscale('log')
     # ax1[1].legend()
     ax1[1].set_title('Inner iterations')
     ax1[2].set_xlabel('t')
@@ -129,7 +131,10 @@ def plotConvCrit(ConvCrit):
     plt.ylabel('Step size')
     # plt.ylim([1e-4, 1e2])
     plt.show()
-    plt.plot(ConvCrit[:,0], ConvCrit[:,2]*180/np.pi, '.', label='Angle')
+    angle_ind=np.where(ConvCrit[:,2]>0)[0]
+    angle2_ind=np.where(ConvCrit[:,2]<0)[0]
+    plt.plot(ConvCrit[angle_ind,0], ConvCrit[angle_ind,2]*180/np.pi, '.', label='Angle')
+    plt.plot(ConvCrit[angle2_ind,0], ConvCrit[angle2_ind,2]*180/np.pi, '.', label='Angle')
     plt.xlabel('Iteration')
     plt.ylabel('Angle between directions')
     plt.show()
