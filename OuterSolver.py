@@ -1,7 +1,7 @@
 import numpy as np
 from petsc4py import PETSc
 from Utilities import KSPsetUp, DBTrick, boxConstraints
-from GlobalizationTechniques import cbt, pm1, pm2, pm3
+from GlobalizationTechniques import cbt, pm1, pm2, pm23, pm3
 from Plotters import plotEnergyLandscape, plotEnergyLandscape2D
 from dolfinx import io
 import csv
@@ -92,7 +92,7 @@ class OuterSolver:
                         cbt(self.fp, self.x, self.p, self.res)
                         self.x.axpy(1.0, self.p) # update solution
                     elif self.method=='Parallelogram':
-                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm3(self.fp, self.x, self.res, self.p, filename=f"test/landscape2_{i_t}_{iteration}.png")
+                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm23(self.fp, self.x, self.res, self.p)
                         if PlotSwitch:
                             print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
                             plotEnergyLandscape2D(self.fp,self.x,self.res,self.p,[beta, alpha])
