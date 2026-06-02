@@ -22,7 +22,7 @@ def Elastic(E, u, bcs, J):
     elastic_solver.setTolerances(atol=1.0e-7, rtol=1.0e-5, stol=1.0e-7, max_it=1000) # set these as inputs? same as damage solver? currently for CTFM example
     elastic_solver.getKSP().setType("cg")
     elastic_solver.getKSP().setTolerances(rtol=1.0e-9)
-    elastic_solver.getKSP().getPC().setType("hypre") # testing -- use ML or hypre
+    elastic_solver.getKSP().getPC().setType("bjacobi") # testing -- use ML or hypre (unstable, try bjacobi for hard problems)
     return elastic_problem, elastic_solver
 
 def Damage(E, v, bcs, J):

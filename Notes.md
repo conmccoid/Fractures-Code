@@ -4,7 +4,7 @@
 
 We now have for comparison three methods:
 - AltMin, using SNESVINewton for irreversibility
-- MSPIN with cubic backtracking, using ??? for irreversibility
+- MSPIN with cubic backtracking, using active set for irreversibility
 - Parallelogram interpolation (and various generalizations), using active set for irreversibility
 
 - [x] Implement irreversibility
@@ -12,13 +12,14 @@ We now have for comparison three methods:
   - [x] Cubic backtracking
   - [x] Parallelogram
 - [x] Parallelize code
+- [ ] 3D interpolant
 - [ ] Run examples
   - [ ] Check efficiency, both in FLOPs and wall clock time
   - [ ] Check scaling
 - [ ] Write paper
   - [ ] Section: background on MSPIN for phase-field
-  - [ ] Section: parallelogram interpolation
-    - [ ] Subsection: active set method in parallelogram setting
+  - [ ] Section: interpolation (now P2, but discuss parallelogram)
+    - [ ] Subsection: active set method in interpolant setting
   - [ ] Section: numerical comparisons
 
 Check https://github.com/nha-tran-lsu/Optimal_Design_Active_Set_Approach/blob/main/AS_phase_field_opt.py for how to get inactive set manually.
