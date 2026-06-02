@@ -134,7 +134,7 @@ def plotConvCrit(ConvCrit):
     angle_ind=np.where(ConvCrit[:,2]>0)[0]
     angle2_ind=np.where(ConvCrit[:,2]<0)[0]
     plt.plot(ConvCrit[angle_ind,0], ConvCrit[angle_ind,2]*180/np.pi, '.', label='Angle')
-    plt.plot(ConvCrit[angle2_ind,0], ConvCrit[angle2_ind,2]*180/np.pi, '.', label='Angle')
+    plt.plot(ConvCrit[angle2_ind,0], -ConvCrit[angle2_ind,2]*180/np.pi, '.', label='Angle')
     plt.xlabel('Iteration')
     plt.ylabel('Angle between directions')
     plt.show()

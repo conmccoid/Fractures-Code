@@ -79,8 +79,6 @@ def pbt(fp,x,q,p):
     xpq=x.copy()
     xpq.axpy(1,q)
     xpq.axpy(1,p)
-    qp=q.copy()
-    qp.axpy(1,p)
 
     E0=fp.updateEnergies(x)[2]
     Eq=fp.updateEnergies(xq)[2]
@@ -102,7 +100,89 @@ def pbt(fp,x,q,p):
     xq.destroy()
     xpq.destroy()
 
-    return coeffs, E_list, qp
+    return coeffs, E_list
+
+def pbt2(fp,x,q,p, E_list=None):
+    """
+    Construct quadratic 2D P2 polynomial interpolant
+    
+    Parameters:
+    - fp: function handling example
+    - x: current solution
+    - q: direction towards the AltMin step
+    - p: direction towards the Newton step
+    """
+    
+    if E_list is None:
+        xq=x.copy()
+        xq.axpy(1,q)
+        xp=x.copy()
+        xp.axpy(1,p)
+        xpq=x.copy()
+        xpq.axpy(1,q)
+        xpq.axpy(1,p)
+
+        E0=fp.updateEnergies(x)[2]
+        Eq=fp.updateEnergies(xq)[2]
+        Ep=fp.updateEnergies(xp)[2]
+        Epq=fp.updateEnergies(xpq)[2]
+
+        xp.destroy()
+        xq.destroy()
+        xpq.destroy()
+
+    else:
+        E0=E_list[0]
+        Eq=E_list[1]
+        Ep=E_list[2]
+        Epq=E_list[3]
+
+    x2q=x.copy()
+    x2q.axpy(2,q)
+    x2p=x.copy()
+    x2p.axpy(2,p)
+
+    E2q=fp.updateEnergies(x2q)[2]
+    E2p=fp.updateEnergies(x2p)[2]
+
+    x2q.destroy()
+    x2p.destroy()
+
+    f=E0
+    a=(E2q + f)/2 - Eq
+    c=(E2p + f)/2 - Ep
+    b=Epq + f - Ep - Eq
+    d=Eq - f - a
+    e=Ep - f - c
+
+    r=4*a*c-b**2
+    alpha = (-2*c*d + b*e)/r # step in q (AltMin)
+    beta = (-2*a*e + b*d)/r # step in p (MSPIN)
+
+    return [a,b,c,d,e,f,r,alpha,beta], [E0, Eq, Ep, Epq, E2q, E2p]
+
+def pmList(fp, x, q, p, E_list):
+    """
+    Choose the minimum energy from a list of 5 points that interpolate a P2 element
+    """
+    
+    qp=q.copy()
+    qp.axpy(1,p)
+    q2=q.copy()
+    q2.scale(2)
+    p2=p.copy()
+    p2.scale(2)
+    v_list=[q.copy(), p.copy(), qp, q2, p2]
+    alpha_list=[1, 0, 1, 2, 0]
+    beta_list=[0, 1, 1, 0, 2]
+    min_index=np.argmin(E_list)
+    alpha=alpha_list[min_index]
+    beta=beta_list[min_index]
+    result=v_list[min_index].copy()
+    for v in v_list:
+        v.destroy()
+
+    return result, alpha, beta
 
 def pm1(fp, x, q, p):
     """
@@ -118,10 +198,12 @@ def pm1(fp, x, q, p):
     nb: some kinks to work out, not clear what to do when r==0
     """
     # need to do DB trick first - does gradF need to have a commensurate sign change?
-    [a,b,c,d,e,f,r,alpha_opt,beta_opt], [E0,Eq,Ep,Epq], qp = pbt(fp,x,q,p)
+    [a,b,c,d,e,f,r,alpha_opt,beta_opt], [E0,Eq,Ep,Epq] = pbt(fp,x,q,p)
     angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
 
     E_list=[Eq, Ep, Epq]
+    qp=q.copy()
+    qp.axpy(1,p)
     v_list=[q.copy(), p.copy(), qp]
     beta_list=[0, 1, 1]
     alpha_list=[1, 0, 1]
@@ -174,12 +256,11 @@ def pm2(fp, x, q, p, filename=None):
     - q: direction towards the AltMin step
     - p: direction towards the Newton step
     """
-    [a,b,c,d,e,f,r,alpha,beta], _, qp = pbt(fp,x,q,p)
+    [a,b,c,d,e,f,r,alpha,beta], _ = pbt(fp,x,q,p)
     angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
     result=q.copy()
     result.scale(alpha)
     result.axpy(beta,p)
-    qp.destroy()
     if filename is not None and r<=0:
         plotInterpolantAcc(fp,x,q,p,[a,b,c,d,e,f], filename=filename)
     return result, angle, alpha, beta, alpha, beta, r, a
@@ -195,7 +276,7 @@ def pm3(fp, x, q, p, filename=None):
     - q: direction towards the AltMin step
     - p: direction towards the Newton step
     """
-    [a,b,c,d,e,f,r,alpha_opt,beta_opt], [E0,Eq,Ep,Epq], qp = pbt(fp,x,q,p)
+    [a,b,c,d,e,f,r,alpha_opt,beta_opt], [E0,Eq,Ep,Epq] = pbt(fp,x,q,p)
     angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
 
     if r>0 and a>0:
@@ -204,57 +285,53 @@ def pm3(fp, x, q, p, filename=None):
         result.axpy(beta_opt,p)
         alpha=alpha_opt
         beta=beta_opt
-
-        qp.destroy()
     else:
         # change to P2 element on triangle bounded by 2q and 2p -- b and f remain the same, a, c, d, e change
         if fp.rank==0:
             print("Interpolant not convex, changing to P2 element")
-        x2q=x.copy()
-        x2q.axpy(2,q)
-        E2q=fp.updateEnergies(x2q)[2]
-        x2p=x.copy()
-        x2p.axpy(2,p)
-        E2p=fp.updateEnergies(x2p)[2]
-        a=(E2q + f)/2 - Eq
-        c=(E2p + f)/2 - Ep
-        d=Eq - f - a
-        e=Ep - f - c
+        [a,b,c,d,e,f,r,alpha,beta], [E0,Eq,Ep,Epq,E2q,E2p] = pbt2(fp,x,q,p,[E0,Eq,Ep,Epq])
 
-        x2q.destroy()
-        x2p.destroy()
-
-        r=4*a*c-b**2
         if r>0 and a>0:
             if fp.rank==0:
                 print("New interpolant convex, using minimum")
-            alpha = (-2*c*d + b*e)/r # step in q (AltMin)
-            beta = (-2*a*e + b*d)/r # step in p (MSPIN)
             result=q.copy()
             result.scale(alpha)
             result.axpy(beta,p)
 
-            qp.destroy()
             angle=-angle
         else:
             if fp.rank==0:
                 print("New interpolant still not convex, choosing minimum energy from list")
             E_list=[Eq, Ep, Epq, E2q, E2p]
-            q2=q.copy()
-            q2.scale(2)
-            p2=p.copy()
-            p2.scale(2)
-            if filename is not None:
-                plotInterpolantAcc(fp,x,q2,p2,[4*a,4*b,4*c,2*d,2*e,f], filename=filename)
-            v_list=[q.copy(), p.copy(), qp, q2, p2]
-            alpha_list=[1, 0, 1, 2, 0]
-            beta_list=[0, 1, 1, 0, 2]
-            min_index=np.argmin(E_list)
-            alpha=alpha_list[min_index]
-            beta=beta_list[min_index]
-            result=v_list[min_index].copy()
-            for v in v_list:
-                v.destroy()
+            result, _, _ = pmList(fp, x, q, p, E_list)
+
+    return result, angle, alpha, beta, alpha_opt, beta_opt, r, a
+
+def pm23(fp, x, q, p):
+    """
+    Combination of pm2 and pm3 strategies: use P2 finite element, no restrictions on taking minimum, check convexity and use list if not convex.
+    
+    Parameters:
+    - fp: function handling example
+    - x: current solution
+    - q: direction towards the AltMin step
+    - p: direction towards the Newton step
+    """
+    [a,b,c,d,e,f,r,alpha_opt,beta_opt], [E0,Eq,Ep,Epq,E2q,E2p] = pbt2(fp,x,q,p)
+    angle = np.arccos(np.clip(q.dot(p)/(q.norm()*p.norm()), -1, 1)) # angle between AltMin and Newton steps
+
+    if r>0 and a>0:
+        alpha=alpha_opt
+        beta=beta_opt
+        result=q.copy()
+        result.scale(alpha)
+        result.axpy(beta,p)
+    else:
+        if fp.rank==0:
+            print("Interpolant not convex, choosing minimum energy from list")
+        E_list=[Eq, Ep, Epq, E2q, E2p]
+        result, alpha, beta = pmList(fp, x, q, p, E_list)
+        angle=-angle
 
     return result, angle, alpha, beta, alpha_opt, beta_opt, r, a
 
