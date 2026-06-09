@@ -9,15 +9,12 @@ def main(id_list=['GD_AltMin','GD_CubicBacktracking','GD_Parallelogram'],en_list
     rank = comm.Get_rank()
 
     if WriteSwitch:
-        en1, id1=EX('AltMin',WriteSwitch=True)
-        comm.Barrier() # ensure all processes have finished writing before moving on
-        en2, id2=EX('CubicBacktracking',WriteSwitch=True)
-        comm.Barrier()
-        en3, id3=EX('Parallelogram',WriteSwitch=True)
-        comm.Barrier()
-        if rank == 0:
-            id_list=[id1,id2,id3]
-            en_list=[en1,en2,en3]
+        en_list=[None]*len(id_list) # placeholder for energies if writing to file, will be filled in by each process
+        for i, id in enumerate(id_list):
+            en_i, id_i=EX(id,WriteSwitch=True)
+            en_list[i]=en_i
+            id_list[i]=id_i
+            comm.Barrier() # ensure all processes have finished writing before moving on
 
     if rank == 0:
         plotNX('GD',id_list, en_list)
@@ -25,6 +22,7 @@ def main(id_list=['GD_AltMin','GD_CubicBacktracking','GD_Parallelogram'],en_list
 if __name__== "__main__":
     parser = argparse.ArgumentParser(description='Run the GD problem with specified parameters.')
     parser.add_argument('--write', action='store_true', default=False, help='Write results to file')
+    parser.add_argument('--ids', nargs='+', default=['AltMin','CubicBacktracking','Parallelogram'], help='List of identifiers for different runs')
     args = parser.parse_args()
-    main(WriteSwitch=args.write)
+    main(id_list=args.ids, en_list=None, WriteSwitch=args.write)
     sys.exit()
