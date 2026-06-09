@@ -1,7 +1,7 @@
 import numpy as np
 from petsc4py import PETSc
 from Utilities import KSPsetUp, DBTrick, boxConstraints
-from GlobalizationTechniques import cbt, pm1, pm2, pm23, pm3
+from GlobalizationTechniques import cbt, pm1, pm2, pm23, pm3, tet
 from Plotters import plotEnergyLandscape, plotEnergyLandscape2D
 from dolfinx import io
 import csv
@@ -105,6 +105,25 @@ class OuterSolver:
 
                         self.x.axpy(1.0, v) # update solution
                         v.destroy() # clean up parallelogram step vector
+                    elif self.method=='Tetrahedron':
+                        resu, resv = self.res.getNestSubVecs() # get sub-vectors for u and v residuals
+                        resu0 = resu.copy()
+                        resu0.zeroEntries()
+                        resv0 = resv.copy()
+                        resv0.zeroEntries()
+                        stepu = PETSc.Vec().createNest([resu,resv0], None, self.fp.comm)
+                        stepv = PETSc.Vec().createNest([resu0,resv], None, self.fp.comm)
+                        v, _, _, [p_opt, q_opt, r_opt] = tet(self.fp, self.x, stepu, stepv, self.p) # compute tetrahedron step
+                        if PlotSwitch:
+                            xr=self.x.copy()
+                            xr.axpy(r_opt, self.p)
+                            plotEnergyLandscape2D(self.fp,xr,stepu, stepv, target=[q_opt, p_opt])
+                        self.x.axpy(1.0, v) # update solution
+                        v.destroy() # clean up tetrahedron step vector
+                        stepu.destroy()
+                        stepv.destroy()
+                        resu0.destroy()
+                        resv0.destroy()
                     boxConstraints(self.fp,self.x) # apply box constraints to solution for backtracking methods
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()

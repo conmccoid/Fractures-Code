@@ -361,3 +361,69 @@ def pm4(fp, x, q, p):
     else:
         # minimize along line alpha=0
         pass
+
+def tet(fp, x, p, q, r):
+    """
+    Minimize the objective function using a tetrahedral P2 finite element in 3D space.
+    
+    Parameters:
+    - fp: function handling example
+    - x: current solution
+    - p: direction 1
+    - q: direction 2
+    - r: direction 3
+    """
+    #   0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+    #   x, p, q, r,pq,qr,pr,2p,2q,2r
+    xp=[0, 1, 0, 0, 1, 0, 1, 2, 0, 0]
+    xq=[0, 0, 1, 0, 1, 1, 0, 0, 2, 0]
+    xr=[0, 0, 0, 1, 0, 1, 1, 0, 0, 2]
+    E_list=[None]*10
+    for ind, v in enumerate(xp):
+        v=x.copy()
+        v.axpy(xp[ind], p)
+        v.axpy(xq[ind], q)
+        v.axpy(xr[ind], r)
+        E_list[ind]=(fp.updateEnergies(v)[2])
+        v.destroy()
+    
+    coeffs=[None]*10
+    coeffs[0]=(E_list[7] - 2*E_list[1] + E_list[0])/2
+    coeffs[1]=(E_list[8] - 2*E_list[2] + E_list[0])/2
+    coeffs[2]=(E_list[9] - 2*E_list[3] + E_list[0])/2
+    coeffs[3]=E_list[4] - E_list[1] - E_list[2] + E_list[0]
+    coeffs[4]=E_list[5] - E_list[2] - E_list[3] + E_list[0]
+    coeffs[5]=E_list[6] - E_list[1] - E_list[3] + E_list[0]
+    coeffs[6]=E_list[1] - E_list[0] - coeffs[0]
+    coeffs[7]=E_list[2] - E_list[0] - coeffs[1]
+    coeffs[8]=E_list[3] - E_list[0] - coeffs[2]
+    coeffs[9]=E_list[0]
+
+    J = np.array([[2*coeffs[0],   coeffs[3],   coeffs[5]],
+                  [  coeffs[3], 2*coeffs[1],   coeffs[4]],
+                  [  coeffs[5],   coeffs[4], 2*coeffs[2]]])
+    rhs = -np.array([coeffs[6], coeffs[7], coeffs[8]])
+    [p_opt, q_opt, r_opt] = np.linalg.solve(J, rhs)
+    eigs, vecs = np.linalg.eigh(J)
+
+    if eigs[0]>0 and eigs[1]>0 and eigs[2]>0:
+        v=p.copy()
+        v.scale(p_opt)
+        v.axpy(q_opt, q)
+        v.axpy(r_opt, r)
+    else:
+        neg_vecs=[]
+        neg_eigs=[]
+        for ind, eig in enumerate(eigs):
+            if eig<=0:
+                neg_vecs.append(vecs[:,ind])
+                neg_eigs.append(eig)
+        if fp.rank==0:
+            print(f"Interpolant not convex: eigs={neg_eigs}, vecs={neg_vecs}, choosing minimum energy from list")
+        min_index=np.argmin(E_list)
+        v=p.copy()
+        v.scale(xp[min_index])
+        v.axpy(xq[min_index], q)
+        v.axpy(xr[min_index], r)
+    
+    return v, coeffs, E_list, [p_opt, q_opt, r_opt]
