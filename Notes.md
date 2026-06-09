@@ -12,7 +12,7 @@ We now have for comparison three methods:
   - [x] Cubic backtracking
   - [x] Parallelogram
 - [x] Parallelize code
-- [ ] 3D interpolant
+- [x] 3D interpolant -- usually gives a saddle point
 - [ ] Run examples
   - [ ] Check efficiency, both in FLOPs and wall clock time
   - [ ] Check scaling
