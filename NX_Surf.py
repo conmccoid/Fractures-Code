@@ -4,7 +4,7 @@ from mpi4py import MPI
 import argparse
 import sys
 
-def main(id_list=['Surf_AltMin','Surf_CubicBacktracking','Surf_Parallelogram'],en_list=None, WriteSwitch=True):
+def main(id_list=['Surf_AltMin','Surf_CubicBacktracking','Surf_Parallelogram','Surf_Tetrahedron'],en_list=None, WriteSwitch=True):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
