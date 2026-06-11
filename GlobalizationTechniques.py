@@ -403,10 +403,10 @@ def tet(fp, x, p, q, r):
                   [  coeffs[3], 2*coeffs[1],   coeffs[4]],
                   [  coeffs[5],   coeffs[4], 2*coeffs[2]]])
     rhs = -np.array([coeffs[6], coeffs[7], coeffs[8]])
-    [p_opt, q_opt, r_opt] = np.linalg.solve(J, rhs)
     eigs, vecs = np.linalg.eigh(J)
 
     if eigs[0]>0 and eigs[1]>0 and eigs[2]>0:
+        [p_opt, q_opt, r_opt] = np.linalg.solve(J, rhs)
         v=p.copy()
         v.scale(p_opt)
         v.axpy(q_opt, q)
@@ -421,9 +421,12 @@ def tet(fp, x, p, q, r):
         if fp.rank==0:
             print(f"Interpolant not convex: eigs={neg_eigs}, vecs={neg_vecs}, choosing minimum energy from list")
         min_index=np.argmin(E_list)
+        p_opt= xp[min_index]
+        q_opt= xq[min_index]
+        r_opt= xr[min_index]
         v=p.copy()
-        v.scale(xp[min_index])
-        v.axpy(xq[min_index], q)
-        v.axpy(xr[min_index], r)
+        v.scale(p_opt)
+        v.axpy(q_opt, q)
+        v.axpy(r_opt, r)
     
     return v, coeffs, E_list, [p_opt, q_opt, r_opt]
