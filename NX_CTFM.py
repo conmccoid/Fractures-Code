@@ -4,7 +4,7 @@ from mpi4py import MPI
 import argparse
 import sys
 
-def main(id_list=['CTFM_AltMin','CTFM_CubicBacktracking','CTFM_Parallelogram'],en_list=None, WriteSwitch=True):
+def main(id_list=['CTFM_AltMin','CTFM_CubicBacktracking','CTFM_Parallelogram','CTFM_Tetrahedron'],en_list=None, WriteSwitch=True):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
@@ -15,9 +15,11 @@ def main(id_list=['CTFM_AltMin','CTFM_CubicBacktracking','CTFM_Parallelogram'],e
         comm.Barrier()
         en3, id3=EX('Parallelogram',WriteSwitch=True)
         comm.Barrier()
+        en4, id4=EX('Tetrahedron',WriteSwitch=True)
+        comm.Barrier()
         if rank == 0:
-            id_list=[id1,id2,id3]
-            en_list=[en1,en2,en3]
+            id_list=[id1,id2,id3,id4]
+            en_list=[en1,en2,en3,en4]
 
     if rank == 0:
         plotNX('CTFM',id_list, en_list)
