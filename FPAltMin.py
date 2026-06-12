@@ -14,9 +14,12 @@ from JAltMin import JAltMin
 class FPAltMin:
     def setUp(self,E_u, E_v, E_uu, E_vv, E_uv, E_vu, bcs_u, bcs_v):
         
-        # PETSc.Log.begin()
-        # PETSc.Options().insertString("-log_view")
+        PETSc.Log.begin()
+        PETSc.Options().insertString("-log_view :petsc_log.txt")
 
+        stage_fpsetup = PETSc.Log.Stage("FP setup")
+
+        stage_fpsetup.push()
         # self.comm=MPI.COMM_WORLD
         self.comm=self.u.function_space.mesh.comm
         self.rank=self.comm.rank
@@ -58,6 +61,8 @@ class FPAltMin:
 
         pyvista.OFF_SCREEN = True
         pyvista.set_jupyter_backend('trame')
+
+        stage_fpsetup.pop()
 
     def createVecMat(self):
         b_u = self.u.x.petsc_vec.duplicate()

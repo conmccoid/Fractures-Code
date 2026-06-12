@@ -8,6 +8,10 @@ import csv
 
 class OuterSolver:
     def __init__(self, fp, example, method, loads, ksp_type="gmres", rtol=1.0e-3, max_it=100, restarts=100, monitor='off'):
+        
+        stage_ossetup = PETSc.Log.Stage("Outer solver setup")
+        stage_ossetup.push()
+
         self.fp = fp
         self.example = example
         self.method = method
@@ -17,6 +21,8 @@ class OuterSolver:
         self.setUp()
         if self.method!='AltMin':
             self.SNESKSP = KSPsetUp(self.fp, self.J, type=ksp_type, rtol=rtol, max_it=max_it, restarts=restarts, monitor=monitor)  # Set up the KSP solver
+
+        stage_ossetup.pop()
 
     def setIdentifier(self):
         self.identifier=f"{self.example}_{self.method}"
@@ -28,6 +34,9 @@ class OuterSolver:
     
     def solve(self, WriteSwitch=False, PlotSwitch=False, maxit=100, tol=1e-4):
 
+        stage_altmin = PETSc.Log.Stage("AltMin step")
+        stage_mspin = PETSc.Log.Stage("MSPIN solve")
+        stage_global = PETSc.Log.Stage("Globalization technique")
         # write headers to saved files
         if WriteSwitch:
             with io.XDMFFile(self.fp.comm, f"output/EX_{self.identifier}.xdmf","w") as xdmf:
@@ -53,7 +62,9 @@ class OuterSolver:
             
             start_time = PETSc.Log.getTime() # or time.perf_counter()?
             iteration=0
+            stage_altmin.push()
             self.fp.Fn(None, self.x, self.res)  # Evaluate the function: run one iteration of AltMin to satisfy BCs
+            stage_altmin.pop()
             if PlotSwitch:
                 plotEnergyLandscape(self.fp,self.x,self.res) # temporary
                 print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
@@ -65,7 +76,9 @@ class OuterSolver:
 
             while error > tol and iteration < maxit:
                 iteration += 1
+                stage_altmin.push()
                 self.fp.Fn(None, self.x, self.res)
+                stage_altmin.pop()
                 if self.method=='AltMin':
                     if PlotSwitch:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary
@@ -79,13 +92,16 @@ class OuterSolver:
                     self.x += self.res # update solution
                 else:
                     # Solve the linear system
+                    stage_mspin.push()
                     self.fp.PJ.updateMat() # update Jacobian matrix in Python context
                     self.fp.PJ.getKSPs() # update KSPs
                     self.SNESKSP.solve(self.res, self.p)  # Solve the linear system
                     self.fp.PJ.resetKSPs() # reset KSPs
                     self.fp.PJ.destroyMat() # destroy Jacobian matrix components to free memory before solve
+                    stage_mspin.pop()
                     self.energies[i_t,6]+=self.SNESKSP.getIterationNumber()
                     DBTrick(self.fp,self.x,self.p) # apply DB trick to search direction
+                    stage_global.push()
                     if self.method=='CubicBacktracking': # Run cubic backtracking in situ
                         if PlotSwitch:
                             plotEnergyLandscape(self.fp,self.x,self.p)
@@ -120,6 +136,7 @@ class OuterSolver:
                         stepu.destroy()
                         resv0.destroy()
                     boxConstraints(self.fp,self.x) # apply box constraints to solution for backtracking methods
+                    stage_global.pop()
                 self.fp.updateUV(self.x)
                 error = self.fp.updateError()
                 self.fp.monitor(iteration)
