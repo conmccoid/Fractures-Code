@@ -9,15 +9,18 @@ import csv
 class OuterSolver:
     def __init__(self, fp, example, method, loads, ksp_type="gmres", rtol=1.0e-3, max_it=100, restarts=100, monitor='off'):
         
-        stage_ossetup = PETSc.Log.Stage("Outer solver setup")
-        stage_ossetup.push()
-
         self.fp = fp
         self.example = example
         self.method = method
         self.loads = loads
         self.energies = np.zeros((loads.shape[0], 7)) # intialize energy storage
         self.setIdentifier()
+
+        PETSc.Log.begin()
+        PETSc.Options().insertString(f"-log_view :LOG_{self.identifier}.txt")
+        stage_ossetup = PETSc.Log.Stage("OS setup")
+        stage_ossetup.push()
+
         self.setUp()
         if self.method!='AltMin':
             self.SNESKSP = KSPsetUp(self.fp, self.J, type=ksp_type, rtol=rtol, max_it=max_it, restarts=restarts, monitor=monitor)  # Set up the KSP solver
@@ -36,7 +39,7 @@ class OuterSolver:
 
         stage_altmin = PETSc.Log.Stage("AltMin step")
         stage_mspin = PETSc.Log.Stage("MSPIN solve")
-        stage_global = PETSc.Log.Stage("Globalization technique")
+        stage_global = PETSc.Log.Stage("Glob. tech.")
         # write headers to saved files
         if WriteSwitch:
             with io.XDMFFile(self.fp.comm, f"output/EX_{self.identifier}.xdmf","w") as xdmf:
