@@ -30,6 +30,9 @@ class JAltMin:
     def getKSPs(self):
         self.ksp_uu=self.elastic_solver.getKSP()
         self.ksp_vv=self.damage_solver.getKSP()
+        self.saveTolerances=[self.ksp_uu.getTolerances()[0], self.ksp_vv.getTolerances()[0]]
+        self.ksp_uu.setTolerances(rtol=1.0e-3)
+        self.ksp_vv.setTolerances(rtol=1.0e-3)
         self.opts=PETSc.Options()
         self.opts['ksp_reuse_preconditioner'] = True
         self.ksp_uu.setFromOptions()
@@ -40,6 +43,8 @@ class JAltMin:
         self.IS_v=self.damage_solver.getVIInactiveSet() # get inactive set from damage solver
 
     def resetKSPs(self):
+        self.ksp_uu.setTolerances(rtol=self.saveTolerances[0])
+        self.ksp_vv.setTolerances(rtol=self.saveTolerances[1])
         self.opts['ksp_reuse_preconditioner'] = False
         self.ksp_uu.setFromOptions()
         self.ksp_vv.setFromOptions()
