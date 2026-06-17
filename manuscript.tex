@@ -58,9 +58,13 @@ In particular, in Section \ref{subsec: mspin} we will examine applying MSPIN to 
 \subsection{MSPIN}
 \label{subsec: mspin}
 
+Multiplicative Schwarz preconditioning inexact Newton (MSPIN) was first described in (nb: cite Cai and Keyes), with further explanation for field-split Schwarz methods in (nb: cite Liu and Keyes).
 MSPIN has been previously applied to phase-field fracture models in (nb: cite 3K).
-There, the authors used cubic backtracking to globalize the Newton direction.
+There, the authors used cubic backtracking to globalize the Newton direction, see Section \ref{subsec: cb} below.
 Note that their model differs slightly from the one presented here.
+
+We present MSPIN as applied to AltMin.
+[fill in once notation is specified from prev. section]
 
 \subsection{Cubic Backtracking}
 \label{subsec: cb}
@@ -86,13 +90,17 @@ This algorithm is summarized in Algorithm \ref{alg: cb}.
 	\end{algorithmic}
 \end{algorithm}
 
-\section{Parallelogram globalization}
-\label{subsec: pg}
+\section{Interpolant minimization}
 
 When using MSPIN, one has two potential directions for minimization: the AltMin direction $\vec{q}$ and the Newton direction $\vec{p}$.
 Let's try using both while applying similar ideas to cubic backtracking.
-Rather than find the minimum of a single variable cubic polynomial, find the minimum of a two-variable quadratic polynomial.
+Rather than find the minimum of a single variable cubic polynomial, find the minimum of a multivariate quadratic polynomial interpolant.
+Here we present three options for interpolants to minimize.
 
+\subsection{Parallelogram}
+\label{subsec: para}
+
+We begin by considering a 2D interpolant using the AltMin and Newton directions, $\vec{q}$ and $\vec{p}$.
 For this interpolant, we need six pieces of information.
 Five are provided by MSPIN:
 the value of the function at the starting point, $f(\vec{x})$;
@@ -139,18 +147,100 @@ The determinant of the Jacobian matrix is $D = 4ac - b^2$, used in the denominat
 If $D>0$ and $a>0$, then the critical point is indeed a minimum.
 Otherwise, this point may be a maximum or a saddle point.
 This becomes more likely when the calculation of the gradient of the function is subject to numerical error, especially when the magnitude of the gradient is small in the AltMin and Newton directions.
-To compensate for these situations, one can try replacing the information from the gradient with more evaluations of the function, resulting in a P2 finite element:
+
+Should the calculated critical point be deemed unacceptable, either by being too far from the starting point or failing the second derivative test, then one should change strategies.
+One can choose one of the other interpolants suggested here, or select one of the three corners of the parallelogram with the lowest energy as the next step.
+
+\subsection{Triangle}
+\label{subsec: tri}
+
+If one wants to form interpolants using only evaluations of the objective function and not its gradient, then one can form a P2 finite element by evaluating the objective function at six points.
+Four of these points are the corners of the parallelogram described previously.
+The remaining two are $\vec{x} + 2 \vec{p}$ and $\vec{x} + 2 \vec{q}$.
+The coefficients of the polynomial $P(\alpha, \beta)$ are then:
 \begin{align*}
+	f = f(\vec{x}), \qquad
+	b = f(\vec{x} + \vec{q} + \vec{p}) + f - f(\vec{x} + \vec{q}) - f(\vec{x} + \vec{p}), \\
 	a = \frac{1}{2} \left ( f(\vec{x} + 2 \vec{q}) + f \right ) - f(\vec{x} + \vec{q}), \qquad
 	d = f(\vec{x} + \vec{q}) - f - a, \\
 	c = \frac{1}{2} \left ( f(\vec{x} + 2 \vec{p}) + f \right ) - f(\vec{x} + \vec{p}), \qquad
-	e = f(\vec{x} + \vec{p}) - f - c,
+	e = f(\vec{x} + \vec{p}) - f - c.
 \end{align*}
-with $b$ and $f$ remaining the same.
-This requires only two more evaluations of the objective function.
+Like the parallelogram, the minimum of this interpolant occurs at
+\begin{equation*}
+	\alpha = \frac{be - 2cd}{4ac-b^2}, \quad \beta = \frac{-db - 2ae}{4ac-b^2}.
+\end{equation*}
+
+If one started with the parallelogram interpolant but were unsatisfied by its critical point, then the triangle interpolant requires only two more evaluations of the objective function.
 If the new interpolant still fails the second derivative test, then the next step in the algorithm can be chosen as that which has the lowest value of the objective function from amongst the five values already found.
+
+\subsection{Tetrahedron}
+\label{subsec: tet}
+
+Lastly, let us consider forming a 3D interpolant by including the intermediate step in AltMin.
+That is, let $\vec{p}$ and $\vec{q}$ remain the same, and add in the direction $\vec{r}$, which is the restriction of $\vec{q}$ to the damage degrees of freedom.
+
+To form the P2 finite element for this 3D interpolant, we need 10 evaluations of the objective function.
+This will be the six already used for the triangle interpolant, as well as $f(\vec{x} + \vec{r})$, $f(\vec{x} + \vec{r} + \vec{q})$, $f(\vec{x} + \vec{r} + \vec{p})$, and $f(\vec{x} + 2 \vec{r})$.
+The interpolant now appears as
+\begin{equation*}
+	Q(\alpha, \beta, \gamma) = a \alpha^2 + b \beta^2 + c \gamma^2 + d \alpha \beta + e \beta \gamma + f \alpha \gamma + g \alpha + h \beta + i \gamma + j.
+\end{equation*}
+These coefficients are equal to
+\begin{align*}
+	j = f(\vec{x}), \qquad
+	d = f(\vec{x} + \vec{p} + \vec{q}) - f(\vec{x} + \vec{q}) - f(\vec{x} + \vec{p}) + j, \\
+	e = f(\vec{x} + \vec{r} + \vec{p}) - f(\vec{x} + \vec{p}) - f(\vec{x} + \vec{r}) + j, \\
+	f = f(\vec{x} + \vec{q} + \vec{r}) - f(\vec{x} + \vec{r}) - f(\vec{x} + \vec{q}) + j,\\
+	a = \frac{1}{2} \left ( f(\vec{x} + 2 \vec{q}) - 2 f(\vec{x} + \vec{q}) + j \right ), \qquad
+	g = f(\vec{x} + \vec{q}) - j - a, \\
+	b = \frac{1}{2} \left ( f(\vec{x} + 2 \vec{p}) - 2 f(\vec{x} + \vec{p}) + j \right ), \qquad
+	h = f(\vec{x} + \vec{p}) - j - b, \\
+	c = \frac{1}{2} \left ( f(\vec{x} + 2 \vec{r}) - 2 f(\vec{x} + \vec{r}) + j \right ), \qquad
+	i = f(\vec{x} + \vec{r}) - j - c.
+\end{align*}
+The minimum occurs at the solution to the following system:
+\begin{equation*}
+	\begin{bmatrix} 2a & d & f \\ d & 2b & e \\ f & e & 2c \end{bmatrix} \begin{bmatrix} \alpha \\ \beta \\ \gamma \end{bmatrix} = - \begin{bmatrix} g \\ h \\ i \end{bmatrix},
+\end{equation*}
+but only if the matrix of this system is positive definite.
+Otherwise, this critical point is a saddle point or a maximum.
 
 \section{Numerical comparisons}
 \label{sec: num}
+
+Numerical experiments conducted for this article are run using FEniCSx for its finite element library, petsc4py for solving linear systems, and mpi4py for parallelization.
+The Docker image used for these experiments can be found at (nb: DockerHub link) (nb: cite Docker and Apptainer).
+Code for these experiments can be found at (nb: GitHub link).
+
+\subsection{Surfing boundary conditions}
+\label{subsec: surf}
+
+For this example, we begin with an initial crack of length (nb: length) in an otherwise rectangular domain with an unstructured grid of (nb: number) points.
+The boundary conditions set the damage at maximum on the initial crack and zero on the boundary.
+For displacement, the boundary conditions are of Neumann type, setting
+\begin{align*}
+	\frac{\partial u}{\partial x} = \frac{K}{2 \mu} \sqrt{\frac{r(t)}{2 \pi}} \left ( k - \cos \theta(t) \right ) \cos \frac{\theta(t)}{2},
+	\quad
+	\frac{\partial u}{\partial y} = \frac{K}{2 \mu} \sqrt{\frac{r(t)}{2 \pi}} \left ( k - \cos \theta(t) \right ) \sin \frac{\theta(t)}{2},
+	\\
+	r(t) = \sqrt{(x-t)^2 + y^2}, \quad \theta(t) = \arctan \frac{y}{x-t},
+\end{align*}
+where $t$ defines the force exerted on the system, (nb: and define the remaining parameters).
+
+[figure of domain, crack progression]
+
+[compare energy]
+
+[compare outer iterations]
+
+[discussion on number of inner iterations]
+
+[compare flop counts]
+
+[compare wall clock time]
+
+\subsection{CTFM (nb: expand acronym)}
+\label{subsec: ctfm}
 
 \end{document}
