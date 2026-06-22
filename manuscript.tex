@@ -83,11 +83,34 @@ Find the minimum of this polynomial and test the value of the function there, th
 If the function is smaller at this point, then this ends the line search.
 Otherwise, find the minimum of the cubic interpolant and repeat.
 This algorithm is summarized in Algorithm \ref{alg: cb}.
-\begin{algorithm} \label{alg: cb}
-	\caption{Cubic backtracking (nb: cite)}
+\begin{algorithm}
+	\caption{Cubic backtracking (nb: cite) \\
+		$p$: search direction, $x$: current position, $f$: objective function, $\alpha$: bound on step size, $\tau$: tolerance (nb: of some kind, check)}
 	\begin{algorithmic}[1]
-	\State inputs
+	\State Calculate $c = p^\top \nabla f(x)$
+	\If{$f(x + p) \leq f(x) + \alpha c$}
+		\State Set $\lambda = 1$
+	\ElsIf{$\norm{p} \leq \tau$}
+		\State (nb: check)
+	\Else
+		\State Find $\lambda$ such that $x + \lambda p$ minimizes the degree 2 polynomial interpolating $f(x)$, $f(x + p)$, and $g$: $$\lambda = -c / \left ( 2\left ( f(x+p) - f(x) - c \right ) \right )$$
+		\State Set $\lambda_0=1$, $\lambda_1 = \lambda$
+		\While{$f(x + \lambda p) > f(x) + \alpha \lambda c$}
+			\State Find the coefficients of the degree 3 polynomial interpolating $f(x)$, $f(x + \lambda_0 p)$, $f(x + \lambda_1 p)$, and $g$: $$\begin{bmatrix} a \\ b \end{bmatrix} = \frac{1}{\lambda_1 - \lambda_0} \begin{bmatrix} 1/\lambda_1^2 & -1/\lambda_0^2 \\  -\lambda_0/\lambda_1^2 & \lambda_1/\lambda_0^2 \end{bmatrix} \begin{bmatrix} f(x+\lambda_1 p) - f(x) - \lambda_1 c \\ f(x+\lambda_0 p) - f(x) - \lambda_0 c \end{bmatrix}$$
+			\If{$a=0$}
+				\State $\lambda = -c / 2b$
+			\Else
+				\State $\lambda = \frac{-b + \sqrt{b^2 - 3a c}}{3a}$
+			\EndIf
+			\If{$\lambda > 0.5 \lambda_1$}
+				\State $\lambda = 0.5 \lambda_1$
+			\EndIf
+			\State $\lambda_0 = \lambda_1$, $\lambda_1 = \lambda$
+		\EndWhile
+	\EndIf
+	\State Return $\lambda$, amount to travel in search direction $p$ to minimize $f(x)$
 	\end{algorithmic}
+	\label{alg: cb}
 \end{algorithm}
 
 \section{Interpolant minimization}
