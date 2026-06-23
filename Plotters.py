@@ -83,7 +83,7 @@ def plotNX(example,id_list,en_list):
                               delimiter=',',skiprows=1)
         else:
             energies = en_list[i]
-        ax0[0].plot(energies[:,0],energies[:,5],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+        ax0.plot(energies[:,0],energies[:,5],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
         if energies.shape[1]>5:
             ax1[0].plot(energies[:,0],energies[:,6],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
             ax1[1].plot(energies[:,0],energies[:,6]/np.maximum(1,energies[:,5]),label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
@@ -97,7 +97,7 @@ def plotNX(example,id_list,en_list):
     ax0.set_ylabel('Outer iterations')
     ax0.legend()
     fig0.savefig(f"output/FIG_{example}_outerIts.pdf")
-    
+
     ax1[0].set_xlabel('t')
     ax1[0].set_ylabel('Iterations')
     # ax1[0].set_yscale('log')
