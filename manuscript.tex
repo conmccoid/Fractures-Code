@@ -2,6 +2,7 @@
 
 \usepackage{math}
 \usepackage{algorithm, algpseudocode}
+\usepackage{graphicx}
 
 \title{Phase-field fracture models and MSPIN} % nb: placeholder
 \author{Conor McCoid \and Blaise Bourdin}
@@ -250,18 +251,63 @@ For displacement, the boundary conditions are of Neumann type, setting
 	r(t) = \sqrt{(x-t)^2 + y^2}, \quad \theta(t) = \arctan \frac{y}{x-t},
 \end{align*}
 where $t$ defines the force exerted on the system, (nb: and define the remaining parameters).
+\begin{figure}
+	\centering
+	\includegraphics[width=0.3\textwidth]{output/PLOT_Surf_0.png}
+	\includegraphics[width=0.3\textwidth]{output/PLOT_Surf_3.png}
+	\includegraphics[width=0.3\textwidth]{output/PLOT_Surf_6.png}
+	\caption{Crack progression of the surfing boundary conditions example.}
+	\label{plot: surf}
+\end{figure}
+Figure \ref{plot: surf} shows the progression of the crack for this example.
 
-[figure of domain, crack progression]
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{output/FIG_Surf_energy.pdf}
+	\caption{Energy for the surfing example using the five methods tested.}
+	\label{fig: surf energy}
+\end{figure}
+Figure \ref{fig: surf energy} shows the resulting energies produced by each of the five methods.
+This can be used to determine correctness of the solutions.
+We see that the elastic energy for the cubic backtracking continues to rise over all time steps, while for all other methods there is a point where it decreases.
+Ultimately, the other four methods find lower total energy, and therefore produce more correct crack progression.
 
-[compare energy]
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{output/FIG_Surf_outerIts.pdf}
+	\caption{Outer iterations (number of linear solves of the AltMin system) for each load step of the surfing example.}
+	\label{fig: surf outer}
+\end{figure}
+Figure \ref{fig: surf outer} gives the number of outer iterations required for each load step to be completed for each of the five methods.
+An outer iteration is characterized by a solve of the linear system defined by AltMin.
+Cubic backtracking requires the lowest number of outer iterations, but we have seen that it produces the most problematic solution.
+AltMin and the parallelogram interpolant give roughly the same number of outer iterations, while the triangle and tetrahedron interpolants requiring about half as many.
+The tetrahedron does not appear to signficantly improve over the triangle, though it requires more function evaluations.
 
-[compare outer iterations]
-
-[discussion on number of inner iterations]
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{output/FIG_Surf_innerIts.pdf}
+	\caption{On the left, total number of inner iterations (matrix-vector multiplications required to solve the Newton system to within tolerance) for the four methods that use inexact Newton.
+	On the right, average number of inner iterations per outer iterations.}
+	\label{fig: surf inner}
+\end{figure}
+Computation time is determined not only by the number of outer iterations, but also the number of inner iterations, a measure of the time to solve the inexact Newton step.
+However, the average number of inner iterations per outer iteration remains fairly constant for each method, meaning reducing the number of outer iterations remains the goal.
+Cubic backtracking has a high average, at times up to 6, while the three types of interpolants all remain between 3 and 5, averaging 4 over all load steps.
 
 [compare flop counts]
 
-[compare wall clock time]
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{output/FIG_Surf_time.pdf}
+	\caption{Wall clock time for solving the surfing example for all five methods.}
+	\label{fig: surf time}
+\end{figure}
+Wall clock time includes several steps that can be avoided through code design, such as print statements and communication.
+However, it gives some indication of the effectiveness of theoretical speedups.
+Figure \ref{fig: surf time} gives the wall clock time for each of the five methods for each load step.
+We see that AltMin has the best time of the accurate methods.
+It is clear that care must be taken to reduce the number of flops spent on the inexact Newton step.
 
 \subsection{CTFM (nb: expand acronym)}
 \label{subsec: ctfm}
