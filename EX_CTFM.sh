@@ -6,11 +6,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=64
 #SBATCH --cpus-per-task=1
-#SBATCH --time=3:00:00
+#SBATCH --time=1:00:00
 #SBATCH --mail-user=mccoidc@mcmaster.ca
 #SBATCH --no-requeue
 
 srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method AltMin --write
-srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method CubicBacktracking --write
-srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method Parallelogram --write
-srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method Tetrahedron --write
