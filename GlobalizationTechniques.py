@@ -268,7 +268,7 @@ def pm2(fp, x, q, p, filename=None):
 def pm3(fp, x, q, p, filename=None):
     """
     Find the minimum of a quadratic 2D polynomial that interpolates the residual in a parallelogram.
-    Check convexity of the interpolant; if concave down or saddle point, change interpolant; if still not concave up, choose min energy from list.
+    Check convexity of the interpolant; if concave down or saddle point, choose min energy from list.
     
     Parameters:
     - fp: function handling example
@@ -286,24 +286,10 @@ def pm3(fp, x, q, p, filename=None):
         alpha=alpha_opt
         beta=beta_opt
     else:
-        # change to P2 element on triangle bounded by 2q and 2p -- b and f remain the same, a, c, d, e change
         if fp.rank==0:
-            print("Interpolant not convex, changing to P2 element")
-        [a,b,c,d,e,f,r,alpha,beta], [E0,Eq,Ep,Epq,E2q,E2p] = pbt2(fp,x,q,p,[E0,Eq,Ep,Epq])
-
-        if r>0 and a>0:
-            if fp.rank==0:
-                print("New interpolant convex, using minimum")
-            result=q.copy()
-            result.scale(alpha)
-            result.axpy(beta,p)
-
-            angle=-angle
-        else:
-            if fp.rank==0:
-                print("New interpolant still not convex, choosing minimum energy from list")
-            E_list=[Eq, Ep, Epq, E2q, E2p]
-            result, _, _ = pmList(fp, x, q, p, E_list)
+            print("Interpolant not convex, choosing minimum energy from list")
+        E_list=[Eq, Ep, Epq]
+        result, alpha, beta = pmList(fp, x, q, p, E_list)
 
     return result, angle, alpha, beta, alpha_opt, beta_opt, r, a
 

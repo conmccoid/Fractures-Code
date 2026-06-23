@@ -4,7 +4,7 @@ from mpi4py import MPI
 import argparse
 import sys
 
-def main(id_list=['Surf_AltMin','Surf_CubicBacktracking','Surf_Parallelogram','Surf_Tetrahedron'],en_list=None, WriteSwitch=True):
+def main(id_list=['Surf_AltMin','Surf_CubicBacktracking','Surf_Parallelogram','Surf_Triangle','Surf_Tetrahedron'],en_list=None, WriteSwitch=True):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
@@ -12,14 +12,12 @@ def main(id_list=['Surf_AltMin','Surf_CubicBacktracking','Surf_Parallelogram','S
         en1, id1=EX('AltMin',WriteSwitch=True)
         comm.Barrier() # ensure all processes have finished writing before moving on
         en2, id2=EX('CubicBacktracking',WriteSwitch=True)
-        comm.Barrier()
         en3, id3=EX('Parallelogram',WriteSwitch=True)
-        comm.Barrier()
-        en4, id4=EX('Tetrahedron',WriteSwitch=True)
-        comm.Barrier()
+        en4, id4=EX('Triangle',WriteSwitch=True)
+        en5, id5=EX('Tetrahedron',WriteSwitch=True)
         if rank == 0:
-            id_list=[id1,id2,id3,id4]
-            en_list=[en1,en2,en3,en4]
+            id_list=[id1,id2,id3,id4,id5]
+            en_list=[en1,en2,en3,en4,en5]
 
     if rank == 0:
         plotNX('Surf',id_list, en_list)

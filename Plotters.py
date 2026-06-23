@@ -72,9 +72,10 @@ def plotNX(example,id_list,en_list):
     marker= ['o', 's', 'D', '^', 'v']
     color= ['g', 'r', 'c', 'm', 'y']
     ms=5
-    fig1, ax1=plt.subplots(1,3)
-    fig2, ax2=plt.subplots(1,3)
-    fig3, ax3=plt.subplots(1,1)
+    fig0, ax0=plt.subplots(1,1) # outerIts.pdf
+    fig1, ax1=plt.subplots(1,2) # innerIts.pdf
+    fig2, ax2=plt.subplots(3,1) # energy.pdf
+    fig3, ax3=plt.subplots(1,1) # time.pdf
 
     for i, identifier in enumerate(id_list):
         if en_list==None:
@@ -82,31 +83,31 @@ def plotNX(example,id_list,en_list):
                               delimiter=',',skiprows=1)
         else:
             energies = en_list[i]
-        ax1[0].plot(energies[:,0],energies[:,5],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+        ax0[0].plot(energies[:,0],energies[:,5],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
         if energies.shape[1]>5:
-            ax1[1].plot(energies[:,0],energies[:,6],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
-            ax1[2].plot(energies[:,0],energies[:,6]/np.maximum(1,energies[:,5]),label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+            ax1[0].plot(energies[:,0],energies[:,6],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
+            ax1[1].plot(energies[:,0],energies[:,6]/np.maximum(1,energies[:,5]),label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
 
         ax2[0].plot(energies[:,0],energies[:,1],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
         ax2[1].plot(energies[:,0],energies[:,2],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
         ax2[2].plot(energies[:,0],energies[:,3],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
         ax3.plot(energies[:,0],energies[:,4],label=identifier,ls='--',marker=marker[i],color=color[i],ms=ms)
 
+    ax0.set_xlabel('t')
+    ax0.set_ylabel('Outer iterations')
+    ax0.legend()
+    fig0.savefig(f"output/FIG_{example}_outerIts.pdf")
+    
     ax1[0].set_xlabel('t')
     ax1[0].set_ylabel('Iterations')
     # ax1[0].set_yscale('log')
     # ax1[0].legend()
-    ax1[0].set_title('Outer iterations')
+    ax1[0].set_title('Inner iterations')
     ax1[1].set_xlabel('t')
-    ax1[1].set_ylabel('Iterations')
-    # ax1[1].set_yscale('log')
-    # ax1[1].legend()
-    ax1[1].set_title('Inner iterations')
-    ax1[2].set_xlabel('t')
-    ax1[2].set_ylabel('Ave. inner / outer')
-    ax1[2].legend()
-    ax1[2].set_title('Ave. inner per outer')
-    fig1.savefig(f"output/FIG_{example}_its.pdf")
+    ax1[1].set_ylabel('Ave. inner / outer')
+    ax1[1].legend()
+    ax1[1].set_title('Ave. inner per outer')
+    fig1.savefig(f"output/FIG_{example}_innerIts.pdf")
 
     ax2[0].set_xlabel('t')
     ax2[0].set_ylabel('Elastic energy')

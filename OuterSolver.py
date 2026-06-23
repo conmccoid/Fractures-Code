@@ -111,7 +111,7 @@ class OuterSolver:
                         cbt(self.fp, self.x, self.p, self.res)
                         self.x.axpy(1.0, self.p) # update solution
                     elif self.method=='Parallelogram':
-                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm23(self.fp, self.x, self.res, self.p)
+                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm3(self.fp, self.x, self.res, self.p)
                         if PlotSwitch:
                             print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
                             plotEnergyLandscape2D(self.fp,self.x,self.res,self.p,[beta, alpha])
@@ -122,6 +122,15 @@ class OuterSolver:
                                 writer=csv.writer(csv.file,delimiter=',')
                                 writer.writerow([iteration,vnorm,angle,alpha,beta,alpha_opt,beta_opt,det,curv_AltMin])
 
+                        self.x.axpy(1.0, v) # update solution
+                        v.destroy() # clean up parallelogram step vector
+                    elif self.method=='Triangle':
+                        v, angle, alpha, beta, alpha_opt, beta_opt, det, curv_AltMin = pm23(self.fp, self.x, self.res, self.p)
+                        if PlotSwitch:
+                            print(f"Step in AltMin: {alpha}, Step in Newton: {beta}")
+                            plotEnergyLandscape2D(self.fp,self.x,self.res,self.p,[beta, alpha])
+
+                        vnorm = v.norm()
                         self.x.axpy(1.0, v) # update solution
                         v.destroy() # clean up parallelogram step vector
                     elif self.method=='Tetrahedron':
