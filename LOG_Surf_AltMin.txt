@@ -4,17 +4,17 @@
 
 ------------------------------------------------------------------ PETSc Performance Summary: ------------------------------------------------------------------
 
-Unknown Name on a linux-gnu-real64-32 named 56270ce6e4d2 with 4 processes, by Unknown on Mon Jun 15 18:09:46 2026
+Unknown Name on a linux-gnu-real64-32 named bb01 with 1 process, by mccoidc on Tue Jun 23 17:20:59 2026
 Using PETSc Release Version 3.24.0, unknown
 
                          Max       Max/Min     Avg       Total
-Time (sec):           7.193e+01     1.000   7.193e+01
+Time (sec):           3.583e+01     1.000   3.583e+01
 Objects:              0.000e+00     0.000   0.000e+00
-Flops:                1.462e+10     1.096   1.392e+10  5.567e+10
-Flops/sec:            2.033e+08     1.096   1.935e+08  7.740e+08
-MPI Msg Count:        5.213e+05     1.499   4.344e+05  1.738e+06
-MPI Msg Len (bytes):  2.170e+08     1.396   4.151e+02  7.214e+08
-MPI Reductions:       1.352e+04     1.000
+Flops:                3.970e+10     1.000   3.970e+10  3.970e+10
+Flops/sec:            1.108e+09     1.000   1.108e+09  1.108e+09
+MPI Msg Count:        0.000e+00     0.000   0.000e+00  0.000e+00
+MPI Msg Len (bytes):  0.000e+00     0.000   0.000e+00  0.000e+00
+MPI Reductions:       0.000e+00     0.000
 
 Flop counting convention: 1 flop = 1 real number operation of type (multiply/divide/add/subtract)
                             e.g., VecAXPY() for real vectors of length N --> 2N flops
@@ -22,9 +22,9 @@ Flop counting convention: 1 flop = 1 real number operation of type (multiply/div
 
 Summary of Stages:   ----- Time ------  ----- Flop ------  --- Messages ---  -- Message Lengths --  -- Reductions --
                         Avg     %Total     Avg     %Total    Count   %Total     Avg         %Total    Count   %Total
- 0:      Main Stage: 1.1025e+01  15.3%  2.2400e+07   0.0%  0.000e+00   0.0%  0.000e+00        0.0%  2.000e+00   0.0%
- 1: Outer solver setup: 1.5298e-02   0.0%  0.0000e+00   0.0%  0.000e+00   0.0%  0.000e+00        0.0%  7.000e+00   0.1%
- 2:     AltMin step: 4.7824e+01  66.5%  5.5647e+10 100.0%  1.738e+06 100.0%  4.152e+02      100.0%  1.347e+04  99.6%
+ 0:      Main Stage: 8.8146e+00  24.6%  2.2400e+07   0.1%  0.000e+00   0.0%  0.000e+00        0.0%  0.000e+00   0.0%
+ 1:        OS setup: 1.9394e-03   0.0%  0.0000e+00   0.0%  0.000e+00   0.0%  0.000e+00        0.0%  0.000e+00   0.0%
+ 2:     AltMin step: 2.3050e+01  64.3%  3.9681e+10  99.9%  0.000e+00   0.0%  0.000e+00        0.0%  0.000e+00   0.0%
 
 ------------------------------------------------------------------------------------------------------------------------
 See the 'Profiling' chapter of the users' manual for details on interpreting output.
@@ -48,55 +48,55 @@ Event                Count      Time (sec)     Flop                             
 
 --- Event Stage 0: Main Stage
 
-VecAXPY              860 1.0 1.0207e-02 1.1 5.64e+06 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0 100  0  0  0  2195
+VecAXPY              860 1.0 3.1849e-03 1.0 2.24e+07 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0 100  0  0  0  7033
 
---- Event Stage 1: Outer solver setup
+--- Event Stage 1: OS setup
 
-VecSet                 1 1.0 5.4010e-06 1.2 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecSet                 1 1.0 3.2060e-06 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
 
 --- Event Stage 2: AltMin step
 
-BuildTwoSided      11389 1.0 1.9982e+00 1.0 0.00e+00 0.0 4.0e+04 4.0e+00 0.0e+00  3  0  2  0  0   4  0  2  0  0     0
-BuildTwoSidedF      6618 1.0 1.8195e+00 1.1 0.00e+00 0.0 4.9e+04 1.1e+03 0.0e+00  2  0  3  7  0   4  0  3  7  0     0
-SFSetGraph          4771 1.0 4.4250e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-SFSetUp             4771 1.0 3.6737e-01 1.1 0.00e+00 0.0 3.2e+04 6.0e+01 0.0e+00  1  0  2  0  0   1  0  2  0  0     0
-SFPack            170435 1.0 1.0494e-01 1.1 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-SFUnpack          170435 1.0 4.0212e-02 1.2 1.83e+05 1.7 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0    14
-VecDot              1589 1.0 3.9420e-02 1.1 3.47e+06 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0   350
-VecTDot           297050 1.0 5.8669e+00 1.1 1.01e+09 1.1 0.0e+00 0.0e+00 0.0e+00  8  7  0  0  0  12  7  0  0  0   639
-VecNorm           150974 1.0 5.1326e+00 1.2 5.08e+08 1.1 0.0e+00 0.0e+00 0.0e+00  7  3  0  0  0  10  3  0  0  0   369
-VecCopy            11254 1.0 3.3115e-02 1.4 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-VecSet             10526 1.0 1.6161e-02 1.1 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-VecAXPY           293012 1.0 4.8760e-01 1.1 9.96e+08 1.1 0.0e+00 0.0e+00 0.0e+00  1  7  0  0  0   1  7  0  0  0  7621
-VecAYPX           143627 1.0 3.5725e-01 1.1 4.89e+08 1.1 0.0e+00 0.0e+00 0.0e+00  0  3  0  0  0   1  3  0  0  0  5110
-VecWAXPY            1589 1.0 3.9818e-03 1.2 1.74e+06 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0  1732
-VecAssemblyBegin     860 1.0 5.1592e-02 1.1 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-VecAssemblyEnd       860 1.0 4.0793e-03 1.1 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-VecScatterBegin   170435 1.0 1.0689e+00 1.2 0.00e+00 0.0 1.6e+06 3.8e+02 0.0e+00  1  0 94 85  0   2  0 94 85  0     0
-VecScatterEnd     170435 1.0 2.0302e+00 1.2 1.83e+05 1.7 0.0e+00 0.0e+00 0.0e+00  3  0  0  0  0   4  0  0  0  0     0
-VecReduceArith      3178 1.0 5.8866e-03 1.2 6.94e+06 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0  4685
-VecReduceComm       1589 1.0 3.4631e-02 1.3 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-MatMult           147665 1.0 8.5039e+00 1.1 5.70e+09 1.1 1.5e+06 4.0e+02 0.0e+00 11 39 85 81  0  17 39 85 81  0  2566
-MatSolve          148525 1.0 8.0980e+00 1.1 5.62e+09 1.1 0.0e+00 0.0e+00 0.0e+00 11 39  0  0  0  16 39  0  0  0  2653
-MatLUFactorNum      2449 1.0 8.2512e-01 1.2 1.92e+08 1.1 0.0e+00 0.0e+00 0.0e+00  1  1  0  0  0   2  1  0  0  0   879
-MatILUFactorSym     1590 1.0 8.3917e-02 1.4 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-MatAssemblyBegin    9665 1.0 2.0375e+00 1.1 0.00e+00 0.0 4.9e+04 1.1e+03 0.0e+00  3  0  3  7  0   4  0  3  7  0     0
-MatAssemblyEnd      9665 1.0 6.0407e-01 1.2 1.08e+06 1.7 3.2e+04 6.0e+01 1.6e+03  1  0  2  0 12   1  0  2  0 12     6
-MatGetRowIJ         1590 1.0 7.7435e-04 1.4 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-MatCreateSubMat     1589 1.0 1.1773e+00 1.0 0.00e+00 0.0 6.4e+04 1.6e+02 4.8e+03  2  0  4  1 35   2  0  4  1 35     0
-MatGetOrdering      1590 1.0 3.5807e-02 1.1 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-MatZeroEntries      2449 1.0 3.9125e-02 1.1 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-PCSetUp             2449 1.0 4.7380e-02 1.3 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-PCSetUpOnBlocks     2449 1.0 1.0456e+00 1.2 1.92e+08 1.1 0.0e+00 0.0e+00 0.0e+00  1  1  0  0  0   2  1  0  0  0   694
-PCApply           148525 1.0 8.8617e+00 1.1 5.62e+09 1.1 0.0e+00 0.0e+00 0.0e+00 12 39  0  0  0  18 39  0  0  0  2425
-PCApplyOnBlocks   148525 1.0 8.6063e+00 1.1 5.62e+09 1.1 0.0e+00 0.0e+00 0.0e+00 12 39  0  0  0  17 39  0  0  0  2497
-KSPSetUp            2449 1.0 2.6121e-02 1.1 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
-KSPSolve            2449 1.0 2.8607e+01 1.0 1.43e+10 1.1 1.5e+06 4.0e+02 0.0e+00 40 98 84 81  0  60 98 84 81  0  1901
-SNESSolve           1720 1.0 4.6625e+01 1.0 1.46e+10 1.1 1.7e+06 4.2e+02 1.3e+04 65 100 99 100 100  97 100 99 100 100  1194
-SNESSetUp              2 1.0 4.0878e-04 3.0 0.00e+00 0.0 0.0e+00 0.0e+00 1.0e+00  0  0  0  0  0   0  0  0  0  0     0
-SNESFunctionEval    3309 1.0 4.3565e+00 1.0 1.83e+05 1.7 9.9e+04 1.4e+02 0.0e+00  6  0  6  2  0   9  0  6  2  0     0
-SNESJacobianEval    2449 1.0 9.9911e+00 1.0 9.53e+07 1.0 4.9e+04 1.1e+03 2.0e+00 14  1  3  7  0  21  1  3  7  0    38
-SNESLineSearch      1589 1.0 2.3027e+00 1.0 3.79e+07 1.0 6.4e+04 1.5e+02 0.0e+00  3  0  4  1  0   5  0  4  1  0    65
+BuildTwoSided       4902 1.0 2.7494e-03 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+BuildTwoSidedF      1720 1.0 1.9777e-03 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+SFSetGraph          3182 1.0 5.5300e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+SFSetUp             3182 1.0 7.8993e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+SFPack             19600 1.0 1.2310e-03 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+SFUnpack           19600 1.0 1.0569e-03 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecDot              1590 1.0 1.6650e-03 1.0 1.38e+07 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0  8290
+VecTDot           210722 1.0 2.4887e-01 1.0 2.64e+09 1.0 0.0e+00 0.0e+00 0.0e+00  1  7  0  0  0   1  7  0  0  0 10592
+VecNorm           107811 1.0 9.0351e-02 1.0 1.34e+09 1.0 0.0e+00 0.0e+00 0.0e+00  0  3  0  0  0   0  3  0  0  0 14823
+VecCopy            11260 1.0 1.2322e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecSet              7351 1.0 6.0442e-03 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecAXPY           206682 1.0 2.2916e-01 1.0 2.60e+09 1.0 0.0e+00 0.0e+00 0.0e+00  1  7  0  0  0   1  7  0  0  0 11352
+VecAYPX           100461 1.0 2.1119e-01 1.0 1.27e+09 1.0 0.0e+00 0.0e+00 0.0e+00  1  3  0  0  0   1  3  0  0  0  6006
+VecWAXPY            1590 1.0 2.7459e-03 1.0 6.90e+06 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0  2514
+VecAssemblyBegin     860 1.0 4.9253e-03 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecAssemblyEnd       860 1.0 1.1775e-03 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecScatterBegin    19600 1.0 2.9935e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecScatterEnd      19600 1.0 7.6197e-03 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecReduceArith      3180 1.0 2.3220e-03 1.0 2.76e+07 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0 11889
+VecReduceComm       1590 1.0 1.8611e-04 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+MatMult           104501 1.0 4.0029e+00 1.0 1.52e+10 1.0 0.0e+00 0.0e+00 0.0e+00 11 38  0  0  0  17 38  0  0  0  3808
+MatSolve          105361 1.0 5.9057e+00 1.0 1.54e+10 1.0 0.0e+00 0.0e+00 0.0e+00 16 39  0  0  0  26 39  0  0  0  2610
+MatLUFactorNum      2450 1.0 6.4344e-01 1.0 7.45e+08 1.0 0.0e+00 0.0e+00 0.0e+00  2  2  0  0  0   3  2  0  0  0  1158
+MatILUFactorSym     1591 1.0 5.0487e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+MatAssemblyBegin    6490 1.0 5.1801e-04 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+MatAssemblyEnd      6490 1.0 6.3584e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+MatGetRowIJ         1591 1.0 1.8001e-04 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+MatCreateSubMats    1590 1.0 2.5772e-01 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  1  0  0  0  0   1  0  0  0  0     0
+MatGetOrdering      1591 1.0 1.4564e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+MatZeroEntries      2450 1.0 2.2339e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+PCSetUp             2450 1.0 1.0495e-02 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+PCSetUpOnBlocks     2450 1.0 7.3931e-01 1.0 7.45e+08 1.0 0.0e+00 0.0e+00 0.0e+00  2  2  0  0  0   3  2  0  0  0  1008
+PCApply           105361 1.0 6.0154e+00 1.0 1.54e+10 1.0 0.0e+00 0.0e+00 0.0e+00 17 39  0  0  0  26 39  0  0  0  2563
+PCApplyOnBlocks   105361 1.0 5.9802e+00 1.0 1.54e+10 1.0 0.0e+00 0.0e+00 0.0e+00 17 39  0  0  0  26 39  0  0  0  2578
+KSPSetUp            2450 1.0 5.5066e-03 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+KSPSolve            2450 1.0 1.0886e+01 1.0 3.84e+10 1.0 0.0e+00 0.0e+00 0.0e+00 30 97  0  0  0  47 97  0  0  0  3526
+SNESSolve           1720 1.0 2.2996e+01 1.0 3.97e+10 1.0 0.0e+00 0.0e+00 0.0e+00 64 100  0  0  0 100 100  0  0  0  1726
+SNESSetUp              2 1.0 6.3454e-04 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+SNESFunctionEval    3310 1.0 3.0564e+00 1.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  9  0  0  0  0  13  0  0  0  0     0
+SNESJacobianEval    2450 1.0 7.6270e+00 1.0 3.81e+08 1.0 0.0e+00 0.0e+00 0.0e+00 21  1  0  0  0  33  1  0  0  0    50
+SNESLineSearch      1590 1.0 1.4321e+00 1.0 1.50e+08 1.0 0.0e+00 0.0e+00 0.0e+00  4  0  0  0  0   6  0  0  0  0   105
 ------------------------------------------------------------------------------------------------------------------------
 
 Object Type          Creations   Destructions. Reports information only for process 0.
@@ -104,11 +104,11 @@ Object Type          Creations   Destructions. Reports information only for proc
 --- Event Stage 0: Main Stage
 
            Container     0              4
-           Index Set     0             14
-   IS L to G Mapping     0             10
-   Star Forest Graph     0             19
-              Vector     0             64
-              Matrix     0             12
+           Index Set     0             11
+   IS L to G Mapping     0             14
+   Star Forest Graph     0             16
+              Vector     0             61
+              Matrix     0              8
       Preconditioner     0              4
        Krylov Solver     0              4
      DMKSP interface     0              2
@@ -119,7 +119,7 @@ Object Type          Creations   Destructions. Reports information only for proc
      Discrete System     0              4
            Weak Form     0              4
 
---- Event Stage 1: Outer solver setup
+--- Event Stage 1: OS setup
 
            Index Set     2              0
               Vector    15              0
@@ -127,12 +127,12 @@ Object Type          Creations   Destructions. Reports information only for proc
 
 --- Event Stage 2: AltMin step
 
-           Container  1589           1589
-           Index Set 19834          19824
+           Container  1590           1590
+           Index Set 11894          11887
    IS L to G Mapping     2              0
-   Star Forest Graph  4775           4766
-              Vector 17248          17216
-              Matrix  6359           6354
+   Star Forest Graph  3186           3180
+              Vector 12495          12466
+              Matrix  3183           3180
       Preconditioner     2              0
        Krylov Solver     2              0
      DMKSP interface     2              0
@@ -143,12 +143,10 @@ Object Type          Creations   Destructions. Reports information only for proc
 --- Event Stage 3: MSPIN solve
 
 
---- Event Stage 4: Globalization technique
+--- Event Stage 4: Glob. tech.
 
 ========================================================================================================================
-Average time to get PetscTime(): 7e-08
-Average time for MPI_Barrier(): 9.8818e-06
-Average time for zero size MPI_Send(): 2.8005e-06
+Average time to get PetscTime(): 3.01e-08
 #PETSc Option Table entries:
 -log_view :LOG_Surf_AltMin.txt # (source: code)
 #End of PETSc Option Table entries
