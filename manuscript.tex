@@ -281,8 +281,8 @@ Ultimately, the other four methods find lower total energy, and therefore produc
 Figure \ref{fig: surf outer} gives the number of outer iterations required for each load step to be completed for each of the five methods.
 An outer iteration is characterized by a solve of the linear system defined by AltMin.
 Cubic backtracking requires the lowest number of outer iterations, but we have seen that it produces the most problematic solution.
-AltMin and the parallelogram interpolant give roughly the same number of outer iterations, while the triangle and tetrahedron interpolants requiring about half as many.
-The tetrahedron does not appear to signficantly improve over the triangle, though it requires more function evaluations.
+The three interpolant techniques require roughly half the number of outer iterations of AltMin.
+The parallelogram and triangle interpolants behave about the same, while the tetrahedron performs marginally better.
 
 \begin{figure}
 	\centering
@@ -293,7 +293,7 @@ The tetrahedron does not appear to signficantly improve over the triangle, thoug
 \end{figure}
 Computation time is determined not only by the number of outer iterations, but also the number of inner iterations, a measure of the time to solve the inexact Newton step.
 However, the average number of inner iterations per outer iteration remains fairly constant for each method, meaning reducing the number of outer iterations remains the goal.
-Cubic backtracking has a high average, at times up to 6, while the three types of interpolants all remain between 3 and 5, averaging 4 over all load steps.
+Cubic backtracking has a high average, at times over 5, while the three types of interpolants all remain between 3 and 4.
 
 [compare flop counts]
 
