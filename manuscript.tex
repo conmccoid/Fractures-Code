@@ -291,11 +291,9 @@ The parallelogram and triangle interpolants behave about the same, while the tet
 	On the right, average number of inner iterations per outer iterations.}
 	\label{fig: surf inner}
 \end{figure}
-Computation time is determined not only by the number of outer iterations, but also the number of inner iterations, a measure of the time to solve the inexact Newton step.
+Computation time is determined not only by the number of outer iterations, but also the number of inner iterations, a measure of the time to solve the inexact Newton step, see Figure \ref{fig: surf inner}.
 However, the average number of inner iterations per outer iteration remains fairly constant for each method, meaning reducing the number of outer iterations remains the goal.
 Cubic backtracking has a high average, at times over 5, while the three types of interpolants all remain between 3 and 4.
-
-[compare flop counts]
 
 \begin{figure}
 	\centering
@@ -306,10 +304,132 @@ Cubic backtracking has a high average, at times over 5, while the three types of
 Wall clock time includes several steps that can be avoided through code design, such as print statements and communication.
 However, it gives some indication of the effectiveness of theoretical speedups.
 Figure \ref{fig: surf time} gives the wall clock time for each of the five methods for each load step.
-We see that AltMin has the best time of the accurate methods.
+We see that AltMin has the best time of the accurate methods even though it requires the most number of outer iterations.
 It is clear that care must be taken to reduce the number of flops spent on the inexact Newton step.
 
-\subsection{CTFM (nb: expand acronym)}
+\begin{table}
+	\centering
+	\begin{tabular}{l | c c c}
+	Method & Flops & \% AltMin & \% MSPIN \\ \hline
+	AltMin & 3.970$\times 10^{10}$ & 99.9 \\
+	Cubic backtracking & 1.538$\times 10^{10}$ & 43.6 & 56.3 \\
+	Parallelogram & 5.178$\times 10^{10}$ & 45.9 & 53.7 \\
+	Triangle & 5.175$\times 10^{10}$ & 45.8 & 53.9 \\
+	Tetrahedron & 4.751$\times 10^{10}$ & 44.1 & 55.5
+	\end{tabular}
+	\caption{Flop count for the surfing example.}
+	\label{tab: surf flops}
+\end{table}
+\begin{table}
+	\centering
+	\begin{tabular}{l | c c c}
+	Method & Time (s) & \% AltMin & \% MSPIN \\ \hline
+	AltMin & 3.583$\times 10^{1}$ & 64.3  \\
+	Cubic backtracking & 1.946$\times 10^{1}$ & 22.6 & 14.9 \\
+	Parallelogram & 3.963$\times 10^{1}$ & 35.2 & 23.4 \\
+	Triangle & 3.905$\times 10^{1}$ & 35.9 & 23.8 \\
+	Tetrahedron & 3.842$\times 10^{1}$ & 32.7 & 22.6
+	\end{tabular}
+	\caption{Timing for the surfing example.}
+	\label{tab: surf time}
+\end{table}
+Table \ref{tab: surf flops} shows the number of flops for all five methods tested for the surfing example, while Table \ref{tab: surf time} gives the wall clock time for each.
+Also shown is the percentage of flops and time spent completing the main computations: solving the linear system to compute the AltMin direction, and approximately solving the nonlinear system to compute the MSPIN direction.
+These flop counts and timings are found using PETSc's built-in log view, and may be subject to errors.
+
+While the MSPIN direction takes more flops to compute, it takes less time, likely due to better parallelization and preconditioning.
+Since much of the MSPIN system has already been factorized during the solve of the AltMin direction, this factorization speeds up subsequent calculations.
+
+We also note that approximately 40\% of time is spent on other tasks, though these tasks account for almost no flops.
+This suggests communication issues arising from the parallelization, or wayward print statements.
+
+\subsection{Crack-tip force method (CTFM)}
 \label{subsec: ctfm}
+
+[introduce method and equations]
+
+[figure showing 3 hole domain]
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{output/FIG_CTFM_energy.pdf}
+	\caption{Energy for the CTFM example using the five methods tested.}
+	\label{fig: ctfm energy}
+\end{figure}
+Figure \ref{fig: ctfm energy} shows the resulting energies produced by the five methods.
+As in the surfing example, the cubic backtracking is reticent to allow cracks to grow, instead preferring to increase elastic energy.
+As the other four methods all have lower total energy potentials, their solutions indicate more appropriate crack progressions.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{output/FIG_CTFM_outerIts.pdf}
+	\caption{Outer iterations (number of linear solves of the AltMin system) for each load step of the CTFM example.}
+	\label{fig: ctfm outer}
+\end{figure}
+Figure \ref{fig: ctfm outer} gives the number of outer iterations required for the completion of each load step.
+Each outer iteration represents the process of solving the linear system of AltMin.
+Cubic backtracking again requires the lowest number of outer iterations, but at the expense of the highest potential energy.
+
+The number of outer iterations only becomes significant for the load steps where the crack progresses rapidly.
+In this regime, there are many ways for the crack to propagate that will result in lower energy, meaning the energy landscape has many saddle points and local minima.
+Both the triangle and tetrahedron interpolants consistently have fewer outer iterations than AltMin.
+The parallelogram interpolant is also often competitive, but not in a predictable way.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{output/FIG_CTFM_innerIts.pdf}
+	\caption{On the left, total number of inner iterations for the four non-AltMin methods.
+		On the right, average number of inner iterations per outer iteration.}
+	\label{fig: ctfm inner}
+\end{figure}
+Figure \ref{fig: ctfm inner} shows the additional cost of the MSPIN-based methods over AltMin:
+the number of matrix-vector multiplications required to solve the inexact Newton problem.
+The number of inner iterations is closely correlated with the number of outer iterations performed.
+However, the average number of inner iterations per outer iteration spikes during the crack propagation regime, suggesting the MSPIN system becomes more complicated to resolve at this stage.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{output/FIG_CTFM_time.pdf}
+	\caption{Wall clock time for each load step for the CTFM example.}
+	\label{fig: ctfm time}
+\end{figure}
+Figure \ref{fig: ctfm time} gives a measure of the amount of time each method takes to complete each load step.
+As expected, most time is spent during the crack propagation regime.
+AltMin and the triangle and tetrahedron interpolants take roughly the same amount of time, with the parallelogram interpolant struggling due to its high number of outer iterations.
+
+\begin{table}
+	\centering
+	\begin{tabular}{l | c c c}
+	Method & Flops & \% AltMin & \% MSPIN \\ \hline
+	AltMin & 1.160 $\times 10^{14}$ & 100 \\
+	Cubic backtracking & 2.196 $\times 10^{13}$ & 36.8 & 63.1 \\
+	Parallelogram & 5.631 $\times 10^{14}$ & 32.4 & 67.6 \\
+	Triangle & 1.744 $\times 10^{14}$ & 36.6 & 63.4 \\
+	Tetrahedron & 1.670 $\times 10^{14}$ & 35.0 & 65.0
+	\end{tabular}
+	\caption{Flop count for the CTFM example.}
+	\label{tab: ctfm flops}
+\end{table}
+\begin{table}
+	\centering
+	\begin{tabular}{l | c c c}
+	Method & Time (s) & \% AtlMin & \% MSPIN \\ \hline
+	AltMin & 1.321 $\times 10^3$ & 96.7 \\
+	Cubic backtracking & 2.760 $\times 10^2$ & 35.3 & 48.9 \\
+	Parallelogram & 5.893 $\times 10^3$ & 33.7 & 64.2 \\
+	Triangle & 2.066 $\times 10^3$ & 38.2 & 58.3 \\
+	Tetrahedron & 1.871 $\times 10^3$ & 35.7 & 60.5
+	\end{tabular}
+	\caption{Timings for the CTFM example.}
+	\label{tab: ctfm time}
+\end{table}
+Table \ref{tab: ctfm flops} gives the number of flops for each method on this example, while Table \ref{tab: ctfm time} gives the timings.
+Both tables include the percentage of each measure that is spent on the linear and nonlinear solves.
+The difference in costs between linear and nonlinear solves here is much more stark than in the previous example, with the nonlinear solves costing nearly twice as much as the linear solves in terms of both flops and time.
+This suggests a lack of scalability in the preconditioning methods used to speed up the MSPIN calculations.
+
+It is clear that using MSPIN with the interpolant minimization techniques can reduce the number of outer iterations, often significantly.
+However, doing so greatly increases the computational cost of each outer iteration, up to 290\%.
+To be competitive against AltMin, the number of outer iterations will need to be reduced by a factor of 3.
 
 \end{document}
