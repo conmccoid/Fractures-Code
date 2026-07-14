@@ -5,3 +5,5 @@ __pycache__/*
 *.gz
 *.sif
 output/EX_CTFM_*.h5
+*.aux
+manuscript.log
