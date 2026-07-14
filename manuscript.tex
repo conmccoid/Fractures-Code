@@ -4,6 +4,8 @@
 \usepackage{algorithm, algpseudocode}
 \usepackage{graphicx}
 
+\DeclareMathOperator{\argmin}{argmin}
+
 \title{Phase-field fracture models and MSPIN} % nb: placeholder
 \author{Conor McCoid \and Blaise Bourdin}
 
@@ -33,20 +35,67 @@
 \section{Background}
 \label{sec: bg}
 
-[Mathematical description of phase-field]
+A given brittle material has inherent elastic properties: a critical energy release rate $G_c$, and a stiffness tensor $A$.
+The material occupies a domain $\Omega \subset \bbr^n$ and is subjected to a set of boundary conditions, such as specifying the displacement on part of the boundary.
+The variational approach to fracture seeks to minimize the energy potential
+\begin{equation} \label{eq: var}
+	E(\vec{u}, \Gamma) := \int_{\Omega \setminus \Gamma} \frac{1}{2} A \epsilon(\vec{u}) \cdot \epsilon(\vec{u}) dx + G_c \mathcal{H}^{n-1}(\Gamma),
+\end{equation}
+where $\vec{u}$ is the vector field denoting the displacement of the material,
+$\Gamma$ defines all cracks in the material, $\mathcal{H}^{n-1}(\Gamma)$ is its $(n-1)$-dimensional Hausdorff measure, and $\epsilon(\vec{u})$ is the symmetrized gradient of $\vec{u}$:
+\begin{equation*}
+	\epsilon(\vec{u}) := \frac{1}{2} \left ( \nabla \vec{u} + \nabla^\top \vec{u} \right ).
+\end{equation*}
 
+Computing the Hausdorff measure of the unknown crack $\Gamma$ is untenable in practice.
+Instead, one introduces a phase-field scalar field $v : \Omega \to [0,1]$ called damage, which is intended to represent $\Gamma$:
+at the crack, $v$ should equal 1, while away from the crack, $v$ should equal 0.
+This requires introducing a regularization length $\ell>0$.
 The phase-field energy may be expressed as
 \begin{equation} \label{eq: energy} % nb: fix this
-	E_\ell(\vec{u}, \vec{v}) = \int_{\Omega} \text{tensors} d\Omega + \int_{\partial \Omega} \left ( \frac{\omega(\vec{v})}{4 \ell} + \ell \abs{\vec{v}}^2 \right ) dS
-	.
+	E_\ell(\vec{u}, v) = \int_{\Omega} \frac{a(v) + k_\ell}{2} A \epsilon(\vec{u}) \cdot \epsilon(\vec{u}) dx + \frac{G_c}{4 c_\omega} \int_{\Omega} \left ( \frac{\omega(v)}{\ell} + \ell \abs{\nabla v}^2 \right ) dx,
+\end{equation}
+where $a(v)$ and $\omega(v)$ are continuous monotonic functions satisfying
+\begin{equation*}
+	a(0)=0, \quad a(1)=1, \quad \omega(0)=1, \quad \omega(1)=0, \quad c_\omega := \int_0^1 \sqrt{\omega(s)} ds,
+\end{equation*}
+and $k_\ell$ is a constant smaller than $\ell$.
+In this article, we will use the AT2 model:
+\begin{equation} \label{eq: AT2}
+	a(v) = (1-v)^2, \quad \omega(v) = v^2, \quad c_\omega = \frac{1}{2}.
 \end{equation}
 
-[Irreversibility condition]
+In addition to boundary conditions, the quasi-static phase-field model is constrained by an irreversibility condition on the damage scalar field.
+As time moves forward, damage to the material can only increase; the material cannot heal itself.
+At each time step, the damage field is saved as the new lower bound on the constraints:
+\begin{equation*}
+	v(t_{i-1}) \leq v(t_i) \leq 1, \quad \forall x \in \Omega.
+\end{equation*}
+Care must be taken to enforce this condition.
 
 \subsection{Alternate Minimization}
 \label{subsec: altmin}
 
-[AltMin, using notation from mathematical description of phase-field]
+The energy potential $E_\ell(\vec{u},v)$, see \eqref{eq: energy}, is not convex.
+However, it is convex in both $\vec{u}$ and $v$ separately.
+This then leads to the idea for alternate minimization: hold $v$ constant while solving for $\vec{u}$, then hold $\vec{u}$ constant at its new solution while solving for $v$.
+Algorithm \ref{alg: altmin} gives the alternate minimization algorithm for a given time step.
+\begin{algorithm}
+	\caption{AltMin \\
+		$\vec{u}_0$: initial displacement, $v_0$: initial damage, $\tau$: tolerance}
+	\begin{algorithmic}[1]
+	\State Find $\vec{u}_1 := \argmin E_\ell(\vec{u}, v_0)$, subject to boundary conditions
+	\State Find $v_1 := \argmin E_\ell(\vec{u}_1, v)$, subject to boundary and irreversibility conditions
+	\While{$\norm{v_1 - v_0} > \tau$}
+		\State $v_0 \gets v_1$, $\vec{u}_0 \gets \vec{u}_1$
+		\State Find $\vec{u}_1 := \argmin E_\ell(\vec{u}, v_0)$, subject to boundary conditions
+		\State Find $v_1 := \argmin E_\ell(\vec{u}_1, v)$, subject to boundary and irreversibility conditions
+	\EndWhile
+	\end{algorithmic}
+	\label{alg: altmin}
+\end{algorithm}
+Because solving for damage includes irreversibility conditions, damage is found using a variational inequality Newton's method.
+Displacement may be found with any linear solver.
 
 AltMin may be viewed as a field-split multiplicative Schwarz method.
 The two `fields' of damage and displacement are treated separately and sequentially.
