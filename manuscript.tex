@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 
 \DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\mspin}{MSPIN}
 
 \title{Phase-field fracture models and MSPIN} % nb: placeholder
 \author{Conor McCoid \and Blaise Bourdin}
@@ -84,12 +85,12 @@ Algorithm \ref{alg: altmin} gives the alternate minimization algorithm for a giv
 	\caption{AltMin \\
 		$\vec{u}_0$: initial displacement, $v_0$: initial damage, $\tau$: tolerance}
 	\begin{algorithmic}[1]
-	\State Find $\vec{u}_1 := \argmin E_\ell(\vec{u}, v_0)$, subject to boundary conditions
-	\State Find $v_1 := \argmin E_\ell(\vec{u}_1, v)$, subject to boundary and irreversibility conditions
+	\State Find $\vec{u}_1 := \argmin_u E_\ell(\vec{u}, v_0)$, subject to boundary conditions
+	\State Find $v_1 := \argmin_v E_\ell(\vec{u}_1, v)$, subject to boundary and irreversibility conditions
 	\While{$\norm{v_1 - v_0} > \tau$}
 		\State $v_0 \gets v_1$, $\vec{u}_0 \gets \vec{u}_1$
-		\State Find $\vec{u}_1 := \argmin E_\ell(\vec{u}, v_0)$, subject to boundary conditions
-		\State Find $v_1 := \argmin E_\ell(\vec{u}_1, v)$, subject to boundary and irreversibility conditions
+		\State Find $\vec{u}_1 := \argmin_u E_\ell(\vec{u}, v_0)$, subject to boundary conditions
+		\State Find $v_1 := \argmin_v E_\ell(\vec{u}_1, v)$, subject to boundary and irreversibility conditions
 	\EndWhile
 	\end{algorithmic}
 	\label{alg: altmin}
@@ -113,8 +114,54 @@ MSPIN has been previously applied to phase-field fracture models in (nb: cite 3K
 There, the authors used cubic backtracking to globalize the Newton direction, see Section \ref{subsec: cb} below.
 Note that their model differs slightly from the one presented here.
 
+To describe MSPIN, we must first present AltMin as a multiplicative Schwarz method.
+The Jacobian of the phase-field energy is
+\begin{equation} \label{eq: jacobian}
+	J := \begin{bmatrix} E_{uu} & E_{uv} \\ E_{vu} & E_{vv} \end{bmatrix}, \quad E_{xy} = \ddxy{E_\ell}{x}{y}.
+\end{equation}
+A single step of AltMin can then be thought of as solving the following nonlinear system:
+\begin{equation*}
+	\begin{bmatrix} E_{uu} \\ E_{vu} & E_{vv} \end{bmatrix} \begin{bmatrix} \vec{u}_1 \\ v_1 \end{bmatrix} = \begin{bmatrix} ~ & E_{uv} \\ & ~ \end{bmatrix} \begin{bmatrix} \vec{u}_0 \\ v_0 \end{bmatrix},
+\end{equation*}
+with additional blocks to represent boundary conditions, subject to the irreversibility condition.
+
+The goal of MSPIN is to apply inexact Newton's method to a linearization of this system.
+That is, MSPIN seeks to minimize
+\begin{equation*}
+	\vec{q} := \begin{bmatrix} \vec{u}_1 \\ v_1 \end{bmatrix} - \begin{bmatrix} \vec{u}_0 \\ v_0 \end{bmatrix}.
+\end{equation*}
+In (nb: cite Cai and Keyes, Liu and Keyes, and/or 3K), the Jacobian for this inexact Newton's method is shown to be
+\begin{equation*}
+	J_{\mspin} := \begin{bmatrix} E_{uu} \\ E_{vu} & E_{vv} \end{bmatrix}^{-1} \begin{bmatrix} E_{uu} & E_{uv} \\ E_{vu} & E_{vv} \end{bmatrix}
+	= \begin{bmatrix} I \\ & E_{vv}^{-1} \end{bmatrix} \begin{bmatrix} I \\ -E_{vu} & I \end{bmatrix} \begin{bmatrix} E_{uu}^{-1} \\ & I \end{bmatrix} J.
+\end{equation*}
+
+The Newton direction proposed by MSPIN is the approximate solution to the system
+\begin{equation} \label{eq: inexact newton}
+	J_{\mspin} \vec{p} = \vec{q}.
+\end{equation}
+Since only an approximation is required, one can be found with a few iterations of a Krylov subspace method.
+Note that both $E_{uu}$ and $E_{vv}$ have been inverted as part of the AltMin process.
+Storing factorizations for these matrices can significantly speed up their use here, where each will need to be applied once per Krylov iteration.
+
 We present MSPIN as applied to AltMin.
-[fill in once notation is specified from prev. section]
+\begin{algorithm}
+	\caption{MSPIN on AltMin \\
+		$\vec{u}_0$: initial displacement, $v_0$: initial damage, $\tau$: tolerance}
+	\begin{algorithmic}[1]
+	\State Find $\vec{u}_1 := \argmin_u E_\ell(\vec{u}, v_0)$, subject to boundary conditions
+	\State Find $v_1 := \argmin_v E_\ell(\vec{u}_1, v)$, subject to boundary and irreversibility conditions
+	\While{$\norm{v_1 - v_0} > \tau$}
+		\State $v_0 \gets v_1$, $\vec{u}_0 \gets \vec{u}_1$
+		\State Find $\vec{u}_1 := \argmin_u E_\ell(\vec{u}, v_0)$, subject to boundary conditions
+		\State Find $v_1 := \argmin_v E_\ell(\vec{u}_1, v)$, subject to boundary and irreversibility conditions
+		\State Approximate the solution to eq. \eqref{eq: inexact newton}
+		\State (optional) Apply globalization techniques
+		\State Project solution onto the active set
+	\EndWhile
+	\end{algorithmic}
+	\label{alg: mspin}
+\end{algorithm}
 
 \subsection{Cubic Backtracking}
 \label{subsec: cb}
@@ -462,7 +509,7 @@ AltMin and the triangle and tetrahedron interpolants take roughly the same amoun
 \begin{table}
 	\centering
 	\begin{tabular}{l | c c c}
-	Method & Time (s) & \% AtlMin & \% MSPIN \\ \hline
+	Method & Time (s) & \% AltMin & \% MSPIN \\ \hline
 	AltMin & 1.321 $\times 10^3$ & 96.7 \\
 	Cubic backtracking & 2.760 $\times 10^2$ & 35.3 & 48.9 \\
 	Parallelogram & 5.893 $\times 10^3$ & 33.7 & 64.2 \\
