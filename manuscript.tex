@@ -1,11 +1,15 @@
 \documentclass{article}
 
+\usepackage[margin=1in]{geometry}
+
 \usepackage{math}
 \usepackage{algorithm, algpseudocode}
 \usepackage{graphicx}
 
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\mspin}{MSPIN}
+
+\numberwithin{equation}{section}
 
 \title{Phase-field fracture models and MSPIN} % nb: placeholder
 \author{Conor McCoid \and Blaise Bourdin}
@@ -30,7 +34,6 @@ This variational approach then requires calculating the Griffith's energy, a cha
 As an approximation, one introduces a phase-field variable, a scalar field representing the damage in the material.
 In this phase-field model, one seeks to find both the displacement and damage that minimizes the approximation to the energy potential.
 
-[How has phase-field been computed in the past, with what limitations]
 The energy potential is non-convex, making optimization difficult.
 The solution to this has been alternate minimization, holding either damage or displacement constant while updating the other.
 When either field is kept fixed, the energy potential is convex in the other, meaning by solving two sequential convex optimization problems one arrives at an iterative method for solving the problem.
@@ -39,7 +42,6 @@ This process is costly when the crack nucleates, requiring several orders of mag
 [Recent advances]
 In (nb: cite 3K), the authors applied the multiplicative Schwarz preconditioning inexact Newton method (MSPIN) to the phase-field model.
 
-[Current proposition]
 In this paper, we propose to combine alternate minimization with MSPIN to minimize the energy potential over a 2D or 3D subspace of the degrees of freedom by finding the minimum of polynomial interpolants.
 These interpolants are based on P2 finite elements.
 By using both alternate minimization and MSPIN, the search space for backtracking is higher dimensional and is guaranteed to give lower energy potentials than either method on their own.
@@ -392,7 +394,7 @@ Figure \ref{plot: surf} shows the progression of the crack for this example.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{output/FIG_Surf_energy.pdf}
+	\includegraphics[width=100mm]{output/FIG_Surf_energy.pdf}
 	\caption{Energy for the surfing example using the five methods tested.}
 	\label{fig: surf energy}
 \end{figure}
@@ -403,7 +405,7 @@ Ultimately, the other four methods find lower total energy, and therefore produc
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{output/FIG_Surf_outerIts.pdf}
+	\includegraphics[width=100mm]{output/FIG_Surf_outerIts.pdf}
 	\caption{Outer iterations (number of linear solves of the AltMin system) for each load step of the surfing example.}
 	\label{fig: surf outer}
 \end{figure}
@@ -415,7 +417,7 @@ The parallelogram and triangle interpolants behave about the same, while the tet
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{output/FIG_Surf_innerIts.pdf}
+	\includegraphics[width=100mm]{output/FIG_Surf_innerIts.pdf}
 	\caption{On the left, total number of inner iterations (matrix-vector multiplications required to solve the Newton system to within tolerance) for the four methods that use inexact Newton.
 	On the right, average number of inner iterations per outer iterations.}
 	\label{fig: surf inner}
@@ -426,7 +428,7 @@ Cubic backtracking has a high average, at times over 5, while the three types of
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{output/FIG_Surf_time.pdf}
+	\includegraphics[width=100mm]{output/FIG_Surf_time.pdf}
 	\caption{Wall clock time for solving the surfing example for all five methods.}
 	\label{fig: surf time}
 \end{figure}
@@ -493,7 +495,7 @@ If more force is applied, the crack will eventually nucleate on the right side o
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{output/FIG_CTFM_energy.pdf}
+	\includegraphics[width=100mm]{output/FIG_CTFM_energy.pdf}
 	\caption{Energy for the three hole example using the five methods tested.}
 	\label{fig: ctfm energy}
 \end{figure}
@@ -503,7 +505,7 @@ As the other four methods all have lower total energy potentials, their solution
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{output/FIG_CTFM_outerIts.pdf}
+	\includegraphics[width=100mm]{output/FIG_CTFM_outerIts.pdf}
 	\caption{Outer iterations (number of linear solves of the AltMin system) for each load step of the three hole example.}
 	\label{fig: ctfm outer}
 \end{figure}
@@ -518,7 +520,7 @@ The parallelogram interpolant is also often competitive, but not in a predictabl
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{output/FIG_CTFM_innerIts.pdf}
+	\includegraphics[width=100mm]{output/FIG_CTFM_innerIts.pdf}
 	\caption{On the left, total number of inner iterations for the four non-AltMin methods.
 		On the right, average number of inner iterations per outer iteration.}
 	\label{fig: ctfm inner}
@@ -530,7 +532,7 @@ However, the average number of inner iterations per outer iteration spikes durin
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{output/FIG_CTFM_time.pdf}
+	\includegraphics[width=100mm]{output/FIG_CTFM_time.pdf}
 	\caption{Wall clock time for each load step for the three hole example.}
 	\label{fig: ctfm time}
 \end{figure}
