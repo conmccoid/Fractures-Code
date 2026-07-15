@@ -13,12 +13,12 @@ We now have for comparison three methods:
   - [x] Parallelogram
 - [x] Parallelize code
 - [x] 3D interpolant -- usually gives a saddle point
-- [ ] Run examples
-  - [ ] Check efficiency, both in FLOPs and wall clock time
-  - [ ] Check scaling
+- [x] Run examples
+  - [x] Check efficiency, both in FLOPs and wall clock time
+  - [x] Check scaling
 - [ ] Write paper
-  - [ ] Section: background on MSPIN for phase-field
-  - [ ] Section: interpolation (now P2, but discuss parallelogram)
+  - [x] Section: background on MSPIN for phase-field
+  - [x] Section: interpolation (now P2, but discuss parallelogram)
     - [ ] Subsection: active set method in interpolant setting
   - [ ] Section: numerical comparisons
 
