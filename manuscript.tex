@@ -456,17 +456,29 @@ Since much of the MSPIN system has already been factorized during the solve of t
 We also note that approximately 40\% of time is spent on other tasks, though these tasks account for almost no flops.
 This suggests communication issues arising from the parallelization, or wayward print statements.
 
-\subsection{Crack-tip force method (CTFM)}
+\subsection{Three hole example}
 \label{subsec: ctfm}
 
-[introduce method and equations]
+In this next example, we consider a rectangular domain with three holes, one large central hole and two smaller holes on either side.
+A small notch starts the crack on the left edge, just above the level of the central hole.
+Force is applied through the smaller holes in opposite directions, as if two rods are pulling the material apart.
 
-[figure showing 3 hole domain]
+Figure \ref{plot: ctfm} shows the progression of the crack for this example.
+At a critical level of force, the crack propagates rapidly to the central hole.
+If more force is applied, the crack will eventually nucleate on the right side of the central hole and propagate to the right edge, completely separating the material into two parts.
+\begin{figure}
+	\centering
+	\includegraphics[width=0.3\textwidth]{output/PLOT_CTFM_0.png}
+	\includegraphics[width=0.3\textwidth]{output/PLOT_CTFM_0.5.png}
+	\includegraphics[width=0.3\textwidth]{output/PLOT_CTFM_1.png}
+	\caption{Crack progression of the three hole example.}
+	\label{plot: ctfm}
+\end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{output/FIG_CTFM_energy.pdf}
-	\caption{Energy for the CTFM example using the five methods tested.}
+	\caption{Energy for the three hole example using the five methods tested.}
 	\label{fig: ctfm energy}
 \end{figure}
 Figure \ref{fig: ctfm energy} shows the resulting energies produced by the five methods.
@@ -476,7 +488,7 @@ As the other four methods all have lower total energy potentials, their solution
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{output/FIG_CTFM_outerIts.pdf}
-	\caption{Outer iterations (number of linear solves of the AltMin system) for each load step of the CTFM example.}
+	\caption{Outer iterations (number of linear solves of the AltMin system) for each load step of the three hole example.}
 	\label{fig: ctfm outer}
 \end{figure}
 Figure \ref{fig: ctfm outer} gives the number of outer iterations required for the completion of each load step.
@@ -503,7 +515,7 @@ However, the average number of inner iterations per outer iteration spikes durin
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{output/FIG_CTFM_time.pdf}
-	\caption{Wall clock time for each load step for the CTFM example.}
+	\caption{Wall clock time for each load step for the three hole example.}
 	\label{fig: ctfm time}
 \end{figure}
 Figure \ref{fig: ctfm time} gives a measure of the amount of time each method takes to complete each load step.
@@ -520,7 +532,7 @@ AltMin and the triangle and tetrahedron interpolants take roughly the same amoun
 	Triangle & 1.744 $\times 10^{14}$ & 36.6 & 63.4 \\
 	Tetrahedron & 1.670 $\times 10^{14}$ & 35.0 & 65.0
 	\end{tabular}
-	\caption{Flop count for the CTFM example.}
+	\caption{Flop count for the three hole example.}
 	\label{tab: ctfm flops}
 \end{table}
 \begin{table}
@@ -533,7 +545,7 @@ AltMin and the triangle and tetrahedron interpolants take roughly the same amoun
 	Triangle & 2.066 $\times 10^3$ & 38.2 & 58.3 \\
 	Tetrahedron & 1.871 $\times 10^3$ & 35.7 & 60.5
 	\end{tabular}
-	\caption{Timings for the CTFM example.}
+	\caption{Timings for the three hole example.}
 	\label{tab: ctfm time}
 \end{table}
 Table \ref{tab: ctfm flops} gives the number of flops for each method on this example, while Table \ref{tab: ctfm time} gives the timings.
