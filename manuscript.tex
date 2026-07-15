@@ -28,9 +28,9 @@
 Brittle fracture is the sudden nucleation and propagation of cracks in otherwise elastic material.
 This type of damage can be catastrophic in applications such as civil engineering or crystal growth.
 Because brittle fracture occurs so rapidly, it is difficult to model the phenomenon with standard calculus.
-Instead, Francfort and Marigo (nb: cite) propose using a variational principle: the vector field of the displacement of the material minimizes an energy potential that combines elastic forces and the Griffiths energy of all cracks (nb: cite Griffith?).
+Instead, Francfort and Marigo \cite{francfort1999approche, bourdin2008variational} propose using a variational principle: the vector field of the displacement of the material minimizes an energy potential that combines elastic forces and the Griffith energy of all cracks \cite{griffith1921vi}.
 
-This variational approach then requires calculating the Griffith's energy, a challenge in practice.
+This variational approach then requires calculating the Griffith energy, a challenge in practice.
 As an approximation, one introduces a phase-field variable, a scalar field representing the damage in the material.
 In this phase-field model, one seeks to find both the displacement and damage that minimizes the approximation to the energy potential.
 
@@ -40,7 +40,7 @@ When either field is kept fixed, the energy potential is convex in the other, me
 This process is costly when the crack nucleates, requiring several orders of magnitude more iterations to find a solution.
 
 [Recent advances]
-In (nb: cite 3K), the authors applied the multiplicative Schwarz preconditioning inexact Newton method (MSPIN) to the phase-field model.
+In \cite{3k}, the authors applied the multiplicative Schwarz preconditioning inexact Newton method (MSPIN) to the phase-field model.
 
 In this paper, we propose to combine alternate minimization with MSPIN to minimize the energy potential over a 2D or 3D subspace of the degrees of freedom by finding the minimum of polynomial interpolants.
 These interpolants are based on P2 finite elements.
@@ -70,7 +70,7 @@ Instead, one introduces a phase-field scalar field $v : \Omega \to [0,1]$ called
 at the crack, $v$ should equal 1, while away from the crack, $v$ should equal 0.
 This requires introducing a regularization length $\ell>0$.
 The phase-field energy may be expressed as
-\begin{equation} \label{eq: energy} % nb: fix this
+\begin{equation} \label{eq: energy}
 	E_\ell(\vec{u}, v) = \int_{\Omega} \frac{a(v) + k_\ell}{2} A \epsilon(\vec{u}) \cdot \epsilon(\vec{u}) dx + \frac{G_c}{4 c_\omega} \int_{\Omega} \left ( \frac{\omega(v)}{\ell} + \ell \abs{\nabla v}^2 \right ) dx,
 \end{equation}
 where $a(v)$ and $\omega(v)$ are continuous monotonic functions satisfying
@@ -143,8 +143,8 @@ If not, then the method is allowed to proceed as a standard Newton's method.
 \subsection{MSPIN}
 \label{subsec: mspin}
 
-Multiplicative Schwarz preconditioning inexact Newton (MSPIN) was first described in (nb: cite Cai and Keyes), with further explanation for field-split Schwarz methods in (nb: cite Liu and Keyes).
-MSPIN has been previously applied to phase-field fracture models in (nb: cite 3K).
+Multiplicative Schwarz preconditioning inexact Newton (MSPIN) was first described in \cite{cai}, with further explanation for field-split Schwarz methods in \cite{liu}.
+MSPIN has been previously applied to phase-field fracture models in \cite{3k}.
 There, the authors used cubic backtracking to globalize the Newton direction, see Section \ref{subsec: cb} below.
 Note that their model differs slightly from the one presented here.
 
@@ -164,7 +164,7 @@ That is, MSPIN seeks to minimize
 \begin{equation*}
 	\vec{q} := \begin{bmatrix} \vec{u}_1 \\ v_1 \end{bmatrix} - \begin{bmatrix} \vec{u}_0 \\ v_0 \end{bmatrix}.
 \end{equation*}
-In (nb: cite Cai and Keyes, Liu and Keyes, and/or 3K), the Jacobian for this inexact Newton's method is shown to be
+In \cite{cai, liu, 3k}, the Jacobian for this inexact Newton's method is shown to be
 \begin{equation*}
 	J_{\mspin} := \begin{bmatrix} E_{uu} \\ E_{vu} & E_{vv} \end{bmatrix}^{-1} \begin{bmatrix} E_{uu} & E_{uv} \\ E_{vu} & E_{vv} \end{bmatrix}
 	= \begin{bmatrix} I \\ & E_{vv}^{-1} \end{bmatrix} \begin{bmatrix} I \\ -E_{vu} & I \end{bmatrix} \begin{bmatrix} E_{uu}^{-1} \\ & I \end{bmatrix} J.
@@ -203,7 +203,7 @@ We present MSPIN as applied to AltMin.
 Many applications of Newton's method require globalization techniques to achieve convergence when starting away from the minimum.
 When the Newton direction overshoots the minimum, these globalization techniques should search for a minimum between the starting point and the destination, usually through a line search.
 
-Cubic backtracking (nb: cite) performs this line search by repeatedly interpolating cubic polynomials and finding their minima.
+Cubic backtracking \cite{dennis1996numerical} performs this line search by repeatedly interpolating cubic polynomials and finding their minima.
 Note that a cubic polynomial interpolant requires four pieces of information, but Newton's method only provides three:
 the value of the function at the starting point, $f(\vec{x})$;
 the value of the function in the Newton direction, $f(\vec{x} + \vec{p})$, and;
@@ -215,7 +215,7 @@ If the function is smaller at this point, then this ends the line search.
 Otherwise, find the minimum of the cubic interpolant and repeat.
 This algorithm is summarized in Algorithm \ref{alg: cb}.
 \begin{algorithm}
-	\caption{Cubic backtracking (nb: cite) \\
+	\caption{Cubic backtracking \cite[Algorithm A6.3.1, pg325-327]{dennis1996numerical} \\
 		$p$: search direction, $x$: current position, $f$: objective function, $\alpha$: bound on step size, $\tau$: tolerance (nb: of some kind, check)}
 	\begin{algorithmic}[1]
 	\State Calculate $c = p^\top \nabla f(x)$
@@ -291,9 +291,9 @@ To stay within the parallelogram, we can also check the minima on the boundary:
 \begin{align*}
 	(0, -e/2c), && (-d/2a, 0), && (1, -(e+b)/2c), && (-(d+b)/2c, 1).
 \end{align*}
-In practice, it is advisable to have $\beta$, the amount to step in the Newton direction, be between -1 and 1,
-while $\alpha$, the amount to step in the AltMin direction, can be any positive value.
-We will see examples of this behaviour in the next section.
+%In practice, it is advisable to have $\beta$, the amount to step in the Newton direction, be between -1 and 1,
+%while $\alpha$, the amount to step in the AltMin direction, can be any positive value.
+%We will see examples of this behaviour in the next section.
 
 % nb: what about the smallest value within a tolerated distance of the starting point?
 
@@ -365,13 +365,13 @@ Otherwise, this critical point is a saddle point or a maximum.
 \label{sec: num}
 
 Numerical experiments conducted for this article are run using FEniCSx for its finite element library, petsc4py for solving linear systems, and mpi4py for parallelization.
-The Docker image used for these experiments can be found at (nb: DockerHub link) (nb: cite Docker and Apptainer).
-Code for these experiments can be found at (nb: GitHub link).
+The Docker image used for these experiments can be found on Docker Hub at \texttt{mccoidc/fractures-code:dolfinx} (nb: cite Docker and Apptainer).
+Code for these experiments can be found on GitHub at \texttt{conmccoid/Fractures-Code}.
 
 \subsection{Surfing boundary conditions}
 \label{subsec: surf}
 
-For this example, we begin with an initial crack of length (nb: length) in an otherwise rectangular domain with an unstructured grid of (nb: number) points.
+For this example, we begin with an initial crack of length 0.5 in an otherwise square domain of side length 6 with an unstructured grid of 4341 points.
 The boundary conditions set the damage at maximum on the initial crack and zero on the boundary.
 For displacement, the boundary conditions are of Neumann type, setting
 \begin{align*}
@@ -574,5 +574,8 @@ This suggests a lack of scalability in the preconditioning methods used to speed
 It is clear that using MSPIN with the interpolant minimization techniques can reduce the number of outer iterations, often significantly.
 However, doing so greatly increases the computational cost of each outer iteration, up to 290\%.
 To be competitive against AltMin, the number of outer iterations will need to be reduced by a factor of 3.
+
+\bibliographystyle{siamplain}
+\bibliography{references}
 
 \end{document}
