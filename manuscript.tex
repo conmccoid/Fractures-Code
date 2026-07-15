@@ -106,6 +106,23 @@ In particular, in Section \ref{subsec: mspin} we will examine applying MSPIN to 
 \subsection{Active set methods}
 \label{subsec: as}
 
+As described above, the damage scalar field is subject to a variational inequality that changes at each time step:
+\begin{equation*}
+	v(t_{i-1}) \leq v(t_i) \leq 1, \quad \forall x \in \Omega.
+\end{equation*}
+In Section \ref{sec: altmin}, this is said to be handled by a variational inequality Newton's method, or VINewton, which uses an active set method.
+
+Active set methods separate all degrees of freedom into two sets: an active set, where the constraints are met or exceeded, and an inactive set, where the constraints remain intact, i.e.
+\begin{align*}
+	\Omega_{\text{active}} & := \Set{x \in \Omega}{v(t_i) \leq v(t_{i-1}) \lor v(t_i) \geq 1},
+	\\ \Omega_{\text{inactive}} & := \Set{x \in \Omega}{v(t_{i-1}) < v(t_i) < 1}.
+\end{align*}
+For degrees of freedom in the active set, the value of the scalar field is set to the closest bound.
+If $v(t_i) \leq v(t_{i-1})$, then $v(t_i) \gets v(t_{i-1})$.
+For degrees of freedom in the inactive set, one tests whether the change caused by adding the new Newton direction would violate the constraints.
+If so, the value is set to the closest bound and the degree of freedom is moved to the active set.
+If not, then the method is allowed to proceed as a standard Newton's method.
+
 \subsection{MSPIN}
 \label{subsec: mspin}
 
