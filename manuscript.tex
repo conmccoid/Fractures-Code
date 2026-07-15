@@ -21,17 +21,32 @@
 \section{Introduction}
 \label{sec: intro}
 
-[What is brittle fracture]
+Brittle fracture is the sudden nucleation and propagation of cracks in otherwise elastic material.
+This type of damage can be catastrophic in applications such as civil engineering or crystal growth.
+Because brittle fracture occurs so rapidly, it is difficult to model the phenomenon with standard calculus.
+Instead, Francfort and Marigo (nb: cite) propose using a variational principle: the vector field of the displacement of the material minimizes an energy potential that combines elastic forces and the Griffiths energy of all cracks (nb: cite Griffith?).
 
-[What is phase-field model]
+This variational approach then requires calculating the Griffith's energy, a challenge in practice.
+As an approximation, one introduces a phase-field variable, a scalar field representing the damage in the material.
+In this phase-field model, one seeks to find both the displacement and damage that minimizes the approximation to the energy potential.
 
 [How has phase-field been computed in the past, with what limitations]
+The energy potential is non-convex, making optimization difficult.
+The solution to this has been alternate minimization, holding either damage or displacement constant while updating the other.
+When either field is kept fixed, the energy potential is convex in the other, meaning by solving two sequential convex optimization problems one arrives at an iterative method for solving the problem.
+This process is costly when the crack nucleates, requiring several orders of magnitude more iterations to find a solution.
 
 [Recent advances]
+In (nb: cite 3K), the authors applied the multiplicative Schwarz preconditioning inexact Newton method (MSPIN) to the phase-field model.
 
 [Current proposition]
+In this paper, we propose to combine alternate minimization with MSPIN to minimize the energy potential over a 2D or 3D subspace of the degrees of freedom by finding the minimum of polynomial interpolants.
+These interpolants are based on P2 finite elements.
+By using both alternate minimization and MSPIN, the search space for backtracking is higher dimensional and is guaranteed to give lower energy potentials than either method on their own.
 
-[Outline of paper]
+In Section \ref{sec: bg}, we cover necessary background information, including a description of the phase-field model and algorithms from previous works.
+In Section \ref{sec: interpolant}, we introduce the polynomial interpolants, how to minimize them, and when this minimization may fail.
+In Section \ref{sec: num}, we compare the various methods applied to numerical examples.
 
 \section{Background}
 \label{sec: bg}
@@ -110,7 +125,7 @@ As described above, the damage scalar field is subject to a variational inequali
 \begin{equation*}
 	v(t_{i-1}) \leq v(t_i) \leq 1, \quad \forall x \in \Omega.
 \end{equation*}
-In Section \ref{sec: altmin}, this is said to be handled by a variational inequality Newton's method, or VINewton, which uses an active set method.
+In Section \ref{subsec: altmin}, this is said to be handled by a variational inequality Newton's method, or VINewton, which uses an active set method.
 
 Active set methods separate all degrees of freedom into two sets: an active set, where the constraints are met or exceeded, and an inactive set, where the constraints remain intact, i.e.
 \begin{align*}
@@ -228,6 +243,7 @@ This algorithm is summarized in Algorithm \ref{alg: cb}.
 \end{algorithm}
 
 \section{Interpolant minimization}
+\label{sec: interpolant}
 
 When using MSPIN, one has two potential directions for minimization: the AltMin direction $\vec{q}$ and the Newton direction $\vec{p}$.
 Let's try using both while applying similar ideas to cubic backtracking.
