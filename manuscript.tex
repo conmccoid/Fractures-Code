@@ -5,6 +5,12 @@
 \usepackage{math}
 \usepackage{algorithm, algpseudocode}
 \usepackage{graphicx}
+\usepackage{hyperref}
+
+\usepackage[backend=biber,style=authoryear,giveninits=true,
+url=false, doi=true, eprint=true,date=year,isbn=false,natbib=true]{biblatex}
+\addbibresource{references.bib}
+
 
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\mspin}{MSPIN}
@@ -21,6 +27,7 @@
 \begin{abstract}
 ---
 \end{abstract}
+\tableofcontents
 
 \section{Introduction}
 \label{sec: intro}
@@ -28,7 +35,7 @@
 Brittle fracture is the sudden nucleation and propagation of cracks in otherwise elastic material.
 This type of damage can be catastrophic in applications such as civil engineering or crystal growth.
 Because brittle fracture occurs so rapidly, it is difficult to model the phenomenon with standard calculus.
-Instead, Francfort and Marigo \cite{francfort1999approche, bourdin2008variational} propose using a variational principle: the vector field of the displacement of the material minimizes an energy potential that combines elastic forces and the Griffith energy of all cracks \cite{griffith1921vi}.
+Instead, Francfort and Marigo \autocite{Francfort-Marigo-1998,bourdin2008variational} propose using a variational principle: the vector field of the displacement of the material minimizes an energy potential that combines elastic forces and the Griffith energy of all cracks \cite{griffith1921vi}.
 
 This variational approach then requires calculating the Griffith energy, a challenge in practice.
 As an approximation, one introduces a phase-field variable, a scalar field representing the damage in the material.
@@ -575,7 +582,11 @@ It is clear that using MSPIN with the interpolant minimization techniques can re
 However, doing so greatly increases the computational cost of each outer iteration, up to 290\%.
 To be competitive against AltMin, the number of outer iterations will need to be reduced by a factor of 3.
 
-\bibliographystyle{siamplain}
-\bibliography{references}
+\section*{Acknowledgements}
+This work was supported in parts by the Natural Sciences and Engineering Research Council of Canada (NSERC), RGPIN-2022-04536 and the Canada Research Chair program.
 
+% \bibliographystyle{siamplain}
+% \bibliography{references}
+
+\printbibliography
 \end{document}
