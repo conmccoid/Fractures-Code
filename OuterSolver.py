@@ -40,6 +40,9 @@ class OuterSolver:
         stage_altmin = PETSc.Log.Stage("AltMin step")
         stage_mspin = PETSc.Log.Stage("MSPIN solve")
         stage_global = PETSc.Log.Stage("Glob. tech.")
+        with open(f"FLOP_{self.identifier}.csv",'w') as f:
+            writer=csv.writer(f,delimiter=',')
+            writer.writerow(['t','# Iterations','AltMin FLOPs','MSPIN FLOPs','Total FLOPs'])
         # write headers to saved files
         if WriteSwitch:
             with io.XDMFFile(self.fp.comm, f"output/EX_{self.identifier}.xdmf","w") as xdmf:
@@ -64,10 +67,13 @@ class OuterSolver:
                 print(f"-- Solving for t = {t:3.2f} --")
             
             start_time = PETSc.Log.getTime() # or time.perf_counter()?
+            start_flops = PETSc.Log.getFlops() # get flops at start of iteration
             iteration=0
             stage_altmin.push()
             self.fp.Fn(None, self.x, self.res)  # Evaluate the function: run one iteration of AltMin to satisfy BCs
             stage_altmin.pop()
+            altmin_flops = PETSc.Log.getFlops() - start_flops # get flops for AltMin step
+            mspin_flops = 0.0 # initialize flops for MSPIN solve
             if PlotSwitch:
                 plotEnergyLandscape(self.fp,self.x,self.res) # temporary
                 print(f"Energy: {self.fp.updateEnergies(self.x)[2]}") # temporary
@@ -78,10 +84,12 @@ class OuterSolver:
             self.fp.monitor(iteration) # monitor convergence
 
             while error > tol and iteration < maxit:
+                flops_start = PETSc.Log.getFlops() # get flops at start of iteration
                 iteration += 1
                 stage_altmin.push()
                 self.fp.Fn(None, self.x, self.res)
                 stage_altmin.pop()
+                altmin_flops += PETSc.Log.getFlops() - flops_start # get flops for AltMin step
                 if self.method=='AltMin':
                     if PlotSwitch:
                         plotEnergyLandscape(self.fp,self.x,self.res) # temporary
@@ -95,6 +103,7 @@ class OuterSolver:
                     self.x += self.res # update solution
                 else:
                     # Solve the linear system
+                    flops_start = PETSc.Log.getFlops() # get flops at start of MSPIN solve
                     stage_mspin.push()
                     self.fp.PJ.updateMat() # update Jacobian matrix in Python context
                     self.fp.PJ.getKSPs() # update KSPs
@@ -102,6 +111,7 @@ class OuterSolver:
                     self.fp.PJ.resetKSPs() # reset KSPs
                     self.fp.PJ.destroyMat() # destroy Jacobian matrix components to free memory before solve
                     stage_mspin.pop()
+                    mspin_flops += PETSc.Log.getFlops() - flops_start # get flops for MSPIN solve
                     self.energies[i_t,6]+=self.SNESKSP.getIterationNumber()
                     DBTrick(self.fp,self.x,self.p) # apply DB trick to search direction
                     stage_global.push()
@@ -159,6 +169,12 @@ class OuterSolver:
             self.energies[i_t, 5] = iteration
 
             self.fp.v_lb.x.array[:] = self.fp.v.x.array # update lower bound for damage to ensure irreversibility
+
+            total_flops = PETSc.Log.getFlops() - start_flops # get flops at end of iteration
+            if self.fp.rank==0:
+                with open(f"FLOP_{self.identifier}.csv",'a') as f:
+                    writer=csv.writer(f,delimiter=',')
+                    writer.writerow([t,iteration,altmin_flops,mspin_flops,total_flops])
 
             if PlotSwitch:
                 self.fp.plot(x=self.x)
