@@ -10,9 +10,9 @@
 #SBATCH --mail-user=mccoidc@mcmaster.ca
 #SBATCH --no-requeue
 
-srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method AltMin --write
-srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method CubicBacktracking --write
-srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method Parallelogram --write
-srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method Triangle --write
-srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method Tetrahedron --write
-srun apptainer exec fractures-code_dolfinx.sif python3 NX_CTFM.py
+srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method AltMin
+srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method CubicBacktracking
+srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method Parallelogram
+srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method Triangle
+srun apptainer exec fractures-code_dolfinx.sif python3 EX_CTFM.py --method Tetrahedron
+# srun apptainer exec fractures-code_dolfinx.sif python3 NX_CTFM.py
