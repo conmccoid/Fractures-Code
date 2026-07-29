@@ -191,3 +191,18 @@ for i in range(3):
 ax[2].legend()
 
 fig.savefig('FIG_CTFM_aveflop.pdf')
+
+# flop count increase vs. AltMin
+fig, ax = plt.subplots(1,1)
+
+ax.plot(flop_para[1:51,0],flop_para[1:51,4]/flop_altmin[1:51,4],label='Parallelogram',ls='--',marker=marker[2],color=color[2],ms=5)
+ax.plot(flop_tri[1:51,0],flop_tri[1:51,4]/flop_altmin[1:51,4],label='Triangle',ls='--',marker=marker[3],color=color[3],ms=5)
+ax.plot(flop_tet[1:51,0],flop_tet[1:51,4]/flop_altmin[1:51,4],label='Tetrahedron',ls='--',marker=marker[4],color=color[4],ms=5)
+
+ax.set_yscale('log')
+ax.set_xlabel('t')
+ax.set_ylabel('Percent AltMin flops')
+spanAxes(ax)
+ax.legend()
+
+fig.savefig('FIG_CTFM_flopPercent.pdf')
