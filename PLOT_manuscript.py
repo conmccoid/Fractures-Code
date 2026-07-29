@@ -143,3 +143,51 @@ spanAxes(ax)
 ax.legend()
 
 fig.savefig('FIG_CTFM_outerIts3.pdf')
+
+# flop count comparison (absolute)
+flop_altmin = np.loadtxt(f"FLOP_CTFM_AltMin.csv", delimiter=',',skiprows=1)
+flop_mspin = np.loadtxt(f"FLOP_CTFM_CubicBacktracking.csv", delimiter=',',skiprows=1)
+flop_para = np.loadtxt(f"FLOP_CTFM_Parallelogram.csv", delimiter=',',skiprows=1)
+flop_tri = np.loadtxt(f"FLOP_CTFM_Triangle.csv", delimiter=',',skiprows=1)
+flop_tet = np.loadtxt(f"FLOP_CTFM_Tetrahedron.csv", delimiter=',',skiprows=1)
+
+fig, ax = plt.subplots(3,1)
+
+for i in range(3):
+    ax[i].plot(flop_altmin[1:51,0],flop_altmin[1:51,i+2],label='AltMin',ls='--',marker=marker[0],color=color[0],ms=5)
+    # ax[i].plot(flop_mspin[0:51,0],flop_mspin[0:51,i+2],label='MSPIN',ls='--',marker=marker[1],color=color[1],ms=5)
+    ax[i].plot(flop_para[1:51,0],flop_para[1:51,i+2],label='Parallelogram',ls='--',marker=marker[2],color=color[2],ms=5)
+    ax[i].plot(flop_tri[1:51,0],flop_tri[1:51,i+2],label='Triangle',ls='--',marker=marker[3],color=color[3],ms=5)
+    ax[i].plot(flop_tet[1:51,0],flop_tet[1:51,i+2],label='Tetrahedron',ls='--',marker=marker[4],color=color[4],ms=5)
+
+ax[2].set_xlabel('t')
+ax[0].set_ylabel('AltMin step')
+ax[1].set_ylabel('MSPIN step')
+ax[2].set_ylabel('Total')
+for i in range(3):
+    ax[i].set_yscale('log')
+    spanAxes(ax[i])
+ax[2].legend()
+
+fig.savefig('FIG_CTFM_flop.pdf')
+
+# flop count comparison (average)
+fig, ax = plt.subplots(3,1)
+
+for i in range(3):
+    ax[i].plot(flop_altmin[1:51,0],flop_altmin[1:51,i+2]/flop_altmin[1:51,1],label='AltMin',ls='--',marker=marker[0],color=color[0],ms=5)
+    ax[i].plot(flop_mspin[1:51,0],flop_mspin[1:51,i+2]/flop_mspin[1:51,1],label='MSPIN',ls='--',marker=marker[1],color=color[1],ms=5)
+    ax[i].plot(flop_para[1:51,0],flop_para[1:51,i+2]/flop_para[1:51,1],label='Parallelogram',ls='--',marker=marker[2],color=color[2],ms=5)
+    ax[i].plot(flop_tri[1:51,0],flop_tri[1:51,i+2]/flop_tri[1:51,1],label='Triangle',ls='--',marker=marker[3],color=color[3],ms=5)
+    ax[i].plot(flop_tet[1:51,0],flop_tet[1:51,i+2]/flop_tet[1:51,1],label='Tetrahedron',ls='--',marker=marker[4],color=color[4],ms=5)
+
+ax[2].set_xlabel('t')
+ax[0].set_ylabel('AltMin step')
+ax[1].set_ylabel('MSPIN step')
+ax[2].set_ylabel('Total')
+for i in range(3):
+    ax[i].set_yscale('log')
+    spanAxes(ax[i])
+ax[2].legend()
+
+fig.savefig('FIG_CTFM_aveflop.pdf')
